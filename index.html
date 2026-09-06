@@ -1,1333 +1,2137 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>مدیریت بیمارستان‌ها</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
---bg:#f4f8fc;--bg2:#fff;--card:#fff;--card2:#f8fbff;
---blue:#1677ff;--blue2:#3b8cff;--blue-dark:#0d5dcc;--blue-soft:#eaf3ff;
---text:#172033;--muted:#718096;
---green:#16a66a;--green-soft:#eafaf3;
---orange:#ed9418;--orange-soft:#fff6e7;
---red:#e5484d;--red-soft:#fff0f1;
---border:#e3ebf5;--purple:#7c3aed;--purple-soft:#f2ebff;
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
-html{scroll-behavior:smooth}
+
 body{
-font-family:Tahoma,Arial,sans-serif;
-background:radial-gradient(circle at 50% -15%,rgba(22,119,255,.13),transparent 38%),linear-gradient(180deg,#fff 0%,#f6f9fd 48%,#f1f6fb 100%);
-color:var(--text);min-height:100vh
+    font-family:Tahoma,Arial,sans-serif;
+    background:#050505;
+    color:#fff;
+    min-height:100vh;
 }
-button,input{font-family:inherit}
-button{cursor:pointer}
+
 .header{
-position:sticky;top:0;z-index:50;background:rgba(255,255,255,.88);
-backdrop-filter:blur(18px);border-bottom:1px solid rgba(220,230,242,.85);
-padding:15px;box-shadow:0 5px 25px rgba(31,71,120,.06)
+    padding:20px;
+    text-align:center;
+    border-bottom:1px solid #222;
 }
-.header-inner{max-width:1100px;margin:auto}
-.logo{text-align:center;font-size:24px;font-weight:900;color:#172033;margin-bottom:14px}
-.logo span{color:var(--blue)}
-.top-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
-.top-btn{
-border:1px solid #0d6ff0;background:linear-gradient(135deg,#1680ff,#1267e8);
-color:#fff;border-radius:12px;padding:10px 16px;font-size:13px;font-weight:bold;
-box-shadow:0 6px 16px rgba(22,119,255,.20);transition:.2s
+
+.header h1{
+    margin-bottom:15px;
 }
-.top-btn:hover{transform:translateY(-1px);box-shadow:0 9px 22px rgba(22,119,255,.25)}
-.container{max-width:1100px;margin:auto;padding:24px 14px 55px}
-.page-title{font-size:23px;font-weight:900;color:#172033;margin-bottom:16px}
-.page-subtitle{color:var(--muted);font-size:13px;margin-top:-8px;margin-bottom:18px}
-.search-box{position:relative;margin-bottom:18px}
-.search-box input{
-width:100%;height:52px;background:#fff;border:1px solid #dce7f3;border-radius:15px;
-outline:none;color:#172033;padding:0 46px 0 44px;font-size:14px;
-box-shadow:0 5px 20px rgba(35,75,120,.055);transition:.2s
-}
-.search-box input::placeholder{color:#9aa8b8}
-.search-box input:focus{border-color:#78afff;box-shadow:0 0 0 4px rgba(22,119,255,.09),0 7px 24px rgba(35,75,120,.07)}
-.search-icon{position:absolute;right:15px;top:15px;color:#7d8da1;font-size:17px;pointer-events:none}
-.clear-search{
-position:absolute;left:10px;top:10px;width:32px;height:32px;border:1px solid #dce7f3;
-border-radius:10px;background:#f5f8fc;color:#7d8da1;display:none
-}
-.clear-search:hover{background:#eaf3ff;color:var(--blue)}
-.clear-search.show{display:block}
-.province-grid{
-display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:13px
-}
-.province-card{
-position:relative;background:linear-gradient(145deg,#fff,#fafdff);border:1px solid #e1eaf4;
-border-radius:18px;padding:18px;min-height:110px;transition:.2s;
-box-shadow:0 8px 28px rgba(35,75,120,.075);overflow:hidden
-}
-.province-card::before{
-content:"";position:absolute;top:0;right:0;left:0;height:3px;
-background:linear-gradient(90deg,#126be8,#5ba3ff)
-}
-.province-card:hover{transform:translateY(-3px);border-color:#bcd7f8;box-shadow:0 13px 32px rgba(35,75,120,.12)}
-.province-name{font-size:17px;font-weight:900;color:#172033;margin-bottom:10px}
-.province-count{color:#718096;font-size:12px}
-.province-status{display:flex;gap:5px;margin-top:12px;flex-wrap:wrap}
-.mini-status{font-size:10px;padding:4px 7px;border-radius:7px;background:#f2f6fa;color:#6e7e91;border:1px solid #e5edf5}
+
+.top-btn,
 .back-btn{
-border:1px solid #cfe0f4;background:#fff;color:#176bd8;padding:9px 14px;
-border-radius:11px;margin-bottom:15px;font-size:12px;font-weight:bold;box-shadow:0 4px 14px rgba(35,75,120,.06)
+    border:none;
+    padding:12px 18px;
+    border-radius:10px;
+    cursor:pointer;
+    background:#222;
+    color:#fff;
 }
-.back-btn:hover{background:#edf5ff;border-color:#a9caf2}
-.hospital-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+
+.container{
+    width:min(1200px,94%);
+    margin:25px auto;
+}
+
+.search-box{
+    display:flex;
+    gap:8px;
+    margin-bottom:20px;
+}
+
+.search-box input{
+    flex:1;
+    padding:14px;
+    border-radius:10px;
+    border:1px solid #333;
+    background:#111;
+    color:#fff;
+    outline:none;
+}
+
+.search-clear{
+    display:none;
+    padding:10px;
+    cursor:pointer;
+}
+
+.search-clear.show{
+    display:block;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:15px;
+}
+
+.province-card,
 .hospital-card{
-position:relative;background:#fff;border:1px solid #e1eaf4;border-radius:18px;padding:17px;
-transition:.2s;box-shadow:0 8px 26px rgba(35,75,120,.065)
+    background:#101010;
+    border:1px solid #252525;
+    border-radius:15px;
+    padding:18px;
+    cursor:pointer;
+    transition:.2s;
 }
-.hospital-card:hover{transform:translateY(-2px);border-color:#bcd7f8;box-shadow:0 13px 32px rgba(35,75,120,.11)}
-.hospital-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:7px}
-.hospital-name{font-weight:900;line-height:1.7;font-size:15px;color:#172033;flex:1}
+
+.province-card:hover,
+.hospital-card:hover{
+    transform:translateY(-2px);
+    border-color:#555;
+}
+
+.province-name,
+.hospital-name{
+    font-weight:bold;
+    font-size:17px;
+}
+
+.province-count,
+.hospital-city{
+    color:#aaa;
+    margin-top:8px;
+}
+
+.province-status{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-top:12px;
+}
+
+.mini-status{
+    font-size:11px;
+    padding:5px 7px;
+    background:#1b1b1b;
+    border-radius:6px;
+}
+
+.hospital-title-row{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:10px;
+}
+
 .delete-btn{
-flex:0 0 auto;width:35px;height:35px;border-radius:10px;border:1px solid #f0c8ca;
-background:#fff6f6;color:#e5484d;font-size:16px;transition:.2s
+    border:0;
+    background:#251010;
+    color:#ff7777;
+    border-radius:7px;
+    padding:6px 8px;
+    cursor:pointer;
 }
-.delete-btn:hover{background:#ffe9ea;border-color:#eba7aa}
-.hospital-city{color:#8090a3;font-size:12px;margin-bottom:12px}
+
 .status-badge{
-display:inline-flex;padding:6px 10px;border-radius:9px;font-size:11px;font-weight:bold;
-margin-bottom:12px;border:1px solid transparent
+    display:inline-block;
+    margin:12px 0;
+    padding:7px 10px;
+    border-radius:8px;
+    font-size:12px;
 }
-.status-ready{color:#128257;background:var(--green-soft);border-color:#c9efdf}
-.status-no-answer{color:#d13c42;background:var(--red-soft);border-color:#f7d1d3}
-.status-catalog{color:#c27a08;background:var(--orange-soft);border-color:#f5dfb8}
-.status-follow-up{color:#146dd4;background:var(--blue-soft);border-color:#c9def9}
-.status-emed{color:#6d28d9;background:var(--purple-soft);border-color:#ddd0ff}
-.card-phone{
-width:100%;border:1px solid #dce7f3;background:linear-gradient(180deg,#fff,#f8fbfe);
-color:#176bd8;border-radius:11px;padding:10px;margin-top:7px;text-align:center;
-font-size:13px;font-weight:bold;display:block;text-decoration:none;transition:.2s
+
+.status-ready{
+    background:#123d20;
+    color:#71e58c;
 }
-.card-phone:hover{border-color:#9fc5f3;background:#edf6ff;color:#075fca;transform:translateY(-1px)}
-.note{margin-top:11px;padding:10px;border-radius:11px;background:#f7f9fc;border:1px solid #e7edf4;color:#68788c;font-size:11px;line-height:1.8}
-.modal{
-position:fixed;inset:0;background:rgba(22,42,70,.32);backdrop-filter:blur(8px);
-display:none;align-items:center;justify-content:center;padding:15px;z-index:100
+
+.status-no-answer{
+    background:#3b1717;
+    color:#ff8585;
 }
-.modal.show{display:flex}
-.modal-box{
-width:min(520px,100%);max-height:90vh;overflow:auto;
-background:linear-gradient(145deg,#fff,#f9fcff);border:1px solid #dce7f3;
-border-radius:22px;padding:20px;box-shadow:0 30px 80px rgba(31,65,105,.22)
+
+.status-catalog{
+    background:#382d0d;
+    color:#ffd65c;
 }
-.modal-header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:16px}
-.modal-title{font-size:18px;font-weight:900;line-height:1.7;color:#172033}
-.modal-city{color:#7c8da1;font-size:12px;margin-top:4px}
-.close-btn{
-width:36px;height:36px;border:1px solid #dce7f3;border-radius:10px;
-background:#f5f8fc;color:#718096;font-size:18px
+
+.status-follow-up{
+    background:#172c42;
+    color:#72bfff;
 }
-.status-title{color:#6e7e91;font-size:12px;margin-bottom:9px;font-weight:bold}
-.status-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}
-.status-btn{
-border:1px solid #dce7f3;background:#f9fbfd;color:#526276;padding:12px 8px;
-border-radius:12px;font-size:12px;font-weight:bold;transition:.2s
+
+.status-emed{
+    background:#301744;
+    color:#db83ff;
 }
-.status-btn:hover{background:#edf5ff;color:#176bd8;border-color:#b9d5f5}
-.status-btn.active{border-color:#4d96f5;background:linear-gradient(135deg,#eaf4ff,#dceeff);color:#0965d5}
-.modal-phones{display:grid;gap:8px}
+
+.card-phone,
 .modal-phone{
-text-decoration:none;color:#176bd8;background:#f9fbfd;border:1px solid #dce7f3;
-border-radius:12px;padding:13px;text-align:center;direction:ltr;font-weight:bold
+    display:block;
+    text-decoration:none;
+    color:#fff;
+    background:#181818;
+    border:1px solid #292929;
+    padding:10px;
+    margin-top:7px;
+    border-radius:9px;
 }
-.modal-note{margin-top:15px;color:#66778b;background:#f7f9fc;border:1px solid #e5edf5;padding:12px;border-radius:12px;font-size:12px;line-height:1.8}
-.empty{text-align:center;padding:50px 20px;color:#8291a3;background:#fff;border:1px dashed #d9e5f1;border-radius:16px}
-.stats{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:17px}
-.stat{background:#fff;border:1px solid #dfe9f3;border-radius:10px;padding:7px 10px;color:#718096;font-size:11px}
-.stat strong{color:#176bd8}
+
+.card-phone:hover,
+.modal-phone:hover{
+    background:#222;
+}
+
+.note{
+    margin-top:12px;
+    padding:10px;
+    background:#191919;
+    border-radius:8px;
+    color:#ccc;
+    font-size:12px;
+    line-height:1.8;
+}
+
+.empty{
+    text-align:center;
+    padding:40px;
+    color:#888;
+    grid-column:1/-1;
+}
+
+.stats{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:15px 0;
+}
+
+.stat{
+    background:#111;
+    border:1px solid #292929;
+    padding:10px 14px;
+    border-radius:9px;
+}
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.75);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:1000;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    width:min(600px,100%);
+    max-height:90vh;
+    overflow:auto;
+    background:#101010;
+    border:1px solid #333;
+    border-radius:18px;
+    padding:20px;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:15px;
+}
+
+.close-btn{
+    border:0;
+    background:#252525;
+    color:#fff;
+    border-radius:8px;
+    width:38px;
+    height:38px;
+    cursor:pointer;
+}
+
+.status-buttons{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:8px;
+    margin-top:15px;
+}
+
+.status-btn{
+    padding:12px;
+    border:1px solid #333;
+    background:#181818;
+    color:#fff;
+    border-radius:9px;
+    cursor:pointer;
+}
+
+.status-btn.active{
+    background:#333;
+    border-color:#777;
+}
+
+#modalNote{
+    margin-top:15px;
+    padding:12px;
+    background:#181818;
+    border-radius:9px;
+    line-height:1.8;
+    color:#ddd;
+}
+
 .toast{
-position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);
-background:#fff;border:1px solid #dce7f3;color:#26364c;padding:12px 17px;border-radius:12px;
-font-size:12px;font-weight:bold;opacity:0;pointer-events:none;transition:.25s;z-index:200;
-box-shadow:0 12px 30px rgba(31,65,105,.16)
+    position:fixed;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%) translateY(20px);
+    background:#222;
+    color:#fff;
+    padding:12px 18px;
+    border-radius:10px;
+    opacity:0;
+    pointer-events:none;
+    transition:.25s;
+    z-index:2000;
 }
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+}
+
+.loading{
+    text-align:center;
+    padding:50px;
+    color:#aaa;
+}
+
 @media(max-width:600px){
-.header{padding:13px}.container{padding:20px 12px 45px}
-.province-grid{grid-template-columns:1fr 1fr;gap:10px}
-.hospital-grid{grid-template-columns:1fr}.province-card{min-height:95px;padding:14px}
-.province-name{font-size:14px}.province-count{font-size:11px}.logo{font-size:21px}
-.page-title{font-size:21px}.top-btn{width:100%;max-width:300px}
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .status-buttons{
+        grid-template-columns:1fr;
+    }
+
 }
+
 </style>
+
 </head>
 
 <body>
 
 <header class="header">
-<div class="header-inner">
-<div class="logo">مدیریت <span>بیمارستان‌ها</span></div>
-<div class="top-actions">
-<button class="top-btn" onclick="exportTXT()">💾 خروجی اطلاعات</button>
-</div>
-</div>
+
+    <h1>مدیریت بیمارستان‌ها</h1>
+
+    <button class="top-btn" onclick="exportTXT()">
+        💾 خروجی اطلاعات
+    </button>
+
 </header>
+
 
 <main class="container">
 
-<div id="provincePage">
-<div class="page-title">استان‌ها</div>
-<div class="page-subtitle">استان موردنظر را انتخاب کنید</div>
+    <!-- صفحه استان‌ها -->
 
-<div class="search-box">
-<span class="search-icon">🔍</span>
-<input id="provinceSearch" type="text" placeholder="جستجوی استان..." oninput="renderProvinces()">
-<button id="provinceClear" class="clear-search" onclick="clearProvinceSearch()">×</button>
-</div>
+    <div id="provincePage">
 
-<div id="provinceGrid" class="province-grid"></div>
-</div>
+        <div class="search-box">
 
-<div id="hospitalPage" style="display:none">
-<button class="back-btn" onclick="showProvinces()">← بازگشت به استان‌ها</button>
-<div class="page-title" id="hospitalPageTitle"></div>
+            <input
+                id="provinceSearch"
+                type="text"
+                placeholder="جستجوی استان..."
+                oninput="renderProvinces()"
+            >
 
-<div class="search-box">
-<span class="search-icon">🔍</span>
-<input id="hospitalSearch" type="text" placeholder="جستجوی بیمارستان، شهر، وضعیت یا یادداشت..." oninput="renderHospitals(currentProvince)">
-<button id="hospitalClear" class="clear-search" onclick="clearHospitalSearch()">×</button>
-</div>
+            <button
+                id="provinceClear"
+                class="search-clear"
+                onclick="clearProvinceSearch()"
+            >
+                ✕
+            </button>
 
-<div id="hospitalStats" class="stats"></div>
-<div id="hospitalGrid" class="hospital-grid"></div>
-</div>
+        </div>
+
+        <div id="provinceGrid" class="grid">
+
+            <div class="loading">
+                در حال دریافت اطلاعات...
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- صفحه بیمارستان‌ها -->
+
+    <div id="hospitalPage" style="display:none">
+
+        <button class="back-btn" onclick="showProvinces()">
+            ← بازگشت به استان‌ها
+        </button>
+
+        <h2 id="hospitalPageTitle" style="margin-top:20px"></h2>
+
+        <div id="hospitalStats" class="stats"></div>
+
+        <div class="search-box">
+
+            <input
+                id="hospitalSearch"
+                type="text"
+                placeholder="جستجوی بیمارستان، شهر، تلفن یا وضعیت..."
+                oninput="renderHospitals(currentProvince)"
+            >
+
+            <button
+                id="hospitalClear"
+                class="search-clear"
+                onclick="clearHospitalSearch()"
+            >
+                ✕
+            </button>
+
+        </div>
+
+        <div id="hospitalGrid" class="grid"></div>
+
+    </div>
 
 </main>
 
-<div id="modal" class="modal" onclick="closeModalByBackdrop(event)">
-<div class="modal-box">
 
-<div class="modal-header">
-<div>
-<div id="modalTitle" class="modal-title"></div>
-<div id="modalCity" class="modal-city"></div>
+<!-- Modal -->
+
+<div
+    id="modal"
+    class="modal"
+    onclick="closeModalByBackdrop(event)"
+>
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2 id="modalTitle"></h2>
+
+                <div
+                    id="modalCity"
+                    style="color:#aaa;margin-top:8px"
+                ></div>
+
+            </div>
+
+            <button
+                class="close-btn"
+                onclick="closeModal()"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <h3>وضعیت تماس</h3>
+
+        <div
+            id="statusButtons"
+            class="status-buttons"
+        ></div>
+
+
+        <h3 style="margin-top:20px">
+            شماره تلفن‌ها
+        </h3>
+
+        <div id="modalPhones"></div>
+
+
+        <div id="modalNote"></div>
+
+    </div>
+
 </div>
-<button class="close-btn" onclick="closeModal()">×</button>
-</div>
 
-<div class="status-title">وضعیت بیمارستان</div>
-<div id="statusButtons" class="status-buttons"></div>
-
-<div class="status-title">شماره تلفن‌ها</div>
-<div id="modalPhones" class="modal-phones"></div>
-
-<div id="modalNote" class="modal-note" style="display:none"></div>
-
-</div>
-</div>
 
 <div id="toast" class="toast"></div>
 
+
 <script>
 
-const provinces=[
-"آذربایجان شرقی","آذربایجان غربی","اردبیل","اصفهان","البرز","ایلام","بوشهر","تهران",
-"چهارمحال و بختیاری","خراسان جنوبی","خراسان رضوی","خراسان شمالی","خوزستان","زنجان",
-"سمنان","سیستان و بلوچستان","فارس","قزوین","قم","کردستان","کرمان","کرمانشاه",
-"کهگیلویه و بویراحمد","گلستان","گیلان","لرستان","مازندران","مرکزی","هرمزگان","همدان","یزد"
+/* =========================================================
+   اطلاعات استان‌ها
+   ========================================================= */
+
+const provinces = [
+
+    "آذربایجان شرقی",
+    "آذربایجان غربی",
+    "اردبیل",
+    "اصفهان",
+    "البرز",
+    "ایلام",
+    "بوشهر",
+    "تهران",
+    "چهارمحال و بختیاری",
+    "خراسان جنوبی",
+    "خراسان رضوی",
+    "خراسان شمالی",
+    "خوزستان",
+    "زنجان",
+    "سمنان",
+    "سیستان و بلوچستان",
+    "فارس",
+    "قزوین",
+    "قم",
+    "کردستان",
+    "کرمان",
+    "کرمانشاه",
+    "کهگیلویه و بویراحمد",
+    "گلستان",
+    "گیلان",
+    "لرستان",
+    "مازندران",
+    "مرکزی",
+    "هرمزگان",
+    "همدان",
+    "یزد"
+
 ];
 
-const hospitals={
 
-"آذربایجان غربی":[
-{id:1,name:"بیمارستان امام خمینی(ره) پلدشت",city:"پلدشت",phones:["04434285015","04434285012"]},
-{id:2,name:"بیمارستان حضرت فاطمه زهرا (س) نقده",city:"نقده",phones:["04435633899"]},
-{id:3,name:"آذربایجان غربی بیمارستان شهداء تکاب",city:"تکاب",phones:["04445522871","04445522872","04445522873","04445522874"]},
-{id:4,name:"بیمارستان شهیدراثی شاهین دژ",city:"شاهین دژ",phones:["04446322135"]},
-{id:5,name:"بیمارستان عباسی میاندوآب",city:"میاندوآب",phones:["04445350921"]},
-{id:6,name:"بیمارستان حضرت فاطمه(س) میاندوآب",city:"میاندوآب",phones:["04445221994"]},
-{id:7,name:"بیمارستان امام خمینی (ره) سردشت",city:"سردشت",phones:["04444334666","04444320986","04444322929"]},
-{id:8,name:"بیمارستان شهید قلیپور بوکان",city:"بوکان",phones:["04446230701","0444623072","04446230703","04446230704","04446230705"]},
-{id:9,name:"بیمارستان امام خمینی(ره) مهاباد",city:"مهاباد",phones:["04442226144","04442226155","04442226166","04442226177"]},
-{id:10,name:"بیمارستان خاتم الانبیاء(ص) سلماس",city:"سلماس",phones:["04435228886"]},
-{id:11,name:"بیمارستان شهید بهشتی چالدران",city:"چالدران",phones:["04434267291 1020"]},
-{id:12,name:"بیمارستان فجر ماکو",city:"ماکو",phones:["04434244205"]},
-{id:13,name:"بیمارستان امام خمینی(ره) چایپاره",city:"چایپاره",phones:["04436727701","04436727285"]},
-{id:14,name:"آذربایجان غربی بیمارستان امام خمینی(ره) پیرانشهر",city:"پیرانشهر",phones:["04444229722","04444229723","04444229724"]},
-{id:15,name:"بیمارستان قمر بنی هاشم خوی",city:"خوی",phones:["04436332112"]},
-{id:16,name:"آذربایجان غربی بیمارستان شهید مدنی خوی",city:"خوی",phones:["04436253222","04436253223"]},
-{id:17,name:"آذربایجان غربی بیمارستان نبی اکرم(ص) اشنویه",city:"اشنویه",phones:["04444622303"]},
-{id:18,name:"آذربایجان غربی بیمارستان امام خمینی(ره) نقده",city:"نقده",phones:["04435661820","04435661821","04435661822","04435661823","04435661824","04435661825"]},
-{id:19,name:"بیمارستان امام رضا(ع) ارومیه",city:"ارومیه",phones:["04433659987","04433659986","04433659928"]},
-{id:20,name:"بیمارستان تخصصی قلب سیدالشهدا(ع) ارومیه",city:"ارومیه",phones:["04432375908","04432375909","04432375910","04432375911"]},
-{id:21,name:"بیمارستان آیت اله طالقانی ارومیه",city:"ارومیه",phones:["04433487990"]},
-{id:22,name:"آذربایجان غربی بیمارستان آذربایجان ارومیه",city:"ارومیه",phones:["04431944444"]},
-{id:23,name:"بیمارستان امام خمینی(ره) ارومیه",city:"ارومیه",phones:["04433469933","04433469934","04433469935","04433469938","04433469939"]},
-{id:24,name:"بیمارستان 523ارتش ارومیه",city:"ارومیه",phones:["04433472891"]},
-{id:25,name:"آذربایجان غربی بیمارستان شهید مطهری ارومیه",city:"ارومیه",phones:["04432225777","04432224777"]},
-{id:26,name:"بیمارستان شفا ارومیه",city:"ارومیه",phones:["04432225588"]},
-{id:27,name:"بیمارستان دکتر صولتی ارومیه",city:"ارومیه",phones:["04432222525","04432222526","04432222527","04432222529","04432222530"]},
-{id:28,name:"بیمارستان رازی ارومیه",city:"ارومیه",phones:["04432722930"],note:"09147150800 آقای مهندس فروتنی تجهیزات"},
-{id:29,name:"بیمارستان شهدا شوط",city:"شوط",phones:["04434277495"]},
-{id:30,name:"بیمارستان شهید عارفیان ارومیه",city:"ارومیه",phones:["04431934000"],note:"همکاری دارن با شرکت"}
-],
+/* =========================================================
+   اطلاعات بیمارستان‌ها از JSON
+   ========================================================= */
 
-"فارس":[
-{id:1,name:"بیمارستان تخصصی و فوق تخصصی دکتر فرهمندفر",city:"شیراز",phones:["07136264748"]},
-{id:2,name:"بیمارستان حافظ",city:"شیراز",phones:["07136271532","07136271534"]},
-{id:3,name:"بیمارستان چمران",city:"شیراز",phones:["07136240101"]},
-{id:4,name:"بیمارستان نمازی",city:"شیراز",phones:["07136474332","07136474334","07136474335","07136474338","07136474340","07136474361"]},
-{id:5,name:"بیمارستان پیوند ابوعلی سینا",city:"شیراز (صدرا)",phones:["07136407061","07136407062","07136407063","07136407064"]},
-{id:6,name:"بیمارستان شهید رجایی",city:"شیراز",phones:["07136364001"]},
-{id:7,name:"بیمارستان سوانح سوختگی و ترمیمی امیرالمؤمنین (ع)",city:"صدرا",phones:["07136146100","07136146101"]},
-{id:8,name:"بیمارستان مرکزی MRI",city:"شیراز",phones:["07136284411","07136284412","07136284414","07136284416","07136284418","07136284420"]},
-{id:9,name:"بیمارستان اردیبهشت",city:"شیراز",phones:["07136284821","07136284822","07136284823","07136284824","07136284825"]},
-{id:10,name:"بیمارستان امام هادی",city:"فراشبند",phones:["07138758312"]},
-{id:11,name:"بیمارستان اعصاب و روان استاد محرری",city:"شیراز",phones:["07136277503"]},
-{id:12,name:"بیمارستان مادر و کودک غدیر",city:"شیراز",phones:["07132279701"]},
-{id:13,name:"بیمارستان حضرت قائم (عج)",city:"فیروزآباد",phones:["07138727092","07138727093","07138727094","07138727095"]},
-{id:14,name:"بیمارستان دکتر علی شریعتی",city:"فسا",phones:["07153350116","07153350117"]},
-{id:15,name:"بیمارستان حضرت ولیعصر (عج)",city:"فسا",phones:["07153315011","07153315012","07153315014","07153315015","07153315021","07153315026"]},
-{id:16,name:"بیمارستان امام سجاد (ع)",city:"خشت و کنار تخته (کازرون)",phones:["07142444052","07142444053","07142444054"]},
-{id:17,name:"بیمارستان امام محمد باقر (ع)",city:"قیر و کارزین",phones:["07154526507","07154526291","07154526292","07154526293"]},
-{id:18,name:"بیمارستان ولیعصر (عج)",city:"کازرون",phones:["07142227080","07142227081","07142227083"]},
-{id:19,name:"بیمارستان امام رضا (ع)",city:"لارستان",phones:["07152242101"]},
-{id:20,name:"بیمارستان امیرالمؤمنین (ع)",city:"گراش",phones:["07152440001","07152440002","07152440003"]},
-{id:21,name:"بیمارستان امیدوار",city:"اوز",phones:["07152512535","07152512536","07152512537","07152512538"]},
-{id:22,name:"بیمارستان ولیعصر (ع)",city:"لامرد",phones:["07152722201"]},
-{id:23,name:"بیمارستان علی اصغر (ع)",city:"بیرم",phones:["07152552604"]},
-{id:24,name:"بیمارستان بعثت",city:"اشکنان",phones:["07152762030","07152762031","07152762032"]},
-{id:25,name:"بیمارستان شهید مطهری",city:"مرودشت",phones:["07143342060","07143342061","07143342062","07143342063","07143342064","07143342065","07143342066"]},
-{id:26,name:"بیمارستان ولیعصر (عج)",city:"اقلید",phones:["07144529341","07144529342","07144529343","07144529344"]},
-{id:27,name:"بیمارستان ولی عصر",city:"بوانات",phones:["07144406931"]},
-{id:28,name:"بیمارستان امام جعفر صادق (ع)",city:"پاسارگاد",phones:["07145563990","07143563991","07143563992","07143563993","07143563994","07143563995"]},
-{id:29,name:"بیمارستان پیمانیه",city:"جهرم",phones:["07154230011","07154230012"]},
-{id:30,name:"بیمارستان استاد مطهری",city:"جهرم",phones:["07154331201","07154333002","07154333003","07154333004"]},
-{id:31,name:"بیمارستان خاتم الانبیا",city:"خفر",phones:["07154503073"]},
-{id:32,name:"بیمارستان ولی عصر (عج)",city:"خرم‌بید",phones:["07144451021","07144451025"]},
-{id:33,name:"بیمارستان جوادالائمه (ع)",city:"خرامه",phones:["07132728443","07132728440"]},
-{id:34,name:"بیمارستان سیدالشهدا",city:"قادرآباد",phones:["07144493949"]},
-{id:35,name:"بیمارستان نبی اکرم (ص)",city:"خنج",phones:["07152620051","07152620052","07152620053","07152620054"]},
-{id:36,name:"بیمارستان امام حسن مجتبی (ع)",city:"داراب",phones:["07153526990"]},
-{id:37,name:"بیمارستان امام حسن عسکری (ع)",city:"زرقان",phones:["07132620027"]},
-{id:38,name:"بیمارستان امام موسی کاظم (ع)",city:"زرین‌دشت",phones:["07153725500","07153722978","07153725501"]},
-{id:39,name:"بیمارستان امام حسین (ع)",city:"سپیدان",phones:["07136725245"]},
-{id:40,name:"بیمارستان شهدای سروستان",city:"سروستان",phones:["07137842111","07137842112"]},
-{id:41,name:"بیمارستان شهید آیت‌الله دستغیب",city:"شیراز",phones:["07132284780","07132289307","07132288064"]},
-{id:42,name:"بیمارستان شهید بهشتی",city:"شیراز",phones:["07132241161"]},
-{id:43,name:"بیمارستان شفا",city:"شیراز",phones:["07132339017","07132339015"]},
-{id:44,name:"بیمارستان فقیهی",city:"شیراز",phones:["07132351087","07132351089","07132351090","07132351092","07132351094","07132351096","07132351098","07132351099"]},
-{id:45,name:"بیمارستان پارس",city:"شیراز",phones:["07132336006"]},
-{id:46,name:"بیمارستان امامی",city:"شیراز",phones:["07132360141"]},
-{id:47,name:"بیمارستان تخصصی و فوق تخصصی شهریار",city:"شیراز",phones:["07132337905"]},
-{id:48,name:"بیمارستان ایران ناجا",city:"شیراز",phones:["07132332370"]},
-{id:49,name:"بیمارستان مسلمین",city:"شیراز",phones:["07132135000"]},
-{id:50,name:"بیمارستان حضرت علی اصغر (ع)",city:"شیراز",phones:["07132288602","07132288603","07132288604","07132288605","07132288606"]},
-{id:51,name:"بیمارستان علوی",city:"شیراز",phones:["07132248327"]},
-{id:52,name:"بیمارستان 576 ارتش",city:"شیراز",phones:["07132263546","07132263547"]},
-{id:53,name:"بیمارستان میرحسینی",city:"شیراز",phones:["07132284433","07132284434"]},
-{id:54,name:"بیمارستان زینبیه",city:"شیراز",phones:["07137266812","07137266813","07137266814","07137266815","07137266816","07137266817","07137266819"]},
-{id:55,name:"بیمارستان قلب الزهرا (س) و کودکان شهید حجازی",city:"شیراز",phones:["07137398811","07137398812","07137398813","07137398814","07137398815"]},
-{id:56,name:"بیمارستان جنّت",city:"شیراز",phones:["07138226362"]},
-{id:57,name:"بیمارستان مادر و کودک شوشتری",city:"شیراز",phones:["07132324803"]},
-{id:58,name:"بیمارستان دنا",city:"شیراز",phones:["07136490411"]},
-{id:59,name:"بیمارستان بعثت",city:"شیراز",phones:["07136359379","07136359382","07136359383","07136359387"]},
-{id:60,name:"بیمارستان تخصصی و فوق تخصصی کوثر",city:"شیراز",phones:["07136141000"]},
-{id:61,name:"بیمارستان انکولوژی امیر",city:"شیراز",phones:["07136323532"]},
-{id:62,name:"بیمارستان خلیلی",city:"شیراز",phones:["07136291470"]},
-{id:63,name:"بیمارستان امام خمینی",city:"آباده",phones:["07144361133"]}
-],
+let hospitals = {};
 
-"البرز":[
-{id:1,name:"بیمارستان فاطمه الزهرا",city:"البرز",phones:["026-37723035"]},
-{id:2,name:"بیمارستان امام جعفر صادق",city:"البرز",phones:["026-44210925"]},
-{id:3,name:"بیمارستان البرز",city:"البرز",phones:["026-34924209"]},
-{id:4,name:"بیمارستان شهید باهنر",city:"البرز",phones:["026-32562358"]},
-{id:5,name:"بیمارستان رجایی",city:"البرز",phones:["026-34552002"]},
-{id:6,name:"بیمارستان شهید مدنی",city:"البرز",phones:["026-34427001"]},
-{id:7,name:"بیمارستان آرام",city:"البرز",phones:["026-36111000"]},
-{id:8,name:"بیمارستان قائم",city:"البرز",phones:["026-32771000"]},
-{id:9,name:"بیمارستان امام خمینی",city:"البرز",phones:["026-32234370"]},
-{id:10,name:"بیمارستان امام حسین",city:"البرز",phones:["026-36220118"]},
-{id:11,name:"بیمارستان دکتر شریعتی",city:"البرز",phones:["026-37305001"]},
-{id:12,name:"بیمارستان کوثر",city:"البرز",phones:["026-34544061"]},
-{id:13,name:"بیمارستان مریم",city:"البرز",phones:["026-33502347"]},
-{id:14,name:"بیمارستان کسری",city:"البرز",phones:["026-34416232"]},
-{id:15,name:"بیمارستان ثارالله",city:"البرز",phones:["026-33305204"]},
-{id:16,name:"بیمارستان نور (چشم‌پزشکی)",city:"البرز",phones:["026-35800"],note:"09385141451 خانم مهندس شکیبا در واتس‌اپ ارسال شد"}
-],
 
-"قزوین":[
-{id:1,name:"بیمارستان تخصصی اطفال قدس قزوین",city:"قزوین",phones:["02833334810","02833334809","02833334808","02833334807"],note:"09364821559 خانم مهندس روغنی تجهیزات"},
-{id:2,name:"بیمارستان 22 بهمن قزوین",city:"قزوین",phones:["02833555054"]},
-{id:3,name:"بیمارستان خیریه رحیمیان البرز",city:"قزوین",phones:["02832229701","02832229899","02832229898","02832223831"]},
-{id:4,name:"بیمارستان امیرالمومنین (ع) بوئین زهرا",city:"بوئین زهرا",phones:["02834225381","02834225382"]},
-{id:5,name:"بیمارستان تامین اجتماعی امیرالمومنین تاکستان",city:"تاکستان",phones:["02835220101"]},
-{id:6,name:"بیمارستان تخصصی ولیعصر آبیک",city:"آبیک",phones:["02832898001"]},
-{id:7,name:"بیمارستان شهداء آبیک",city:"آبیک",phones:["02832880923","02832880921","02832880920","02832880922"]},
-{id:8,name:"بیمارستان ولایت قزوین",city:"قزوین",phones:["02833790643"]},
-{id:9,name:"بیمارستان شفاء تاکستان",city:"تاکستان",phones:["02835249211","02835249212","02835249213","02835249214","02835249215","02835249216","02835249217","02835249218","02835249219","02835249220"]},
-{id:10,name:"بیمارستان شهید رجائی قزوین",city:"قزوین",phones:["02833335800"]},
-{id:11,name:"بیمارستان مهرگان قزوین",city:"قزوین",phones:["02833365160","02833365169"]},
-{id:12,name:"بیمارستان بوعلی سینا قزوین",city:"قزوین",phones:["02833339049"]},
-{id:13,name:"بیمارستان پاستور قزوین",city:"قزوین",phones:["02833378011","02833378012","02833378013","02833378014","02833378015","02833378016","02833378017"]},
-{id:14,name:"بیمارستان دهخدا قزوین",city:"قزوین",phones:["02833342060","02833342050"]},
-{id:15,name:"بیمارستان زکریای رازی قزوین",city:"قزوین",phones:["02833665008","02833665007","02833665009"]},
-{id:16,name:"بیمارستان 553 ارتش قزوین",city:"قزوین",phones:["02833326020"]},
-{id:17,name:"بیمارستان کوثر قزوین",city:"قزوین",phones:["02833236376","02833236375","02833236374"]}
-],
+/* =========================================================
+   دریافت JSON
+   ========================================================= */
 
-"مرکزی":[
-{id:1,name:"مرکزی بیمارستان امام خمینی ( ره ) محلات",city:"محلات",phones:["08643222081","08643222082","08643222083","08643223041"]},
-{id:2,name:"بیمارستان تامین اجتماعی شازند",city:"شازند",phones:["08638223712","08638223711","08638223710"]},
-{id:3,name:"بیمارستان امام سجاد (ع) آشتیان",city:"آشتیان",phones:["08637222121","08637222120","08637222124","08637222123","08637222122"]},
-{id:4,name:"بیمارستان والفجر تفرش",city:"تفرش",phones:["08636225715","08636225444","08636222057"]},
-{id:5,name:"مرکزی بیمارستان شهدای آسیابک- زرندیه",city:"زرندیه/آسیابک",phones:["08645222442"]},
-{id:6,name:"یمارستان شهید مدرس (شهدای 17 شهریور )ساوه",city:"ساوه",phones:["08642222042"]},
-{id:7,name:"مرکزی بیمارستان شهید چمران ساوه",city:"ساوه",phones:["08642401262","08642401263","08642401264","08642401261"]},
-{id:8,name:"بیمارستان امام خمینی (ره)خمین",city:"خمین",phones:["08646332211"]},
-{id:9,name:"بیمارستان امام علی (ع) کمیجان",city:"کمیجان",phones:["08635453583","08635453582","08635453581"]},
-{id:10,name:"بیمارستان امیر کبیر اراک",city:"اراک",phones:["08633135076"]},
-{id:11,name:"بیمارستان آیت الله طالقانی اراک",city:"اراک",phones:["08632776063","08632776035","08632776064","08632776065","08632776034"]},
-{id:12,name:"مرکزی بیمارستان ولیعصر (ع) اراک",city:"اراک",phones:["08632222004","08632222005","08632222007","08632222008","08632222009","08632222003","08632222006"]},
-{id:13,name:"بیمارستان قدس اراک",city:"اراک",phones:["08632228065","08632228064","08632228063","08632228062","08632228061","08632223019"],note:"09188611945 آقای مهندس محمدی تجهیزات پزشکی بیمارستان قدس اراک 1405/03/31تماس بی پاسخ"},
-{id:14,name:"بیمارستان امام صادق (ع ) دلیجان",city:"دلیجان",phones:["08644224118","08644224117","08644224116","08644224115","08644224114"]},
-{id:15,name:"مرکزی بیمارستان آیت الله خوانساری اراک",city:"اراک",phones:["08633675001","08633675002","08633675003","08633675004","08633675005","08633675000"]},
-{id:16,name:"بیمارستان امیرالمومنین(ع) 10",city:"",phones:["08634173601"]},
-{id:17,name:"بیمارستان حضرت فاطمه(س) ساوه",city:"ساوه",phones:["08642442400"]},
-{id:18,name:"تصویربرداری میلاد اراک",city:"اراک",phones:["09395218193"],note:"خانم مهربان"},
-{id:19,name:"کلینیک ایرانیان اراک",city:"اراک",phones:["09307087901"],note:"آقای مهندس امرایی"},
-{id:20,name:"کلینیک اولترا اراک",city:"اراک",phones:["09120680292"],note:"مرکز تصویربرداری اولترا"}
-],
+async function loadHospitals(){
 
-"چهارمحال و بختیاری":[
-{id:1,name:"بیمارستان شهدا",city:"لردگان",phones:["03834444444","038344444445","09130060315"],note:"09130060315خانم موسوی تجهیزات پزشکی ارسال کاتالوگ 1405/2/18"},
-{id:2,name:"بیمارستان امام رضا (ع)",city:"اردل",phones:["03834344271","03834344272","03834342509"]},
-{id:3,name:"بیمارستان ولیعصر (عج)",city:"بروجن",phones:["03834222122","03834222123","03834222124"]},
-{id:4,name:"بیمارستان امام جواد (ع)",city:"ناغان",phones:["03832643660"]},
-{id:5,name:"بیمارستان سیدالشهداء",city:"فارسان",phones:["03833227331","03833227333","03833227332"]},
-{id:6,name:"بیمارستان روانپزشکی سینا",city:"جونقان",phones:["03833261602 219"]},
-{id:7,name:"بیمارستان رسالت",city:"چالشتر",phones:["03832322400"]},
-{id:8,name:"بیمارستان آیت الله کاشانی",city:"شهرکرد",phones:["03832264841","09134818158"],note:"09134818158 آقای مهندس بیگ زاده تجهیزات پزشکی"},
-{id:9,name:"بیمارستان هاجر",city:"شهرکرد",phones:["03832220016","03832225505"]},
-{id:10,name:"مرکز تصویربردتری بیمارستان هاجر چهارمحال بختیاری",city:"شهر کرد",phones:["03832220016"]},
-{id:11,name:"مرکز تصویربرداری بیمارستان کاشانی چهارمحال بختیاری",city:"شهرکرد",phones:["03832264841"]},
-{id:12,name:"مرکز تصویربرداری کوثر چهارمحال بختیاری",city:"فارسان",phones:["03827226088"]},
-{id:13,name:"مرکز تصویربرداری دکتر مولایی شهرکرد چهارمحال بختیاری",city:"شهرکرد",phones:["03832222535","03832251525"]},
-{id:14,name:"مرکز تصویربرداری دکتر کوهی فایق چهارمحال بختیاری",city:"شهرکرد",phones:["03832251525"]},
-{id:15,name:"مرکز تصویربرداری دکتر صدیق پور چهارمحال بختیاری",city:"شهرکرد",phones:["03832220510"]},
-{id:16,name:"مرکز تصویربرداری دکتر خاکسار چهارمحال بختیاری",city:"بروجن",phones:["03834245343"]},
-{id:17,name:"مرکز تصویربرداری دکتر حسین غضنفری چهارمحال و بختیاری",city:"شهرکرد",phones:["03832229695"]}
-],
+    try{
 
-"خراسان جنوبی":[
-{id:1,name:"بیمارستان ایرانمهر",city:"بیرجند",phones:["05631626868","05631626800"]},
-{id:2,name:"بیمارستان بیماران خاص",city:"بیرجند",phones:["05632381319","05632381320"]},
-{id:3,name:"بیمارستان حضرت ابوالفضل عباس (میلاد ۳)",city:"بیرجند",phones:["05632328505"]},
-{id:4,name:"بیمارستان شهید سید مصطفی خمینی",city:"طبس",phones:["05632383000"]},
-{id:5,name:"بیمارستان خاتم الانبیا (ص)",city:"اسدیه",phones:["05631308777"]},
-{id:6,name:"بیمارستان شفا",city:"بشرویه",phones:["05632782011","05632782012","05632782013"]},
-{id:7,name:"بیمارستان ولیعصر (عج)",city:"بیرجند",phones:["05631622001 2053","09159626658"],note:"09159626658 خانم مهندس محمودی تجهیزات"},
-{id:8,name:"بیمارستان ۵۰-۵۵۲ ارتش",city:"بیرجند",phones:["05632220591","05632218026"]},
-{id:9,name:"بیمارستان شهید دکتر رحیمی",city:"بیرجند",phones:["05632442099","05632446600"]},
-{id:10,name:"بیمارستان شهید دکتر چمران",city:"فردوس",phones:["05632722801","09153356255"],note:"09153356255 مهندس رضایی تجهیزات کاتالوگ در واتس اپ ارسال شود"},
-{id:11,name:"بیمارستان علی ابن ابیطالب (ع)",city:"سربیشه",phones:["05632664754"]},
-{id:12,name:"بیمارستان امام علی (ع)",city:"سرایان",phones:["05632884800"]},
-{id:13,name:"بیمارستان شهید آتشدست",city:"نهبندان",phones:["05632933500","05632933501","05632933502","05632933503"]},
-{id:14,name:"بیمارستان شهدا",city:"قاین",phones:["05631628000"]},
-{id:15,name:"بیمارستان امام رضا",city:"بیرجند",phones:["05632222300"]}
-],
+        const response = await fetch(
+            "./data/hospitals.json",
+            {
+                cache:"no-store"
+            }
+        );
 
-"کردستان":[
-{id:1,name:"بیمارستان شهید بهشتی کردستان (قروه، استان کردستان)",city:"قروه",phones:["08735220074","08725220150","08735252460","08735226162"]},
-{id:2,name:"بیمارستان شهدای دهگلان کردستان (دهگلان، استان کردستان)",city:"دهگلان",phones:["08715123400","08735123331"]},
-{id:3,name:"بیمارستان امام خمینی کردستان (دیواندره، استان کردستان)",city:"دیواندره",phones:["08738724880","08738722840","08738722930"]},
-{id:4,name:"بیمارستان شهید چمران کردستان (سروآباد، استان کردستان)",city:"سروآباد",phones:["087-34824101"]},
-{id:5,name:"بیمارستان فجر کردستان (مریوان، استان کردستان)",city:"مریوان",phones:["08734521460","08734521461"],note:"خانم مهندس ایرانی"},
-{id:6,name:"بیمارستان بوعلی سینا کردستان (مریوان، استان کردستان)",city:"مریوان",phones:["08734593862","08734593863","08734593864"]},
-{id:7,name:"بیمارستان تأمین اجتماعی کردستان (سقز، استان کردستان)",city:"سقز",phones:["08736230461","08736230462"]},
-{id:8,name:"بیمارستان شفا کردستان (سقز، استان کردستان)",city:"سقز",phones:["087-36222000"]},
-{id:9,name:"بیمارستان امام خمینی کردستان (سقز، استان کردستان)",city:"سقز",phones:["08736223160","08736224443","08736224444"]},
-{id:10,name:"بیمارستان سینا کردستان (کامیاران، استان کردستان)",city:"کامیاران",phones:["08735522925"]},
-{id:11,name:"بیمارستان سیدالشهدا کردستان (سنندج، استان کردستان)",city:"سنندج",phones:["087-33564747"]},
-{id:12,name:"بیمارستان آریا کردستان (سنندج، استان کردستان)",city:"سنندج",phones:["087-33783400"]},
-{id:13,name:"بیمارستان کوثر کردستان (سنندج، استان کردستان)",city:"سنندج",phones:["08733611233","08733611232","08733611231","08733611234"]},
-{id:14,name:"بیمارستان ۵۲۴ ارتش کردستان (سنندج، استان کردستان)",city:"سنندج",phones:["08733160404"]},
-{id:15,name:"بیمارستان تأمین اجتماعی کردستان (سنندج، استان کردستان) 7",city:"سنندج",phones:["08733661803"]},
-{id:16,name:"بیمارستان قدس کردستان (سنندج، استان کردستان) 7",city:"سنندج",phones:["08733660025 206"]},
-{id:17,name:"بیمارستان بعثت کردستان (سنندج، استان کردستان)",city:"سنندج",phones:["08733285914"]},
-{id:18,name:"بیمارستان توحید کردستان (سنندج، استان کردستان)",city:"سنندج",phones:["087-3286112"]},
-{id:19,name:"بیمارستان صلاح الدین ایوبی بانه",city:"بانه",phones:["08734263800","08734269040","09913559035"],note:"09913559035 خانم مهندس شاه ویسی 1405/04/27 مرخصی بودن فردا کاتالوگ ارسال شود"},
-{id:20,name:"بیمارستان امام حسین(ع)بیجار",city:"بیجار",phones:["08738236067","08738236068","08738236069","08724236066"]}
-],
+        if(!response.ok){
 
-"لرستان":[
-{id:1,name:"بیمارستان فوق تخصصی شفا",city:"",phones:["0663111"]},
-{id:2,name:"بیمارستان شهید سید فخرالدین رحیمی",city:"",phones:["06633336143","06633336150 510"]},
-{id:3,name:"بیمارستان کوثر بروجرد",city:"بروجرد",phones:["06642462214 16","06642449975 7"]},
-{id:4,name:"لرستان بیمارستان امام خمینی بروجرد",city:"بروجرد",phones:["06642503055","06642503056","06642503057","06642503058","06642503054"]},
-{id:5,name:"بیمارستان شهید دکتر چمران بروجرد",city:"بروجرد",phones:["06642514001","06642514002","06642514003","06642514004","06642514005"]},
-{id:6,name:"بیمارستان امام خمینی سلسله(الشتر)",city:"الشتر",phones:["06632529914","06632529317"]},
-{id:7,name:"لرستان بیمارستان امام خمینی سپید دشتتلفن",city:"سپیددشت",phones:["06633137212"]},
-{id:8,name:"بیمارستان شهدای هفتم تیر دورود",city:"دورود",phones:["06643224052"]},
-{id:9,name:"لرستان بیمارستان امام علی (ع) ازنا تلفن",city:"ازنا",phones:["06643424470","06643424490","06664223061"]},
-{id:10,name:"لرستان بیمارستان امام جعفر صادق (ع) الیگودرز تلفن",city:"الیگودرز",phones:["06643323092","06643323093","06643323094"]},
-{id:11,name:"بیمارستان امام خمینی (ره)پلدختر",city:"پلدختر",phones:["06632224804","06632228230","06632228223"]},
-{id:12,name:"بیمارستان امام خمینی ره کوهدشت",city:"کوهدشت",phones:["06636232057","06632633000"]},
-{id:13,name:"لرستان بیمارستان ابن سینادلفان(نورآباد)",city:"نورآباد",phones:["06632728001"]},
-{id:14,name:"بیمارستان 256 تختخوابی تامین اجتماعیی خرم آباد",city:"خرم‌آباد",phones:["06633413300","06633413200"]},
-{id:15,name:"بیمارستان زنان و زایمان عسلی خرم آباد",city:"خرم‌آباد",phones:["06633406099","06633419124","06633400101","06633402031"]},
-{id:16,name:"بیمارستان توحید خرم آباد",city:"خرم‌آباد",phones:["06633408200"]},
-{id:17,name:"بیمارستان حضرت ابو الفضل العباس(ع)خرم آباد",city:"خرم‌آباد",phones:["06633313255","06633117183"]},
-{id:18,name:"بیمارستان شهدای عشایر خرم آباد",city:"خرم‌آباد",phones:["06633236401","06633236402","06633236403","06633236404"]},
-{id:19,name:"بیمارستان شهید آیت الله مدنی خرم آباد",city:"خرم‌آباد",phones:["06633419123","06633408898","06633419124","06633406098"],note:"06633437164تجهیزات"},
-{id:20,name:"بیمارستان نرگس دورود",city:"دورود",phones:["06643231668","066٤٣٢٣١٤٤٧","066٤٣٢٣١٠٦٨"]},
-{id:21,name:"بیمارستان 525 منطقه ای ارتش خرم آباد",city:"خرم‌آباد",phones:["06633470525"]},
-{id:22,name:"بیمارستان ایران خرم اباد",city:"خرم‌آباد",phones:["06633403717"]},
-{id:23,name:"لرستان بیمارستان شجاع خرم آباد.",city:"خرم‌آباد",phones:["06633314024"]},
-{id:24,name:"بیمارستان تخصصی زنان باختر خرم آباد",city:"خرم‌آباد",phones:["06633305567"]},
-{id:25,name:"لرستان بیمارستان فوق تخصص شفا",city:"خرم‌آباد",phones:["06633265024","06633265023","06633265022","06633265021","06633265020"]}
-],
+            throw new Error(
+                "خطا در دریافت hospitals.json"
+            );
 
-"زنجان":[
-{id:1,name:"بیمارستان ارتش",city:"زنجان",phones:["02433444280"]},
-{id:2,name:"بیمارستان ولیعصر",city:"زنجان",phones:["02433023200"]},
-{id:3,name:"بیمارستان امام حسین",city:"زنجان",phones:["02433011000"]},
-{id:4,name:"کلینیک مهر",city:"زنجان",phones:["02433044133"]},
-{id:5,name:"بیمارستان امدادی ابهرزنجان",city:"ابهر",phones:["02435277741","09124416576"],note:"آقای ترکی مسئول تجهیزات پزشکی"},
-{id:6,name:"بیمارستان بو علی سینا خرمدره زنجان",city:"خرمدره",phones:["02435528001","09016951286"],note:"خانم مهندس جعفری مسئول تجهیزات پزشکی"},
-{id:7,name:"سونوگرافی لاله",city:"زنجان",phones:["09103208288"]},
-{id:8,name:"بیمارستان رازی ماهنشاه زنجان",city:"ماهنشان",phones:["02436223294","09199789861"],note:"خانم مهندس عشقی مسئول تجهیزات پزشکی"},
-{id:9,name:"مرکز تصویربرداری دکتر کابلی",city:"زنجان",phones:["02433334636","09122416137"],note:"آقای دکتر کابلی"},
-{id:10,name:"بیمارستان شهدای طارم - آب‌بر",city:"آب‌بر",phones:["02432822703","02432822702","02432822701"]},
-{id:11,name:"بیمارستان امیرالمؤمنین (ع) - قیدار (خدابنده)",city:"قیدار",phones:["02434224309","02434224301"]},
-{id:12,name:"بیمارستان امید - ابهر",city:"ابهر",phones:["02435279241"]},
-{id:13,name:"بیمارستان تخصصی و فوق تخصصی آیت الله موسوی - زنجان",city:"زنجان",phones:["02433130000"]},
-{id:14,name:"بیمارستان شهید دکتر بهشتی - زنجان",city:"زنجان",phones:["02433544004","02433544005","02433544002","02433544001","02433544003"]},
-{id:15,name:"بیمارستان خصوصی بهمن - زنجان",city:"زنجان",phones:["02433039999"]},
-{id:16,name:"بیمارستان ایثار - زرین آباد",city:"زرین آباد",phones:["02436722628","02436722100"]}
-],
+        }
 
-"قم":[
-{id:1,name:"بیمارستان کامکار - عرب نیا قم",city:"قم",phones:["02537759229","02537713511"]},
-{id:2,name:"بیمارستان نکویی - هدایتی قم",city:"قم",phones:["02537211061"]},
-{id:3,name:"بیمارستان و زایشگاه ایزدی قم",city:"قم",phones:["02537211301"]},
-{id:4,name:"بیمارستان حضرت معصومه (س) قم",city:"قم",phones:["02536651801"]},
-{id:5,name:"بیمارستان حضرت زهرا قم",city:"قم",phones:["02538844214"]},
-{id:6,name:"بیمارستان حضرت ولیعصر (عج) قم",city:"قم",phones:["02532884310","02532884311","02532884312","02532884313","02532884314"],note:"09912522462 آقای مهندس واحدی در واتس آپ ارسال شود"},
-{id:7,name:"بیمارستان امام رضا (ع) تامین اجتماعی قم",city:"قم",phones:["02538700840","02538700849"],note:"اقای مهندس کریمی تجهیزات09128521392"},
-{id:8,name:"بیمارستان علی بن ابی طالب (ع) قم",city:"قم",phones:["02532914951","02531928800","02531928801","02531928802","02531928803"]},
-{id:9,name:"بیمارستان آیت الله گلپایگانی قم",city:"قم",phones:["02536161111"]},
-{id:10,name:"بیمارستان شهید بهشتی قم",city:"قم",phones:["02536122000"]},
-{id:11,name:"مرکز تصویربرداری مریم ابراهیمی قم",city:"قم",phones:["02537838395"]},
-{id:12,name:"مرکز تصویربرداری کامکار قم واقع در قم - خیابان باجک",city:"قم",phones:["02537713511","02537713514"]},
-{id:13,name:"مرکز تصویربرداری قرآن و عترت قم واقع در قم - خیابان حجتیه - مقابل مدرسه حجتیه",city:"قم",phones:["02537741525","02537741526"]},
-{id:14,name:"مرکز تصویربرداری فرهنگیان آموزش و پرورش قم واقع در قم - میدان سعیدی، بعد از فروشگاه رفاه، جنب دبیرستان مهدیه",city:"قم",phones:["02536647418"]},
-{id:15,name:"مرکز تصویربرداری علی اصغر ملائی قم واقع در قم - میدان سعیدی - ساختمان میلاد",city:"قم",phones:["02536624050"]},
-{id:16,name:"مرکز تصویربرداری صبا قم واقع در قم - خیابان 45 متری عمار یاسر",city:"قم",phones:["02537711515"]},
-{id:17,name:"مرکز تصویربرداری شهید بهشتی قم واقع در قم - فلکه آزادگان",city:"قم",phones:["02536122000"]},
-{id:18,name:"مرکز تصویربرداری سعید خسروی قم واقع در قم - میدان شهید صدوقی - ساختمان خاتم - طبقه 4",city:"قم",phones:["02532919919"]},
-{id:19,name:"مرکز تصویربرداری امام صادق (ع) قم واقع در قم - خیابان نیروگاه - ابتدای بلوار شاهد",city:"قم",phones:["02538844040","02538844042"]},
-{id:20,name:"مرکز تصویربرداری دکتر فاطمی تبار قم واقع در قم - صفاییه",city:"قم",phones:["02537743621"]},
-{id:21,name:"مرکز تصویربرداری درمانگاه‌ دارالشفا حضرت مهدی (ع) قم",city:"قم",phones:["02537253299","02537255084"]},
-{id:22,name:"مرکز تصویربرداری حضرت معصومه قم واقع در قم - خیابان امام",city:"قم",phones:["02536651801","02536651809"]},
-{id:23,name:"مرکز تصویربرداری پویا قم واقع در قم - خیابان صفائیه",city:"قم",phones:["02537748911"]},
-{id:24,name:"مرکز تصویربرداری پارس قم واقع در قم - میدان سعیدی",city:"قم",phones:["02536602732"]},
-{id:25,name:"مرکز تصویربرداری بیمارستان علی ابن ابیطالب (ع) قم",city:"قم",phones:["02532138735","02532138736"]},
-{id:26,name:"مرکز تصویربرداری آل محمد قم واقع در امام",city:"قم",phones:["02536611644","02536609900"]},
-{id:27,name:"مرکز تصویربرداری آریا قم واقع در خیابان امام",city:"قم",phones:["02536637209"]},
-{id:28,name:"مرکز تصویربرداری ایزدی قم واقع در خیابان آذر",city:"قم",phones:["02537211301","02537211305"]},
-{id:29,name:"مرکز تصویربرداری پرتو طب آزما قم واقع در خاکفرج",city:"قم",phones:["02536617207"]},
-{id:30,name:"مرکز تصویربرداری نسیم قم واقع در بلوار امین",city:"قم",phones:["02532931837"]},
-{id:31,name:"مرکز تصویربرداری گلپایگانی قم واقع در خیابان مولوی",city:"قم",phones:["02536161111"]},
-{id:32,name:"مرکز تصویربرداری کیمیا",city:"قم",phones:["02532615485"]}
-],
+        hospitals = await response.json();
 
-"گیلان":[
-{id:1,name:"بیمارستان پارس رشت",city:"رشت",phones:["01333126172","01333126165"]},
-{id:2,name:"بیمارستان نیکوکار املش",city:"املش",phones:["01342728182","01342729852","01342729851"]},
-{id:3,name:"بیمارستان امام رضا شفت",city:"شفت",phones:["01334786981"]},
-{id:4,name:"بیمارستان غدیر سیاهکل",city:"سیاهکل",phones:["01342325521"]},
-{id:5,name:"بیمارستان قائم رشت",city:"رشت",phones:["01333565015","01333565012","01333565013","01333565014","01333565016","01333565017","01333565018","01333565019","01333565011"]},
-{id:6,name:"بیمارستان سلامت رستم‌آباد",city:"رستم‌آباد",phones:["01334675525"]},
-{id:7,name:"بیمارستان رسالت ماسال",city:"ماسال",phones:["01343666104"]},
-{id:8,name:"بیمارستان فوق تخصصی سوختگی ولایت رشت",city:"رشت",phones:["01333368714","01333368860"]},
-{id:9,name:"بیمارستان شفا لاهیجان",city:"لاهیجان",phones:["01342222317","01342222318","01342222319","01342222320","01342222316"],note:"09118485070خانم مهندس رمضانی تجهیزات"},
-{id:10,name:"بیمارستان شهید انصاری رودسر",city:"رودسر",phones:["01342623003","01342624001","01342624002","01342623001","01342623002"]},
-{id:11,name:"بیمارستان امینی لنگرود",city:"لنگرود",phones:["01342524008","01342524007","01342524006","01342524005"]},
-{id:12,name:"بیمارستان 31 خرداد منجیل",city:"منجیل",phones:["01334652277","01334652276"]},
-{id:13,name:"بیمارستان کوثر آستانه اشرفیه",city:"آستانه اشرفیه",phones:["01342122147","01342122146"]},
-{id:14,name:"بیمارستان سیدالشهدا لاهیجان",city:"لاهیجان",phones:["01342292033","01342292031","01342292034","01342292032"]},
-{id:15,name:"بیمارستان دکتر بهشتی آستارا",city:"آستارا",phones:["01344822067","01344822066"]},
-{id:16,name:"بیمارستان شهید نورانی تالش",city:"تالش",phones:["01344221102","01344221101"]},
-{id:17,name:"بیمارستان طاهری تالش",city:"تالش",phones:["01344233122","01344231052"]},
-{id:18,name:"بیمارستان امام خمینی صومعه سرا",city:"صومعه سرا",phones:["01344323042","01344323041"]},
-{id:19,name:"بیمارستان امام حسن مجتبی (ع) فومن",city:"فومن",phones:["01331737017","01331737097","01331737096"]},
-{id:20,name:"بیمارستان شهید بهشتی انزلی",city:"انزلی",phones:["01344502005","01344502006","01344502007","01344502008","01344502004"]},
-{id:21,name:"بیمارستان شفا رشت",city:"رشت",phones:["01333662360","01333662350","01333662325"]},
-{id:22,name:"بیمارستان قلب دکتر حشمت رشت",city:"رشت",phones:["01333669064","01333669066"]},
-{id:23,name:"بیمارستان پورسینا رشت",city:"رشت",phones:["01333322444","01333325783","01333323970"]},
-{id:24,name:"بیمارستان گلسار رشت",city:"رشت",phones:["01332111720","01332111723","01332111719","01332111718","01332111724","01332111725","01332111722","01332111721"]},
-{id:25,name:"بیمارستان رازی رشت",city:"رشت",phones:["01333550028","01333541002","01333541001"]},
-{id:26,name:"بیمارستان حضرت رسول اکرم (ص) رشت",city:"رشت",phones:["01333662218","01333662217","01333662216","01333662215","01333662214"]},
-{id:27,name:"بیمارستان ولیعصر (عج) نیروی دریایی رشت",city:"رشت",phones:["01333336090"]},
-{id:28,name:"بیمارستان آریا رشت",city:"رشت",phones:["01333759790"]},
-{id:29,name:"بیمارستان توتونکاران رشت",city:"رشت",phones:["01333368010"]},
-{id:30,name:"بیمارستان الزهرا (س) رشت",city:"رشت",phones:["01333369326","01333369325","01333369324"]},
-{id:31,name:"بیمارستان 17 شهریور رشت",city:"رشت",phones:["01333369019","01333369026","01333369044","01333369391"]},
-{id:32,name:"بیمارستان امیرالمومنین رشت",city:"رشت",phones:["01333238306","09906542265"],note:"09906542265خانم منصوری تجهیزات پزشکی"},
-{id:33,name:"بیمارستان 22 آبان لاهیجان",city:"لاهیجان",phones:["01342235501"]},
-{id:34,name:"بیمارستان پارس رشت",city:"رشت",phones:["01333126172","01333126165"]},
-{id:35,name:"بیمارستان نیکوکار املش",city:"املش",phones:["01342728182","01342729852","01342729851"]},
-{id:36,name:"بیمارستان امام رضا شفت",city:"شفت",phones:["01334786981"]},
-{id:37,name:"بیمارستان غدیر سیاهکل",city:"سیاهکل",phones:["01342325521"]},
-{id:38,name:"بیمارستان قائم رشت",city:"رشت",phones:["01333565015","01333565012","01333565013","01333565014","01333565016","01333565017","01333565018","01333565019","01333565011"]},
-{id:39,name:"بیمارستان سلامت رستم آباد",city:"رستم آباد",phones:["01334675525"]},
-{id:40,name:"بیمارستان رسالت ماسال",city:"ماسال",phones:["01343666104"]},
-{id:41,name:"بیمارستان فوق تخصصی سوختگی ولایت رشت",city:"رشت",phones:["01333368714","01333368860"]},
-{id:42,name:"بیمارستان شفا لاهیجان",city:"لاهیجان",phones:["01342222317","01342222318","01342222319","01342222320","01342222316"]},
-{id:43,name:"بیمارستان شهید انصاری رودسر",city:"رودسر",phones:["01342623003","01342624001","01342624002","01342623001","01342623002"]}
-],
+        renderProvinces();
 
-"مازندران":[
-{id:1,name:"بیمارستان ولایت ساری",city:"ساری",phones:["011133349797"]},
-{id:2,name:"بیمارستان تامین اجتماعی رازی چالوس",city:"چالوس",phones:["01152243006","01152243007","01152243008"]},
-{id:3,name:"بیمارستان امام خمینی(ره) آمل",city:"آمل",phones:["01144204494","01144204493","01144204492","01144204491"]},
-{id:4,name:"مازندران بیمارستان مهرگان بابل",city:"بابل",phones:["01132395594","01132395592","01132395593","01132395591"]},
-{id:5,name:"مازندران بیمارستان شهداء محمودآباد",city:"محمودآباد",phones:["01144741561","01144741591","01144741585","01144741547"]},
-{id:6,name:"بیمارستان مهر بهشهر",city:"بهشهر",phones:["01134520270","01134520271"]},
-{id:7,name:"مازندران بیمارستان احمد نژاد کتالم",city:"کتالم",phones:["01155245197"]},
-{id:8,name:"بیمارستان امام حسین (ع) نکا",city:"نکا",phones:["01134732155","01134732154","01134732153","01134732152"]},
-{id:9,name:"بیمارستان ثامن الائمه گلوگاه",city:"گلوگاه",phones:["01134660194","01134660193","01134660192","01134660191"]},
-{id:10,name:"بیمارستان شمال آمل",city:"آمل",phones:["01144230749","01144233570","01144233569","01144233568","01144233567","01144230750"]},
-{id:11,name:"مازندران بیمارستان امام خمینی(ره)بهشهر",city:"بهشهر",phones:["01134541403","01134541404","01134541405","01134541400","01134541401","01134541402"]},
-{id:12,name:"بیمارستان رازی قائمشهر",city:"قائمشهر",phones:["01142218018","01142218020","01142218021","01142218022","01142218019"]},
-{id:13,name:"مازندران بیمارستان دکتر امیدی بهشهر",city:"بهشهر",phones:["01134520095","01134520114","01134520135","01134520144","01134525152"]},
-{id:14,name:"بیمارستان شهدای بهشهر",city:"بهشهر",phones:["01134581241","01134581240","01134581239","01134581238","01134581237"],note:"09309759742 خانم مهندس احمدی تجهیزات"},
-{id:15,name:"مازندران بیمارستان فاطمه زهرا (س) ساری",city:"ساری",phones:["01133323024","01133323025","01133323023"]},
-{id:16,name:"بیمارستان حکمت ساری",city:"ساری",phones:["01133268923","01133268922","01133268921","01133268920"]},
-{id:17,name:"بیمارستان امیرمازندرانی ساری",city:"ساری",phones:["01133255204","01133255203","01133255202","01133255201"],note:"eMed میخواستن"},
-{id:18,name:"مازندران بیمارستان روانپزشکی وسوختگی زارع ساری",city:"ساری",phones:["01133283888","01133283887","01133283886","01133283889"]},
-{id:19,name:"بیمارستان امام خمینی (ره )ساری",city:"ساری",phones:["01133361704","01133361703","01133361702","01133361701","01133361700"]},
-{id:20,name:"بیمارستان نیمه شعبان ساری",city:"ساری",phones:["01133340111"],note:"09337503699 خانم مهندس بهزادنیا در واتس اپ ارسال شد"},
-{id:21,name:"بیمارستان بوعلی سیناساری",city:"ساری",phones:["01133343010","01133343011","01133343012","01133343013","01133343014","01133343015"]},
-{id:22,name:"بیمارستان شهدای زیراب",city:"زیراب",phones:["01142452955","01142452956"]},
-{id:23,name:"بیمارستان عزیزی جویبار",city:"جویبار",phones:["01142544711","01142544811"]},
-{id:24,name:"بیمارستان ولیعصر (عج) قائم شهر",city:"قائم شهر",phones:["01142032035 1194"]},
-{id:25,name:"مازندران بیمارستان هفده شهریور مرزیکلا - بابل",city:"بابل",phones:["01132637400"]},
-{id:26,name:"بیمارستان امام خمینی فریدونکنار",city:"فریدونکنار",phones:["01135652008","01135652007","01135652006","01135652005"]},
-{id:27,name:"بیمارستان کودکان امیرکلا",city:"امیرکلا",phones:["01132342151","01132342152","01132342153"]},
-{id:28,name:"مازندران بیمارستان شهید رجائی بابلسر",city:"بابلسر",phones:["01135271790","01135271791"]},
-{id:29,name:"مازندران بیمارستان شفا بابلسر",city:"بابلسر",phones:["01135338036","01135338030","01135338032","01135338033","01135338034","01135338035","01135338031"]},
-{id:30,name:"بیمارستان حضرت زینب بابلسر",city:"بابلسر",phones:["01135363250"]},
-{id:31,name:"بیمارستان آیه الله روحانی بابل",city:"بابل",phones:["01132238301","01132238303","01132238304","01132238305","01132238302"]},
-{id:32,name:"مازندران بیمارستان شهید بهشتی بابل",city:"بابل",phones:["01132252071 1160"]},
-{id:33,name:"بیمارستان شهید یحیی نژاد بابل",city:"بابل",phones:["01132223594","01132223595","01132223596","01132223597"],note:"09112260771 خانم مهندس حیدری تجهیزات پزشکی"},
-{id:34,name:"بیمارستان امام سجاد(ع) رامسر",city:"رامسر",phones:["01155222031","01155222032","01155222033","01155222034"]},
-{id:35,name:"بیمارستان آیت الله طالقانی چالوس",city:"چالوس",phones:["01152241017","01152241016"]},
-{id:36,name:"مازندران بیمارستان رازی چالوس",city:"چالوس",phones:["01152243008","01152243007","01152243006"]},
-{id:37,name:"بیمارستان شهیدبهشتی نوشهر",city:"نوشهر",phones:["01132252075","01132252073","01132252074","01152333211","01132252071","01132252072 داخلی 1160"]},
-{id:38,name:"بیمارستان امام خمینی نور",city:"نور",phones:["01144522014","01144522013","01144522012","01144522011","01144522010"]},
-{id:39,name:"مازندران بیمارستان 17 شهریور آمل",city:"آمل",phones:["01144224004","01144224003","01144224002","01144224001"]},
-{id:40,name:"بیمارستان امام رضا (ع) آمل",city:"آمل",phones:["01143274012"],note:"09116730028 خانم مهندس رحمان نتاج"},
-{id:41,name:"بیمارستان امام علی(ع) آمل",city:"آمل",phones:["01144264661","01144264662","01144264663","01144264664"]},
-{id:42,name:"بیمارستان شفا ساری",city:"ساری",phones:["01133205006","01133205007","01133205008","01133205009"]},
-{id:43,name:"بیمارستان شهید رجایی تنکابن",city:"تنکابن",phones:["01154237001"]},
-{id:44,name:"مازندران بیمارستان بوعلی نکا",city:"نکا",phones:["01134748991","01134745119","01134745118"]},
-{id:45,name:"بیمارستان باروری و ناباروری فاطمه الزهرا(س) - بابل",city:"بابل",phones:["01132274881"],note:"09106314906 خانم شکری تجهیزات پزشکی مدارک ای مد و شخص ثالث میخواستن"}
-],
+    }
+    catch(error){
 
-"خراسان رضوی":[
-{id:1,name:"بیمارستان لقمان حکیم",city:"سرخس",phones:["05135222228"]},
-{id:2,name:"بیمارستان امام خمینی (ره)",city:"فریمان",phones:["05134621001"]},
-{id:3,name:"بیمارستان تخصصی زنان شهدا",city:"قوچان",phones:["05147218422","05147224110"]},
-{id:4,name:"بیمارستان موسی بن جعفر (ع)",city:"قوچان",phones:["05147233412"]},
-{id:5,name:"بیمارستان رازی",city:"تربت حیدریه",phones:["05152235012"]},
-{id:6,name:"بیمارستان نهم دی",city:"تربت حیدریه",phones:["05152226022","05152226016"]},
-{id:7,name:"بیمارستان 555 ارتش",city:"تربت جام",phones:["05152525812","05152525814"]},
-{id:8,name:"بیمارستان 22 بهمن",city:"خواف",phones:["05154231258"]},
-{id:9,name:"بیمارستان سجادیه",city:"تربت جام",phones:["05152521810","05152521811"]},
-{id:10,name:"بیمارستان دکتر بهشتی",city:"سبزوار",phones:["05144640115"]},
-{id:11,name:"بیمارستان خاتم الانبیاء (ص)",city:"تایباد",phones:["05154523994","05154523990"]},
-{id:12,name:"بیمارستان شهیدان مبینی",city:"سبزوار",phones:["05144238102","05144238103","05144238104","05144238105","05144238100","05144238101"]},
-{id:13,name:"بیمارستان محمد واسعی",city:"سبزوار",phones:["05144651300"]},
-{id:14,name:"بیمارستان شهید مدرس",city:"کاشمر",phones:["05155227407","05155227401"]},
-{id:15,name:"بیمارستان قمربنی هاشم (ع)",city:"نقاب",phones:["05145225076"]},
-{id:16,name:"بیمارستان حضرت ابوالفضل (ع)",city:"کاشمر",phones:["05155238300"]},
-{id:17,name:"بیمارستان ولیعصر (عج)",city:"جغتای",phones:["05145623814","05145623815","05145623816","05145623817","05145623818"]},
-{id:18,name:"بیمارستان ولیعصر (عج)",city:"بردسکن",phones:["05155422400"]},
-{id:19,name:"بیمارستان آیت الله مدنی",city:"بجستان",phones:["05156522800","05156522801","05156522802","05156522803"]},
-{id:20,name:"بیمارستان 15 خرداد",city:"بیدخت",phones:["05157231113"]},
-{id:21,name:"بیمارستان حشمتیه",city:"سبزوار",phones:["05144011601","05144011600","05144011604"]},
-{id:22,name:"بیمارستان خلیل آباد",city:"خلیل آباد",phones:["05157720090"]},
-{id:23,name:"بیمارستان فوق تخصصی دیالیز و پیوند اعضا منتصریه",city:"مشهد",phones:["05132291970"]},
-{id:24,name:"بیمارستان حجازی",city:"مشهد",phones:["05137326767"]},
-{id:25,name:"بیمارستان حضرت زهرا (س)",city:"رشتخوار",phones:["05156222801"]},
-{id:26,name:"بیمارستان امام رضا (ع)",city:"فیض آباد",phones:["05156729030"]},
-{id:27,name:"بیمارستان امام رضا",city:"مشهد",phones:["05138543031"]},
-{id:28,name:"بیمارستان اطفال اکبر",city:"مشهد",phones:["05138713803"]},
-{id:29,name:"بیمارستان بینا",city:"مشهد",phones:["05136163"]},
-{id:30,name:"بیمارستان فوق تخصصی علوی",city:"مشهد",phones:["05138513258"]},
-{id:31,name:"بیمارستان دکتر علی شریعتی",city:"مشهد",phones:["05135510010"]},
-{id:32,name:"بیمارستان امام خمینی (ره)",city:"درگز",phones:["05146234315"]},
-{id:33,name:"بیمارستان امام حسن مجتبی (ع)",city:"کلات",phones:["05134724214"]},
-{id:34,name:"بیمارستان موسی بن جعفر (ع)",city:"مشهد",phones:["05138596061"],note:"آقای مهندس نورپرور تجهیزات بیمارستان 09307403543"},
-{id:35,name:"بیمارستان سینا",city:"مشهد",phones:["05138544315"],note:"آقای مهندس نفیسی تجهیزات 09371255242"},
-{id:36,name:"بیمارستان امام رضا (ع)",city:"مشهد",phones:["05138022000"]},
-{id:37,name:"بیمارستان فوق تخصصی کودکان دکتر شیخ",city:"مشهد",phones:["05137269021"]},
-{id:38,name:"بیمارستان آریا",city:"مشهد",phones:["05132229094","05132229095","05132229096","05132229097","05132229098"]},
-{id:39,name:"بیمارستان بنت الهدی",city:"مشهد",phones:["05138590051","05138590052","05138590053","05138590054","05138590055 داخلی 309"],note:"خانم مهندس پادارلو تجهیزات 09150607253"},
-{id:40,name:"بیمارستان 22 بهمن",city:"نیشابور",phones:["05143304"]},
-{id:41,name:"بیمارستان تخصصی زنان و زایمان ام البنین",city:"مشهد",phones:["05132231065","05132231061"]},
-{id:42,name:"بیمارستان جوادالائمه",city:"مشهد",phones:["05133662137","05133662138","05133662139","05133662135","05133662136"]},
-{id:43,name:"بیمارستان امام زمان (عج)",city:"مشهد",phones:["05133652000"]},
-{id:44,name:"بیمارستان و زایشگاه خیریه امام هادی (ع)",city:"مشهد",phones:["05133682673","05133682671"]},
-{id:45,name:"بیمارستان شهید هاشمی نژاد",city:"مشهد",phones:["05132737011","05132737012","05132737013","05132737014","05132737015"]},
-{id:46,name:"بیمارستان امام حسین (ع)",city:"مشهد",phones:["05132787001"]},
-{id:47,name:"بیمارستان آیت الله طالقانی",city:"مشهد",phones:["05135423970"]},
-{id:48,name:"بیمارستان سوانح شهید کامیاب",city:"مشهد",phones:["05138592129","05138592121"],note:"خانم مهندس جبری مسئول تجهیزات 09384689380"},
-{id:49,name:"بیمارستان خیریه امام سجاد (ع)",city:"مشهد",phones:["05132590133"]},
-{id:50,name:"بیمارستان 22 بهمن",city:"مشهد",phones:["05132595516"]},
-{id:51,name:"بیمارستان 17 شهریور",city:"مشهد",phones:["05138403015"],note:"آقای مهندس مهدی زاده تجهیزات پزشکی بیمارستان09155097128 با شخص ثالث کار میکنن/اما قرار شد از مانیتور های کوچک همکاری رو باهامون شروع کنند"},
-{id:52,name:"بیمارستان قائم (عج)",city:"مشهد",phones:["05138400000"],note:"خانم مهندس عباسپور تجهیزات 09154192721"},
-{id:53,name:"بیمارستان 550 ارتش",city:"مشهد",phones:["05138542140"]},
-{id:54,name:"بیمارستان جوادالائمه قلب و عروق",city:"مشهد",phones:["05131841"],note:"آقای مهندس دادگر تجهیزات پزشکی 09151033942"},
-{id:55,name:"بیمارستان امید",city:"مشهد",phones:["05138426084","05138426082"]},
-{id:56,name:"بیمارستان مهر",city:"مشهد",phones:["05138427011"],note:"خانم مهندس حسینی مسئول تجهیزات09159023873"},
-{id:57,name:"بیمارستان مهرگان",city:"مشهد",phones:["0513524003","05135214001"]},
-{id:58,name:"بیمارستان فارابی",city:"مشهد",phones:["05138817980"],note:"آقای مهندس رمضانی مسئول تصویربرداری بیمارستان09151242693"},
-{id:59,name:"بیمارستان و زایشگاه پاستورنو",city:"مشهد",phones:["05138410244","05138410245","05138410246"],note:"اقای مهندس ترشیزیان 09150105012"},
-{id:60,name:"بیمارستان حکیم",city:"نیشابور",phones:["05142638016"]},
-{id:61,name:"بیمارستان روانپزشکی ابن سینا",city:"مشهد",phones:["05137112709","05137112701"]},
-{id:62,name:"بیمارستان ثامن الائمه (ع)",city:"چناران",phones:["05146123005"]},
-{id:63,name:"بیمارستان خیریه قمربنی هاشم (ع)",city:"نیشابور",phones:["05142221511","05142221512","05142221513","05142221514"]},
-{id:64,name:"بیمارستان تخصصی چشم خاتم الانبیاء (ص)",city:"مشهد",phones:["05137281401"]},
-{id:65,name:"بیمارستان رضوی",city:"مشهد",phones:["05136668888"]},
-{id:66,name:"بیمارستان علامه بهلول گناباد",city:"گناباد",phones:["05157236833"],note:"0915934558 آقای مهندس دلیری تجهیزات مانیتور خاموش داشتند که 4 سال پیش یه بار فرستادند برا تعمیر و دو سال پیشم یه بار، هر دو بار گفتن تعمیر نمیشه قرار شد مشخصاتش رو بفرسته بررسی کنیم"},
-{id:67,name:"بیمارستان شمس الشموس ارتش",city:"",phones:["09359483727"],note:"آقای مهندس حسینی تجهیزات بیمارستان"},
-{id:68,name:"مرکز تصویربرداری دکتر طوسی خراسان رضوی",city:"مشهد",phones:["05138417980","09934110640"],note:"خانم مهندس مختارزاده 09934110640"},
-{id:69,name:"مرکز تصویربرداری دکتر بازرگان خراسان رضوی",city:"مشهد",phones:["05138541444","09154087659"],note:"خانم مهندس مومن زاده 09154087659"},
-{id:70,name:"مرکز تصویربرداری دکتر زندی خراسان رضوی واقع در خراسان رضوی - مشهد - خیابان پرستار 5",city:"مشهد",phones:["05138410321"]},
-{id:71,name:"مرکز تصویربرداری دکتر مجدی خراسان رضوی واقع در خراسان رضوی - مشهد - چمران‌ - ‌جنت‌",city:"مشهد",phones:["05132220829"]},
-{id:72,name:"مرکز تصویربرداری دکتر فرخ‌ خراسان رضوی واقع در خراسان رضوی - مشهد - کوهسنگی - ‌اسدی",city:"مشهد",phones:["05138428239","09155101417"],note:"09155101417 اطلاعات به منشی خانم دکتر گفته شد"},
-{id:73,name:"مرکز تصویربرداری بهساز طب‌ تشخیص‌ تصویری خراسان رضوی",city:"مشهد",phones:["05138400775"]},
-{id:74,name:"مرکز تصویربرداری رحیم‌ زاده‌ خراسان رضوی",city:"مشهد",phones:["05138439883"]},
-{id:75,name:"مرکز تصویربرداری نیما دارابی خراسان رضوی",city:"مشهد",phones:["05137689346"]},
-{id:76,name:"مرکز تصویربرداری مهر خراسان رضوی",city:"مشهد",phones:["05138591101"]},
-{id:77,name:"مرکز تصویربرداری دکتر ثامنیه‌ خراسان رضوی",city:"مشهد",phones:["05137617759"]},
-{id:78,name:"مرکز تصویربرداری ایران (دکتر جندقی) خراسان رضوی",city:"مشهد",phones:["05138417984"]}
-],
+        console.error(error);
 
-"اصفهان":[
-{id:1,name:"بیمارستان آموزشی پژوهشی خورشید اصفهان",city:"اصفهان",phones:["0342222127"]},
-{id:2,name:"بیمارستان بهارستان (خانواده) اصفهان",city:"اصفهان",phones:["03136201393","03136201389","03136201396","03136201392","03136201394"]},
-{id:3,name:"اصفهان بیمارستان میلاد اصفهان",city:"اصفهان",phones:["03135130"]},
-{id:4,name:"بیمارستان بوعلی چادگان",city:"چادگان",phones:["03157726974"]},
-{id:5,name:"بیمارستان شهید یغمایی",city:"",phones:["03146322020"]},
-{id:6,name:"بیمارستان فاطمیه خوانسار",city:"خوانسار",phones:["03157779000"],note:"آقای مهندس صفایی تجهیزات پزشکی بیمارستان فاطمیه خوانسار اصفهان09351324267"},
-{id:7,name:"بیمارستان امام حسین(ع) گلپایگان",city:"گلپایگان",phones:["03157241021","03157241020","03157241025","03157241024","03157241023","03157241022"]},
-{id:8,name:"بیمارستان خاتم الانبیا نطنز",city:"نطنز",phones:["03154222066"]},
-{id:9,name:"بیمارستان زنان و زایمان شهید رجایی آران و بیدگل",city:"آران و بیدگل",phones:["03154724142","03154724141"]},
-{id:10,name:"بیمارستان سیدالشهداء آران و بیدگل پزشکی عمومی",city:"آران و بیدگل",phones:["03154724041","03154724042","03154724043"]},
-{id:11,name:"بیمارستان متینی کاشان",city:"کاشان",phones:["03155342024","03155342020","03155342021","03155342023","03155342022"]},
-{id:12,name:"بیمارستان شهید بهشتی کاشان",city:"کاشان",phones:["03155540026","03155540027","03155540029","03155540028"]},
-{id:13,name:"بیمارستان شبیه خوانی کاشان",city:"کاشان",phones:["03155460101","03155460199","03155460102","03155460180"]},
-{id:14,name:"بیمارستان نقوی کاشان",city:"کاشان",phones:["03155451580","03155450031","03155451515"]},
-{id:15,name:"اصفهان بیمارستان صاحب الزمان شهرضا",city:"شهرضا",phones:["03153223000"]},
-{id:16,name:"اصفهان بیمارستان سیدالشهدا سمیرم",city:"سمیرم",phones:["03153667614","03153667612","03153667615","03153667616","03153667617","03153667618","03153667619","03153667613"]},
-{id:17,name:"اصفهان بیمارستان حضرت رسول اکرم (ص) فریدونشهر",city:"فریدونشهر",phones:["03157592042"]},
-{id:18,name:"بیمارستان شهید رجایی گلدشت نجف آباد",city:"نجف‌آباد",phones:["03142232585"]},
-{id:19,name:"اصفهان بیمارستان آیت اله مدرس نجف آباد",city:"نجف‌آباد",phones:["03142232085"]},
-{id:20,name:"اصفهان بیمارستان بهنیا تیران و کرون",city:"تیران و کرون",phones:["03142226776"]},
-{id:21,name:"بیمارستان فاطمه الزهرا (ُس ) نجف آباد",city:"نجف‌آباد",phones:["03142443112","03142443114","03142443115","03142443116","03142443117","03142443113"]},
-{id:22,name:"بیمارستان شهید محمد منتظری نجف اباد",city:"نجف‌آباد",phones:["03142643000"]},
-{id:23,name:"بیمارستان محمدرسول الله(ص)مبارکه",city:"مبارکه",phones:["03152674565","03152674566","03152674567","03152674568","03152674569","03152674570","03155272222"]},
-{id:24,name:"بیمارستان شهید مطهری ذوب آهن اصفهان",city:"شهرستان لنجان/اصفهان",phones:["03152653131-7"]},
-{id:25,name:"بیمارستان شهدای لنجان",city:"زرین شهر",phones:["03152237326"]},
-{id:26,name:"بیمارستان امام خمینی (ره) فلاورجان",city:"فلاورجان",phones:["03133033560","03137421011"]},
-{id:27,name:"بیمارستان شهید اشرفی اصفهانی خمینی شهر",city:"خمینی‌شهر",phones:["03133625081"]},
-{id:28,name:"بیمارستان 577 ارتش اصفهان",city:"اصفهان",phones:["03136240021 74772"]},
-{id:29,name:"بیمارستان الزهرا(س)اصفهان",city:"اصفهان",phones:["03136685555","03136202020"],note:"09130130989 مهندس عابدزاده چندتا مانیتور برای تعمیر دارن ولی باید شخص ثالث داشته باشیم"},
-{id:30,name:"اصفهان بیمارستان دکتر علی شریعتی اصفهان",city:"اصفهان",phones:["03136272009","03136272001"]},
-{id:31,name:"بیمارستان حجتیه اصفهان",city:"اصفهان",phones:["03136306001","03136306002","03136306003","03136306004"]},
-{id:32,name:"بیمارستان امیرالمومنین شهرضا",city:"شهرضا",phones:["03153515667"],note:"09138730664 خانم مهندس مصیبی تجهیزات -همکار"},
-{id:33,name:"بیمارستان دکتر غرضی اصفهان",city:"اصفهان",phones:["03134509909","03134509908","03134509907","03134509906","03134509905","031344509904","03134509903","03134509902","03134509901"]},
-{id:34,name:"بیمارستان سیدالشهداء (ع) اصفهان",city:"اصفهان",phones:["03132350218","03132350219","03132350216","03132350215","03132350214","03132350213","03132350212","03132350211","03132350210","03132350217"]},
-{id:35,name:"بیمارستان فوق تخصصی قلب سعدی اصفهان",city:"اصفهان",phones:["03136273034","03136273033","03136273032","03136273031"]},
-{id:36,name:"بیمارستان تخصصی خانواده اصفهان",city:"اصفهان",phones:["03136201392","03136201396","03136201394","03136201393","03136201389"]},
-{id:37,name:"بیمارستان 577 ارتش اصفهان",city:"اصفهان",phones:["03136281200"]},
-{id:38,name:"بیمارستان امام خمینی سمیرم",city:"سمیرم",phones:["03153666056"]},
-{id:39,name:"بیمارستان شهید رجائی داران",city:"داران",phones:["03157222540"]},
-{id:40,name:"بیمارستان ساعی خمینی شهر",city:"خمینی‌شهر",phones:["03123248077","03133606427"]},
-{id:41,name:"اصفهان بیمارستان حشمتیه نایین",city:"نایین",phones:["03146259061","03146259062","03146259063"],note:"09162866729 خانم مهندس عبدالهی تجهیزات"},
-{id:42,name:"بیمارستان شهید دکتر بهشتی اردستان",city:"اردستان",phones:["03154244112","03154246072","03154246075","03154246078","03154247305","03154247306","03154247307","03154244110","03154246073"]},
-{id:43,name:"بیمارستان حضرت محمد (ص) میمه",city:"میمه",phones:["03145424441","03145424444","03145427575"]},
-{id:44,name:"بیمارستان گلدیس شاهین شهر",city:"شاهین شهر",phones:["03133033600","03145260801"]},
-{id:45,name:"اصفهان بیمارستان عسکریه اصفهان",city:"اصفهان",phones:["03132250041"],note:"09131173505 آقای مهندس اسلامی تجهیزات مانیتور خارجی نداشتند ولی کاتالوگ ارسال شد"},
-{id:46,name:"بیمارستان جرجانی اصفهان",city:"اصفهان",phones:["03134451997","03134451996"]},
-{id:47,name:"بیمارستان کودکان حضرت امام حسین(ع) اصفهان",city:"اصفهان",phones:["03133866266"]},
-{id:48,name:"بیمارستان زهرای مرضیه (س) اصفهان",city:"اصفهان",phones:["03134456061"]},
-{id:49,name:"بیمارستان امیرالمؤمنین (ع) اصفهان",city:"اصفهان",phones:["03132291071","03132296355"]},
-{id:50,name:"بیمارستان آیت الله صدوقی اصفهان",city:"اصفهان",phones:["03132912000","03132912500"]},
-{id:51,name:"بیمارستان فیض اصفهان",city:"اصفهان",phones:["03134452038","03134452037","03134452036","03134452035","03134452034","03134452033","03134452032","03134452031"]},
-{id:52,name:"بیمارستان امین اصفهان",city:"اصفهان",phones:["03134455051","03131122020"],note:"09131023475 خانم مهندس حریری شنبه کاتالوگ ارسال شود.با همکارشون صحبت کردم"},
-{id:53,name:"بیمارستان نور و حضرت علی اصغر(ع ) اصفهان",city:"اصفهان",phones:["03132222127","03132222129","03132222130","03132222131","03132222132","03132222133","03132222134","03132222135","03132222128"],note:"گفتند هر وقت شخص ثالث اوکی کردین تماس بگیرین"},
-{id:54,name:"بیمارستان سوختگی امام موسی کاظم (ع) اصفهان",city:"اصفهان",phones:["03133457670","03133457672","03133457673","03133457671"],note:"09024077171 آقای مهندس وثوق"},
-{id:55,name:"بیمارستان احمدیه اصفهان",city:"اصفهان",phones:["03133351560"]},
-{id:56,name:"اصفهان بیمارستان مهرگان اصفهان",city:"اصفهان",phones:["03132330043"]},
-{id:57,name:"بیمارستان اصفهان عمومی",city:"اصفهان",phones:["03132330018","03132330017","03132330016","03132330015"]},
-{id:58,name:"اصفهان بیمارستان سینا اصفهان",city:"اصفهان",phones:["03132205025"]},
-{id:59,name:"بیمارستان شهدای دهاقان",city:"دهاقان",phones:["03153338801","03153338802","03153338803","03153338804","03153338805"]},
-{id:60,name:"اصفهان بیمارستان فاطمیه بادرود",city:"بادرود",phones:["03154346220"],note:"09300511693 خانم مهندس کمالی"},
-{id:61,name:"بیمارستان قلب شهید دکتر چمران اصفهان",city:"اصفهان",phones:["03132600961","03132600962","03132600963","03132600964","03132600965"]},
-{id:62,name:"بیمارستان سپاهان اصفهان",city:"اصفهان",phones:["03136613082","03136613083","03136613084","03136613085","03136613086"]},
-{id:63,name:"بیمارستان حضرت زهرا اصفهان",city:"اصفهان",phones:["03135511197","03135511196","03135511195"],note:"خانم شاهمرادی09136433591"},
-{id:64,name:"بیمارستان فوق تخصصی قلب سعدی اصفهان",city:"اصفهان",phones:["03136273034","03136273033","03136273032","03136273031"]},
-{id:65,name:"بیمارستان رز اصفهان",city:"اصفهان",phones:["0315506"]}
-]
+        document.getElementById(
+            "provinceGrid"
+        ).innerHTML = `
+
+            <div class="empty">
+
+                ❌ خطا در دریافت اطلاعات بیمارستان‌ها
+
+                <br><br>
+
+                مطمئن شوید فایل زیر وجود دارد:
+
+                <br>
+
+                <b>data/hospitals.json</b>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   وضعیت‌های اولیه
+   ========================================================= */
+
+const initialHospitalStatuses = {
+
+    "آذربایجان غربی":{
+        1:"no-answer",
+        2:"no-answer",
+        3:"no-answer",
+        4:"no-answer",
+        5:"no-answer",
+        6:"no-answer",
+        7:"no-answer",
+        8:"no-answer",
+        9:"no-answer",
+        10:"no-answer",
+        11:"no-answer",
+        12:"no-answer",
+        13:"no-answer",
+        14:"ready",
+        15:"ready",
+        16:"ready",
+        17:"ready",
+        18:"ready",
+        19:"ready",
+        20:"ready",
+        21:"ready",
+        22:"ready",
+        23:"ready",
+        24:"ready",
+        25:"ready",
+        26:"no-answer",
+        27:"no-answer",
+        28:"catalog",
+        29:"no-answer",
+        30:"follow-up"
+    },
+
+    "فارس":{
+        1:"catalog",
+        4:"catalog",
+        8:"catalog",
+        9:"catalog",
+        15:"catalog",
+        59:"catalog",
+        60:"catalog",
+        63:"catalog"
+    },
+
+    "البرز":{
+        1:"ready",
+        2:"ready",
+        4:"ready",
+        5:"ready",
+        6:"ready",
+        7:"ready",
+        8:"ready",
+        10:"ready",
+        11:"ready",
+        12:"ready",
+        13:"ready",
+        16:"catalog"
+    },
+
+    "قزوین":{
+        1:"catalog",
+        8:"ready",
+        9:"ready",
+        10:"ready",
+        11:"ready",
+        12:"ready",
+        13:"ready",
+        14:"ready",
+        15:"ready",
+        16:"ready",
+        17:"ready"
+    },
+
+    "مرکزی":{
+        13:"catalog",
+        18:"catalog",
+        19:"catalog",
+        20:"catalog"
+    },
+
+    "چهارمحال و بختیاری":{
+        1:"catalog",
+        8:"catalog"
+    },
+
+    "خراسان جنوبی":{
+        7:"catalog",
+        10:"catalog"
+    },
+
+    "کردستان":{
+        19:"catalog"
+    },
+
+    "خراسان رضوی":{
+
+        2:"ready",
+        3:"ready",
+        4:"ready",
+        5:"ready",
+        6:"ready",
+        7:"ready",
+        8:"ready",
+        9:"ready",
+        10:"ready",
+        11:"ready",
+        12:"no-answer",
+        13:"ready",
+        14:"ready",
+        15:"ready",
+        16:"ready",
+        17:"ready",
+        18:"ready",
+        19:"ready",
+        20:"ready",
+        21:"ready",
+        22:"ready",
+        23:"ready",
+        24:"no-answer",
+        25:"ready",
+        26:"ready",
+        27:"ready",
+        28:"ready",
+        29:"ready",
+        30:"ready",
+        31:"ready",
+        32:"ready",
+        33:"ready",
+        34:"ready",
+        35:"ready",
+        36:"ready",
+        37:"ready",
+        38:"ready",
+        39:"ready",
+        40:"ready",
+        41:"ready",
+        42:"ready",
+        43:"ready",
+        44:"ready",
+        45:"ready",
+        46:"ready",
+        47:"ready",
+        48:"catalog",
+        49:"ready",
+        50:"ready",
+        51:"ready",
+        52:"catalog",
+        53:"ready",
+        54:"ready",
+        55:"ready",
+        56:"catalog",
+        57:"ready",
+        58:"ready",
+        59:"catalog",
+        60:"no-answer",
+        61:"ready",
+        62:"ready",
+        63:"ready",
+        64:"no-answer",
+        65:"no-answer",
+        66:"catalog",
+        67:"catalog",
+        68:"catalog",
+        69:"catalog",
+        70:"ready",
+        71:"ready",
+        72:"ready",
+        73:"ready",
+        74:"ready",
+        75:"ready",
+        76:"ready",
+        77:"ready",
+        78:"ready"
+
+    },
+
+    "قم":{
+
+        6:"catalog",
+        7:"catalog",
+        16:"ready",
+        17:"ready",
+        18:"ready",
+        19:"ready",
+        20:"ready",
+        21:"ready",
+        22:"ready",
+        23:"ready",
+        24:"ready",
+        25:"ready",
+        26:"ready",
+        27:"ready",
+        28:"ready",
+        29:"ready",
+        30:"ready",
+        31:"ready",
+        32:"ready"
+
+    },
+
+    "مازندران":{
+
+        14:"catalog",
+        17:"emed",
+        20:"catalog",
+        33:"catalog",
+        40:"catalog",
+        45:"catalog"
+
+    },
+
+    "گیلان":{
+
+        4:"ready",
+        5:"ready",
+        6:"ready",
+        7:"ready",
+        8:"ready",
+        9:"catalog",
+        11:"ready",
+        12:"ready",
+        13:"no-answer",
+        14:"no-answer",
+        15:"no-answer",
+        16:"no-answer",
+        17:"ready",
+        18:"ready",
+        19:"ready",
+        20:"ready",
+        21:"no-answer",
+        22:"ready",
+        23:"no-answer",
+        24:"ready",
+        25:"no-answer",
+        26:"no-answer",
+        27:"ready",
+        28:"ready",
+        29:"ready",
+        30:"ready",
+        31:"no-answer",
+        32:"ready",
+        33:"no-answer",
+        34:"ready",
+        35:"no-answer",
+        36:"no-answer",
+        37:"no-answer",
+        38:"ready",
+        39:"ready",
+        40:"no-answer",
+        41:"catalog",
+        42:"catalog",
+        43:"ready"
+
+    },
+
+    "زنجان":{
+        5:"catalog",
+        6:"catalog",
+        8:"catalog",
+        9:"catalog"
+    },
+
+    "اصفهان":{
+
+        1:"no-answer",
+        2:"no-answer",
+        3:"no-answer",
+        4:"no-answer",
+        5:"no-answer",
+        6:"catalog",
+        7:"no-answer",
+        8:"no-answer",
+        9:"no-answer",
+        10:"no-answer",
+        11:"no-answer",
+        12:"no-answer",
+        13:"no-answer",
+        14:"no-answer",
+        15:"no-answer",
+        16:"no-answer",
+        17:"no-answer",
+        18:"no-answer",
+        19:"no-answer",
+        20:"no-answer",
+        21:"no-answer",
+        22:"no-answer",
+        23:"no-answer",
+        24:"no-answer",
+        25:"no-answer",
+        26:"no-answer",
+        27:"no-answer",
+        28:"no-answer",
+        29:"catalog",
+        30:"no-answer",
+        31:"no-answer",
+        32:"catalog",
+        33:"no-answer",
+        34:"no-answer",
+        35:"no-answer",
+        36:"no-answer",
+        37:"no-answer",
+        38:"no-answer",
+        39:"no-answer",
+        40:"no-answer",
+        41:"catalog",
+        42:"no-answer",
+        43:"no-answer",
+        44:"no-answer",
+        45:"catalog",
+        46:"no-answer",
+        47:"no-answer",
+        48:"no-answer",
+        49:"no-answer",
+        50:"no-answer",
+        51:"no-answer",
+        52:"catalog",
+        53:"follow-up",
+        54:"catalog",
+        55:"no-answer",
+        56:"no-answer",
+        57:"no-answer",
+        58:"no-answer",
+        59:"no-answer",
+        60:"catalog",
+        61:"no-answer",
+        62:"no-answer",
+        63:"catalog",
+        64:"no-answer",
+        65:"catalog"
+
+    },
+
+    "لرستان":{},
+    "آذربایجان شرقی":{},
+    "اردبیل":{},
+    "ایلام":{},
+    "بوشهر":{},
+    "تهران":{},
+    "خراسان شمالی":{},
+    "خوزستان":{},
+    "سمنان":{},
+    "سیستان و بلوچستان":{},
+    "کرمان":{},
+    "کرمانشاه":{},
+    "کهگیلویه و بویراحمد":{},
+    "گلستان":{},
+    "هرمزگان":{},
+    "همدان":{},
+    "یزد":{}
 
 };
 
-const initialHospitalStatuses={
 
-"آذربایجان غربی":{
-1:"no-answer",2:"no-answer",3:"no-answer",4:"no-answer",5:"no-answer",6:"no-answer",
-7:"no-answer",8:"no-answer",9:"no-answer",10:"no-answer",11:"no-answer",12:"no-answer",
-13:"no-answer",14:"ready",15:"ready",16:"ready",17:"ready",18:"ready",19:"ready",
-20:"ready",21:"ready",22:"ready",23:"ready",24:"ready",25:"ready",26:"no-answer",
-27:"no-answer",28:"catalog",29:"no-answer",30:"follow-up"
-},
+/* =========================================================
+   تنظیمات
+   ========================================================= */
 
-"فارس":{
-1:"catalog",4:"catalog",8:"catalog",9:"catalog",15:"catalog",59:"catalog",60:"catalog",63:"catalog"
-},
+const STATUS_KEY = "hospital_status_v4";
+const DELETED_KEY = "deleted_hospitals_v1";
 
-"البرز":{
-1:"ready",2:"ready",4:"ready",5:"ready",6:"ready",7:"ready",8:"ready",10:"ready",
-11:"ready",12:"ready",13:"ready",16:"catalog"
-},
+let currentProvince = null;
+let currentHospital = null;
 
-"قزوین":{
-1:"catalog",8:"ready",9:"ready",10:"ready",11:"ready",12:"ready",13:"ready",
-14:"ready",15:"ready",16:"ready",17:"ready"
-},
+const statusNames = {
 
-"مرکزی":{
-13:"catalog",18:"catalog",19:"catalog",20:"catalog"
-},
+    ready:"آماده تماس",
+    "no-answer":"تماس بی‌پاسخ",
+    catalog:"ارسال کاتالوگ",
+    "follow-up":"پیگیری",
+    emed:"eMed"
 
-"چهارمحال و بختیاری":{
-1:"catalog",8:"catalog"
-},
-
-"خراسان جنوبی":{
-7:"catalog",10:"catalog"
-},
-
-"کردستان":{
-19:"catalog"
-},
-
-"خراسان رضوی":{
-2:"ready",3:"ready",4:"ready",5:"ready",6:"ready",7:"ready",8:"ready",9:"ready",
-10:"ready",11:"ready",12:"no-answer",13:"ready",14:"ready",15:"ready",16:"ready",
-17:"ready",18:"ready",19:"ready",20:"ready",21:"ready",22:"ready",23:"ready",
-24:"no-answer",25:"ready",26:"ready",27:"ready",28:"ready",29:"ready",30:"ready",
-31:"ready",32:"ready",33:"ready",34:"ready",35:"ready",36:"ready",37:"ready",38:"ready",
-39:"ready",40:"ready",41:"ready",42:"ready",43:"ready",44:"ready",45:"ready",46:"ready",
-47:"ready",48:"catalog",49:"ready",50:"ready",51:"ready",52:"catalog",53:"ready",
-54:"ready",55:"ready",56:"catalog",57:"ready",58:"ready",59:"catalog",60:"no-answer",
-61:"ready",62:"ready",63:"ready",64:"no-answer",65:"no-answer",66:"catalog",67:"catalog",
-68:"catalog",69:"catalog",70:"ready",71:"ready",72:"ready",73:"ready",74:"ready",
-75:"ready",76:"ready",77:"ready",78:"ready"
-},
-
-"قم":{
-6:"catalog",7:"catalog",16:"ready",17:"ready",18:"ready",19:"ready",20:"ready",21:"ready",
-22:"ready",23:"ready",24:"ready",25:"ready",26:"ready",27:"ready",28:"ready",29:"ready",
-30:"ready",31:"ready",32:"ready"
-},
-
-"مازندران":{
-14:"catalog",17:"emed",20:"catalog",33:"catalog",40:"catalog",45:"catalog"
-},
-
-"گیلان":{
-4:"ready",5:"ready",6:"ready",7:"ready",8:"ready",9:"catalog",11:"ready",12:"ready",
-13:"no-answer",14:"no-answer",15:"no-answer",16:"no-answer",17:"ready",18:"ready",
-19:"ready",20:"ready",21:"no-answer",22:"ready",23:"no-answer",24:"ready",25:"no-answer",
-26:"no-answer",27:"ready",28:"ready",29:"ready",30:"ready",31:"no-answer",32:"ready",
-33:"no-answer",34:"ready",35:"no-answer",36:"no-answer",37:"no-answer",38:"ready",
-39:"ready",40:"no-answer",41:"catalog",42:"catalog",43:"ready"
-},
-
-"زنجان":{
-5:"catalog",6:"catalog",8:"catalog",9:"catalog"
-},
-
-"اصفهان":{
-1:"no-answer",2:"no-answer",3:"no-answer",4:"no-answer",5:"no-answer",6:"catalog",7:"no-answer",
-8:"no-answer",9:"no-answer",10:"no-answer",11:"no-answer",12:"no-answer",13:"no-answer",
-14:"no-answer",15:"no-answer",16:"no-answer",17:"no-answer",18:"no-answer",19:"no-answer",
-20:"no-answer",21:"no-answer",22:"no-answer",23:"no-answer",24:"no-answer",25:"no-answer",
-26:"no-answer",27:"no-answer",28:"no-answer",29:"catalog",30:"no-answer",31:"no-answer",
-32:"catalog",33:"no-answer",34:"no-answer",35:"no-answer",36:"no-answer",37:"no-answer",
-38:"no-answer",39:"no-answer",40:"no-answer",41:"catalog",42:"no-answer",43:"no-answer",
-44:"no-answer",45:"catalog",46:"no-answer",47:"no-answer",48:"no-answer",49:"no-answer",
-50:"no-answer",51:"no-answer",52:"catalog",53:"follow-up",54:"catalog",55:"no-answer",
-56:"no-answer",57:"no-answer",58:"no-answer",59:"no-answer",60:"catalog",61:"no-answer",
-62:"no-answer",63:"catalog",64:"no-answer",65:"catalog"
-},
-
-"لرستان":{},
-"آذربایجان شرقی":{},
-"اردبیل":{},
-"ایلام":{},
-"بوشهر":{},
-"تهران":{},
-"خراسان شمالی":{},
-"خوزستان":{},
-"سمنان":{},
-"سیستان و بلوچستان":{},
-"کرمان":{},
-"کرمانشاه":{},
-"کهگیلویه و بویراحمد":{},
-"گلستان":{},
-"هرمزگان":{},
-"همدان":{},
-"یزد":{}
 };
 
-const STATUS_KEY="hospital_status_v4";
-const DELETED_KEY="deleted_hospitals_v1";
 
-let currentProvince=null;
-let currentHospital=null;
-
-const statusNames={
-ready:"آماده تماس",
-"no-answer":"تماس بی‌پاسخ",
-catalog:"ارسال کاتالوگ",
-"follow-up":"پیگیری",
-emed:"eMed"
-};
+/* =========================================================
+   توابع کمکی
+   ========================================================= */
 
 function normalizeText(value){
-return String(value||"").toLowerCase()
-.replace(/ي/g,"ی").replace(/ى/g,"ی").replace(/ك/g,"ک").replace(/ة/g,"ه")
-.replace(/ۀ/g,"ه").replace(/ؤ/g,"و").replace(/إ/g,"ا").replace(/أ/g,"ا")
-.replace(/ٱ/g,"ا").replace(/‌/g," ").replace(/\u200c/g," ")
-.replace(/\s+/g," ").trim();
+
+    return String(value || "")
+        .toLowerCase()
+        .replace(/ي/g,"ی")
+        .replace(/ى/g,"ی")
+        .replace(/ك/g,"ک")
+        .replace(/ة/g,"ه")
+        .replace(/ۀ/g,"ه")
+        .replace(/ؤ/g,"و")
+        .replace(/إ/g,"ا")
+        .replace(/أ/g,"ا")
+        .replace(/ٱ/g,"ا")
+        .replace(/‌/g," ")
+        .replace(/\u200c/g," ")
+        .replace(/\s+/g," ")
+        .trim();
+
 }
+
 
 function toEnglishDigits(value){
-return String(value||"")
-.replace(/[۰-۹]/g,d=>String("۰۱۲۳۴۵۶۷۸۹".indexOf(d)))
-.replace(/[٠-٩]/g,d=>String("٠١٢٣٤٥٦٧٨٩".indexOf(d)));
+
+    return String(value || "")
+        .replace(/[۰-۹]/g,d =>
+            String("۰۱۲۳۴۵۶۷۸۹".indexOf(d))
+        )
+        .replace(/[٠-٩]/g,d =>
+            String("٠١٢٣٤٥٦٧٨٩".indexOf(d))
+        );
+
 }
+
 
 function hospitalStatusKey(province,id){
-return normalizeText(province)+"_"+id;
+
+    return normalizeText(province) + "_" + id;
+
 }
+
 
 function getHospitalStatus(province,id){
-const key=hospitalStatusKey(province,id);
-return localStorage.getItem(STATUS_KEY+"_"+key)
-||initialHospitalStatuses[province]?.[id]
-||"no-answer";
+
+    const key = hospitalStatusKey(province,id);
+
+    return localStorage.getItem(
+        STATUS_KEY + "_" + key
+    )
+    ||
+    initialHospitalStatuses[province]?.[id]
+    ||
+    "no-answer";
+
 }
+
 
 function setHospitalStatus(province,id,status){
-localStorage.setItem(STATUS_KEY+"_"+hospitalStatusKey(province,id),status);
+
+    localStorage.setItem(
+        STATUS_KEY + "_" +
+        hospitalStatusKey(province,id),
+        status
+    );
+
 }
+
 
 function getDeletedHospitals(){
-try{return JSON.parse(localStorage.getItem(DELETED_KEY)||"{}")}
-catch(e){return {}}
+
+    try{
+
+        return JSON.parse(
+            localStorage.getItem(DELETED_KEY) || "{}"
+        );
+
+    }
+    catch(e){
+
+        return {};
+
+    }
+
 }
+
 
 function isHospitalDeleted(province,id){
-return !!getDeletedHospitals()[hospitalStatusKey(province,id)];
+
+    return !!getDeletedHospitals()[
+        hospitalStatusKey(province,id)
+    ];
+
 }
+
 
 function getVisibleHospitals(province){
-return (hospitals[province]||[]).filter(h=>!isHospitalDeleted(province,h.id));
+
+    return (hospitals[province] || [])
+        .filter(h =>
+            !isHospitalDeleted(province,h.id)
+        );
+
 }
 
-function deleteHospital(event,province,id){
-event.stopPropagation();
-const hospital=(hospitals[province]||[]).find(h=>h.id===id);
-if(!hospital)return;
 
-if(!confirm(`آیا از حذف «${hospital.name}» مطمئن هستید؟\n\nاین بیمارستان از لیست سایت حذف می‌شود.`))return;
-
-const deleted=getDeletedHospitals();
-deleted[hospitalStatusKey(province,id)]=true;
-localStorage.setItem(DELETED_KEY,JSON.stringify(deleted));
-
-showToast("بیمارستان حذف شد");
-
-if(currentProvince===province){
-renderStats(province);
-renderHospitals(province);
-}
-}
-
-function showProvinces(){
-currentProvince=null;
-currentHospital=null;
-document.getElementById("provincePage").style.display="block";
-document.getElementById("hospitalPage").style.display="none";
-document.getElementById("hospitalSearch").value="";
-renderProvinces();
-}
+/* =========================================================
+   استان‌ها
+   ========================================================= */
 
 function renderProvinces(){
 
-const grid=document.getElementById("provinceGrid");
-const input=document.getElementById("provinceSearch");
-const clear=document.getElementById("provinceClear");
-const search=normalizeText(input.value);
+    const grid =
+        document.getElementById("provinceGrid");
 
-clear.classList.toggle("show",!!search);
+    const input =
+        document.getElementById("provinceSearch");
 
-const filtered=provinces.filter(p=>normalizeText(p).includes(search));
+    const clear =
+        document.getElementById("provinceClear");
 
-grid.innerHTML="";
+    const search =
+        normalizeText(input.value);
 
-if(!filtered.length){
-grid.innerHTML=`<div class="empty">استانی با این نام پیدا نشد.</div>`;
-return;
+    clear.classList.toggle(
+        "show",
+        !!search
+    );
+
+    const filtered =
+        provinces.filter(p =>
+            normalizeText(p).includes(search)
+        );
+
+    grid.innerHTML = "";
+
+    if(!filtered.length){
+
+        grid.innerHTML = `
+            <div class="empty">
+                استانی با این نام پیدا نشد.
+            </div>
+        `;
+
+        return;
+
+    }
+
+    filtered.forEach(province => {
+
+        const list =
+            getVisibleHospitals(province);
+
+        const counts = {
+
+            ready:list.filter(
+                h => getHospitalStatus(
+                    province,h.id
+                ) === "ready"
+            ).length,
+
+            noAnswer:list.filter(
+                h => getHospitalStatus(
+                    province,h.id
+                ) === "no-answer"
+            ).length,
+
+            catalog:list.filter(
+                h => getHospitalStatus(
+                    province,h.id
+                ) === "catalog"
+            ).length,
+
+            followUp:list.filter(
+                h => getHospitalStatus(
+                    province,h.id
+                ) === "follow-up"
+            ).length,
+
+            emed:list.filter(
+                h => getHospitalStatus(
+                    province,h.id
+                ) === "emed"
+            ).length
+
+        };
+
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "province-card";
+
+        card.onclick =
+            () => openProvince(province);
+
+
+        card.innerHTML = `
+
+            <div class="province-name">
+                ${escapeHTML(province)}
+            </div>
+
+            <div class="province-count">
+                ${list.length} بیمارستان
+            </div>
+
+            ${
+                list.length
+                ?
+                `
+                <div class="province-status">
+
+                    <span class="mini-status">
+                        آماده: ${counts.ready}
+                    </span>
+
+                    <span class="mini-status">
+                        بی‌پاسخ: ${counts.noAnswer}
+                    </span>
+
+                    <span class="mini-status">
+                        کاتالوگ: ${counts.catalog}
+                    </span>
+
+                    <span class="mini-status">
+                        پیگیری: ${counts.followUp}
+                    </span>
+
+                    ${
+                        counts.emed
+                        ?
+                        `
+                        <span class="mini-status">
+                            eMed: ${counts.emed}
+                        </span>
+                        `
+                        :
+                        ""
+                    }
+
+                </div>
+                `
+                :
+                `
+                <div
+                    class="province-count"
+                    style="margin-top:10px"
+                >
+                    بدون بیمارستان
+                </div>
+                `
+            }
+
+        `;
+
+        grid.appendChild(card);
+
+    });
+
 }
 
-filtered.forEach(province=>{
 
-const list=getVisibleHospitals(province);
-
-const counts={
-ready:list.filter(h=>getHospitalStatus(province,h.id)==="ready").length,
-noAnswer:list.filter(h=>getHospitalStatus(province,h.id)==="no-answer").length,
-catalog:list.filter(h=>getHospitalStatus(province,h.id)==="catalog").length,
-followUp:list.filter(h=>getHospitalStatus(province,h.id)==="follow-up").length,
-emed:list.filter(h=>getHospitalStatus(province,h.id)==="emed").length
-};
-
-const card=document.createElement("div");
-card.className="province-card";
-card.onclick=()=>openProvince(province);
-
-card.innerHTML=`
-<div class="province-name">${escapeHTML(province)}</div>
-<div class="province-count">${list.length} بیمارستان</div>
-${
-list.length
-?`
-<div class="province-status">
-<span class="mini-status">آماده: ${counts.ready}</span>
-<span class="mini-status">بی‌پاسخ: ${counts.noAnswer}</span>
-<span class="mini-status">کاتالوگ: ${counts.catalog}</span>
-<span class="mini-status">پیگیری: ${counts.followUp}</span>
-${counts.emed?`<span class="mini-status">eMed: ${counts.emed}</span>`:""}
-</div>`
-:`<div class="province-count" style="margin-top:10px">بدون بیمارستان</div>`
-}`;
-
-grid.appendChild(card);
-});
-}
+/* =========================================================
+   باز کردن استان
+   ========================================================= */
 
 function openProvince(province){
-currentProvince=province;
-document.getElementById("provincePage").style.display="none";
-document.getElementById("hospitalPage").style.display="block";
-document.getElementById("hospitalPageTitle").textContent="بیمارستان‌های "+province;
-document.getElementById("hospitalSearch").value="";
-renderStats(province);
-renderHospitals(province);
+
+    currentProvince = province;
+
+    document.getElementById(
+        "provincePage"
+    ).style.display = "none";
+
+    document.getElementById(
+        "hospitalPage"
+    ).style.display = "block";
+
+    document.getElementById(
+        "hospitalPageTitle"
+    ).textContent =
+        "بیمارستان‌های " + province;
+
+    document.getElementById(
+        "hospitalSearch"
+    ).value = "";
+
+    renderStats(province);
+    renderHospitals(province);
+
 }
+
+
+/* =========================================================
+   آمار
+   ========================================================= */
 
 function renderStats(province){
 
-const list=getVisibleHospitals(province);
+    const list =
+        getVisibleHospitals(province);
 
-const count=s=>list.filter(h=>getHospitalStatus(province,h.id)===s).length;
+    const count =
+        s => list.filter(
+            h =>
+                getHospitalStatus(
+                    province,
+                    h.id
+                ) === s
+        ).length;
 
-document.getElementById("hospitalStats").innerHTML=`
-<div class="stat">کل: <strong>${list.length}</strong></div>
-<div class="stat">آماده تماس: <strong>${count("ready")}</strong></div>
-<div class="stat">بی‌پاسخ: <strong>${count("no-answer")}</strong></div>
-<div class="stat">کاتالوگ: <strong>${count("catalog")}</strong></div>
-<div class="stat">پیگیری: <strong>${count("follow-up")}</strong></div>
-<div class="stat">eMed: <strong>${count("emed")}</strong></div>
-`;
+
+    document.getElementById(
+        "hospitalStats"
+    ).innerHTML = `
+
+        <div class="stat">
+            کل: <strong>${list.length}</strong>
+        </div>
+
+        <div class="stat">
+            آماده تماس:
+            <strong>${count("ready")}</strong>
+        </div>
+
+        <div class="stat">
+            بی‌پاسخ:
+            <strong>${count("no-answer")}</strong>
+        </div>
+
+        <div class="stat">
+            کاتالوگ:
+            <strong>${count("catalog")}</strong>
+        </div>
+
+        <div class="stat">
+            پیگیری:
+            <strong>${count("follow-up")}</strong>
+        </div>
+
+        <div class="stat">
+            eMed:
+            <strong>${count("emed")}</strong>
+        </div>
+
+    `;
+
 }
 
-function hospitalMatches(hospital,province,search){
 
-if(!search)return true;
+/* =========================================================
+   جستجوی بیمارستان
+   ========================================================= */
 
-const tokens=normalizeText(search).split(" ").filter(Boolean);
-const status=getHospitalStatus(province,hospital.id);
-const searchable=normalizeText([
-hospital.name,hospital.city,statusNames[status]||"",hospital.note||"",
-...(hospital.phones||[])
-].join(" "));
+function hospitalMatches(
+    hospital,
+    province,
+    search
+){
 
-return tokens.every(token=>searchable.includes(token));
+    if(!search)
+        return true;
+
+    const tokens =
+        normalizeText(search)
+            .split(" ")
+            .filter(Boolean);
+
+    const status =
+        getHospitalStatus(
+            province,
+            hospital.id
+        );
+
+    const searchable =
+        normalizeText([
+
+            hospital.name,
+            hospital.city,
+            statusNames[status] || "",
+            hospital.note || "",
+            ...(hospital.phones || [])
+
+        ].join(" "));
+
+
+    return tokens.every(
+        token =>
+            searchable.includes(token)
+    );
+
 }
+
+
+/* =========================================================
+   شماره تلفن
+   ========================================================= */
 
 function phoneHref(phone){
-const digits=toEnglishDigits(phone).replace(/[^\d+]/g,"");
-return digits;
+
+    return toEnglishDigits(phone)
+        .replace(/[^\d+]/g,"");
+
 }
 
+
+/* =========================================================
+   کلاس وضعیت
+   ========================================================= */
+
 function statusClass(status){
-if(status==="ready")return"status-ready";
-if(status==="catalog")return"status-catalog";
-if(status==="follow-up")return"status-follow-up";
-if(status==="emed")return"status-emed";
-return"status-no-answer";
+
+    if(status === "ready")
+        return "status-ready";
+
+    if(status === "catalog")
+        return "status-catalog";
+
+    if(status === "follow-up")
+        return "status-follow-up";
+
+    if(status === "emed")
+        return "status-emed";
+
+    return "status-no-answer";
+
 }
+
+
+/* =========================================================
+   نمایش بیمارستان‌ها
+   ========================================================= */
 
 function renderHospitals(province){
 
-const grid=document.getElementById("hospitalGrid");
-const input=document.getElementById("hospitalSearch");
-const clear=document.getElementById("hospitalClear");
-const search=input.value;
+    const grid =
+        document.getElementById(
+            "hospitalGrid"
+        );
 
-clear.classList.toggle("show",!!normalizeText(search));
+    const input =
+        document.getElementById(
+            "hospitalSearch"
+        );
 
-const list=getVisibleHospitals(province)
-.filter(h=>hospitalMatches(h,province,search));
+    const clear =
+        document.getElementById(
+            "hospitalClear"
+        );
 
-grid.innerHTML="";
+    const search = input.value;
 
-if(!list.length){
-grid.innerHTML=`<div class="empty">بیمارستانی با این جستجو پیدا نشد.</div>`;
-return;
+    clear.classList.toggle(
+        "show",
+        !!normalizeText(search)
+    );
+
+
+    const list =
+        getVisibleHospitals(province)
+            .filter(h =>
+                hospitalMatches(
+                    h,
+                    province,
+                    search
+                )
+            );
+
+
+    grid.innerHTML = "";
+
+
+    if(!list.length){
+
+        grid.innerHTML = `
+            <div class="empty">
+                بیمارستانی با این جستجو پیدا نشد.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    list.forEach(hospital => {
+
+        const status =
+            getHospitalStatus(
+                province,
+                hospital.id
+            );
+
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "hospital-card";
+
+        card.onclick =
+            () =>
+                openHospital(
+                    province,
+                    hospital.id
+                );
+
+
+        const phonesHTML =
+            (hospital.phones || [])
+            .map(phone => `
+
+                <a
+                    class="card-phone"
+                    href="tel:${phoneHref(phone)}"
+                    onclick="event.stopPropagation()"
+                >
+                    📞 ${escapeHTML(phone)}
+                </a>
+
+            `)
+            .join("");
+
+
+        card.innerHTML = `
+
+            <div class="hospital-title-row">
+
+                <div class="hospital-name">
+                    ${escapeHTML(hospital.name)}
+                </div>
+
+                <button
+                    class="delete-btn"
+                    title="حذف بیمارستان"
+                    onclick="
+                        deleteHospital(
+                            event,
+                            '${escapeJS(province)}',
+                            ${hospital.id}
+                        )
+                    "
+                >
+                    🗑
+                </button>
+
+            </div>
+
+
+            <div class="hospital-city">
+                📍 ${escapeHTML(hospital.city || "")}
+            </div>
+
+
+            <div
+                class="status-badge ${statusClass(status)}"
+            >
+                ${escapeHTML(
+                    statusNames[status] ||
+                    "تماس بی‌پاسخ"
+                )}
+            </div>
+
+
+            <div>
+                ${phonesHTML}
+            </div>
+
+
+            ${
+                hospital.note
+                ?
+                `
+                <div class="note">
+                    📝 ${escapeHTML(
+                        hospital.note
+                    )}
+                </div>
+                `
+                :
+                ""
+            }
+
+        `;
+
+
+        grid.appendChild(card);
+
+    });
+
 }
 
-list.forEach(hospital=>{
 
-const status=getHospitalStatus(province,hospital.id);
-
-const card=document.createElement("div");
-card.className="hospital-card";
-card.onclick=()=>openHospital(province,hospital.id);
-
-const phonesHTML=(hospital.phones||[]).map(phone=>`
-<a class="card-phone"
-href="tel:${phoneHref(phone)}"
-onclick="event.stopPropagation()">
-📞 ${escapeHTML(phone)}
-</a>
-`).join("");
-
-card.innerHTML=`
-<div class="hospital-title-row">
-<div class="hospital-name">${escapeHTML(hospital.name)}</div>
-<button class="delete-btn"
-title="حذف بیمارستان"
-onclick="deleteHospital(event,'${escapeJS(province)}',${hospital.id})">🗑</button>
-</div>
-
-<div class="hospital-city">📍 ${escapeHTML(hospital.city||"")}</div>
-
-<div class="status-badge ${statusClass(status)}">
-${escapeHTML(statusNames[status]||"تماس بی‌پاسخ")}
-</div>
-
-<div>${phonesHTML}</div>
-
-${hospital.note?`<div class="note">📝 ${escapeHTML(hospital.note)}</div>`:""}
-`;
-
-grid.appendChild(card);
-});
-}
+/* =========================================================
+   باز کردن بیمارستان
+   ========================================================= */
 
 function openHospital(province,id){
 
-const hospital=(hospitals[province]||[]).find(h=>h.id===id);
-if(!hospital||isHospitalDeleted(province,id))return;
+    const hospital =
+        (hospitals[province] || [])
+        .find(h => h.id === id);
 
-currentHospital=hospital;
 
-document.getElementById("modalTitle").textContent=hospital.name;
-document.getElementById("modalCity").textContent="📍 "+(hospital.city||"");
+    if(
+        !hospital ||
+        isHospitalDeleted(
+            province,
+            id
+        )
+    )
+        return;
 
-const currentStatus=getHospitalStatus(province,id);
-const statusButtons=document.getElementById("statusButtons");
 
-statusButtons.innerHTML="";
+    currentHospital =
+        hospital;
 
-Object.entries(statusNames).forEach(([key,label])=>{
 
-const btn=document.createElement("button");
-btn.className="status-btn";
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        hospital.name;
 
-if(currentStatus===key)btn.classList.add("active");
 
-btn.textContent=label;
+    document.getElementById(
+        "modalCity"
+    ).textContent =
+        "📍 " +
+        (hospital.city || "");
 
-btn.onclick=()=>{
 
-setHospitalStatus(province,id,key);
-closeModal();
-renderStats(province);
-renderHospitals(province);
-showToast("وضعیت به «"+label+"» تغییر کرد");
+    const currentStatus =
+        getHospitalStatus(
+            province,
+            id
+        );
 
-};
 
-statusButtons.appendChild(btn);
-});
+    const statusButtons =
+        document.getElementById(
+            "statusButtons"
+        );
 
-const phones=document.getElementById("modalPhones");
-phones.innerHTML="";
 
-(hospital.phones||[]).forEach(phone=>{
+    statusButtons.innerHTML = "";
 
-const a=document.createElement("a");
 
-a.className="modal-phone";
-a.href="tel:"+phoneHref(phone);
-a.textContent="📞 "+phone;
+    Object.entries(statusNames)
+        .forEach(([key,label]) => {
 
-phones.appendChild(a);
-});
+            const btn =
+                document.createElement(
+                    "button"
+                );
 
-const note=document.getElementById("modalNote");
+            btn.className =
+                "status-btn";
 
-if(hospital.note){
-note.style.display="block";
-note.textContent="📝 "+hospital.note;
-}else{
-note.style.display="none";
-note.textContent="";
+
+            if(currentStatus === key)
+                btn.classList.add("active");
+
+
+            btn.textContent =
+                label;
+
+
+            btn.onclick = () => {
+
+                setHospitalStatus(
+                    province,
+                    id,
+                    key
+                );
+
+                closeModal();
+
+                renderStats(province);
+
+                renderHospitals(province);
+
+                showToast(
+                    "وضعیت به «" +
+                    label +
+                    "» تغییر کرد"
+                );
+
+            };
+
+
+            statusButtons.appendChild(btn);
+
+        });
+
+
+    const phones =
+        document.getElementById(
+            "modalPhones"
+        );
+
+
+    phones.innerHTML = "";
+
+
+    (hospital.phones || [])
+        .forEach(phone => {
+
+            const a =
+                document.createElement(
+                    "a"
+                );
+
+            a.className =
+                "modal-phone";
+
+            a.href =
+                "tel:" +
+                phoneHref(phone);
+
+            a.textContent =
+                "📞 " + phone;
+
+            phones.appendChild(a);
+
+        });
+
+
+    const note =
+        document.getElementById(
+            "modalNote"
+        );
+
+
+    if(hospital.note){
+
+        note.style.display =
+            "block";
+
+        note.textContent =
+            "📝 " +
+            hospital.note;
+
+    }
+    else{
+
+        note.style.display =
+            "none";
+
+        note.textContent =
+            "";
+
+    }
+
+
+    document.getElementById(
+        "modal"
+    ).classList.add("show");
+
 }
 
-document.getElementById("modal").classList.add("show");
+
+/* =========================================================
+   حذف بیمارستان
+   ========================================================= */
+
+function deleteHospital(
+    event,
+    province,
+    id
+){
+
+    event.stopPropagation();
+
+
+    const hospital =
+        (hospitals[province] || [])
+        .find(h => h.id === id);
+
+
+    if(!hospital)
+        return;
+
+
+    if(
+        !confirm(
+            `آیا از حذف «${hospital.name}» مطمئن هستید؟\n\nاین بیمارستان از لیست سایت حذف می‌شود.`
+        )
+    )
+        return;
+
+
+    const deleted =
+        getDeletedHospitals();
+
+
+    deleted[
+        hospitalStatusKey(
+            province,
+            id
+        )
+    ] = true;
+
+
+    localStorage.setItem(
+        DELETED_KEY,
+        JSON.stringify(deleted)
+    );
+
+
+    showToast(
+        "بیمارستان حذف شد"
+    );
+
+
+    if(currentProvince === province){
+
+        renderStats(province);
+        renderHospitals(province);
+
+    }
+
 }
+
+
+/* =========================================================
+   برگشت
+   ========================================================= */
+
+function showProvinces(){
+
+    currentProvince = null;
+    currentHospital = null;
+
+    document.getElementById(
+        "provincePage"
+    ).style.display = "block";
+
+    document.getElementById(
+        "hospitalPage"
+    ).style.display = "none";
+
+    document.getElementById(
+        "hospitalSearch"
+    ).value = "";
+
+    renderProvinces();
+
+}
+
+
+/* =========================================================
+   Modal
+   ========================================================= */
 
 function closeModal(){
-document.getElementById("modal").classList.remove("show");
-currentHospital=null;
+
+    document.getElementById(
+        "modal"
+    ).classList.remove("show");
+
+    currentHospital = null;
+
 }
+
 
 function closeModalByBackdrop(event){
-if(event.target===event.currentTarget)closeModal();
+
+    if(
+        event.target ===
+        event.currentTarget
+    ){
+
+        closeModal();
+
+    }
+
 }
 
-document.addEventListener("keydown",event=>{
-if(event.key==="Escape")closeModal();
-});
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if(event.key === "Escape")
+            closeModal();
+
+    }
+);
+
+
+/* =========================================================
+   جستجو
+   ========================================================= */
 
 function clearProvinceSearch(){
-document.getElementById("provinceSearch").value="";
-renderProvinces();
+
+    document.getElementById(
+        "provinceSearch"
+    ).value = "";
+
+    renderProvinces();
+
 }
 
+
 function clearHospitalSearch(){
-document.getElementById("hospitalSearch").value="";
-renderHospitals(currentProvince);
+
+    document.getElementById(
+        "hospitalSearch"
+    ).value = "";
+
+    renderHospitals(
+        currentProvince
+    );
+
 }
+
+
+/* =========================================================
+   خروجی TXT
+   ========================================================= */
 
 function exportTXT(){
 
-let output="";
-output+="========================================\n";
-output+="گزارش اطلاعات بیمارستان‌ها\n";
-output+="========================================\n\n";
-output+="تاریخ تهیه گزارش: "+new Date().toLocaleString("fa-IR")+"\n\n";
+    let output = "";
 
-let total=0;
+    output +=
+        "========================================\n";
 
-provinces.forEach(province=>{
+    output +=
+        "گزارش اطلاعات بیمارستان‌ها\n";
 
-const list=getVisibleHospitals(province);
-if(!list.length)return;
+    output +=
+        "========================================\n\n";
 
-output+="\n########################################\n";
-output+="استان: "+province+"\n";
-output+="تعداد: "+list.length+"\n";
-output+="########################################\n\n";
+    output +=
+        "تاریخ تهیه گزارش: " +
+        new Date().toLocaleString("fa-IR") +
+        "\n\n";
 
-list.forEach((hospital,index)=>{
 
-total++;
+    let total = 0;
 
-const status=getHospitalStatus(province,hospital.id);
 
-output+=`${index+1}. ${hospital.name}\n`;
-output+=`شهر: ${hospital.city||""}\n`;
-output+=`وضعیت: ${statusNames[status]||""}\n`;
-output+="تلفن‌ها:\n";
+    provinces.forEach(
+        province => {
 
-(hospital.phones||[]).forEach(phone=>{
-output+="  "+phone+"\n";
-});
+            const list =
+                getVisibleHospitals(
+                    province
+                );
 
-if(hospital.note){
-output+="یادداشت: "+hospital.note+"\n";
+
+            if(!list.length)
+                return;
+
+
+            output +=
+                "\n########################################\n";
+
+            output +=
+                "استان: " +
+                province +
+                "\n";
+
+            output +=
+                "تعداد: " +
+                list.length +
+                "\n";
+
+            output +=
+                "########################################\n\n";
+
+
+            list.forEach(
+                (hospital,index) => {
+
+                    total++;
+
+
+                    const status =
+                        getHospitalStatus(
+                            province,
+                            hospital.id
+                        );
+
+
+                    output +=
+                        `${index+1}. ${hospital.name}\n`;
+
+                    output +=
+                        `شهر: ${hospital.city || ""}\n`;
+
+                    output +=
+                        `وضعیت: ${
+                            statusNames[status] || ""
+                        }\n`;
+
+
+                    output +=
+                        "تلفن‌ها:\n";
+
+
+                    (hospital.phones || [])
+                        .forEach(phone => {
+
+                            output +=
+                                "  " +
+                                phone +
+                                "\n";
+
+                        });
+
+
+                    if(hospital.note){
+
+                        output +=
+                            "یادداشت: " +
+                            hospital.note +
+                            "\n";
+
+                    }
+
+
+                    output +=
+                        "----------------------------------------\n\n";
+
+                }
+            );
+
+        }
+    );
+
+
+    output +=
+        "\n========================================\n";
+
+    output +=
+        "تعداد کل بیمارستان‌های فعال: " +
+        total +
+        "\n";
+
+    output +=
+        "========================================\n";
+
+
+    const blob =
+        new Blob(
+            ["\uFEFF" + output],
+            {
+                type:
+                    "text/plain;charset=utf-8"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(blob);
+
+
+    const a =
+        document.createElement("a");
+
+
+    a.href = url;
+
+    a.download =
+        "hospital-data-" +
+        new Date()
+            .toISOString()
+            .slice(0,10) +
+        ".txt";
+
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    a.remove();
+
+    URL.revokeObjectURL(url);
+
+
+    showToast(
+        "فایل اطلاعات ساخته شد"
+    );
+
 }
 
-output+="----------------------------------------\n\n";
-});
-});
 
-output+="\n========================================\n";
-output+="تعداد کل بیمارستان‌های فعال: "+total+"\n";
-output+="========================================\n";
+/* =========================================================
+   Toast
+   ========================================================= */
 
-const blob=new Blob(["\uFEFF"+output],{type:"text/plain;charset=utf-8"});
-const url=URL.createObjectURL(blob);
-const a=document.createElement("a");
+let toastTimer = null;
 
-a.href=url;
-a.download="hospital-data-"+new Date().toISOString().slice(0,10)+".txt";
-
-document.body.appendChild(a);
-a.click();
-a.remove();
-
-URL.revokeObjectURL(url);
-
-showToast("فایل اطلاعات ساخته شد");
-}
-
-let toastTimer=null;
 
 function showToast(message){
 
-const toast=document.getElementById("toast");
+    const toast =
+        document.getElementById(
+            "toast"
+        );
 
-toast.textContent=message;
-toast.classList.add("show");
 
-clearTimeout(toastTimer);
+    toast.textContent =
+        message;
 
-toastTimer=setTimeout(()=>{
-toast.classList.remove("show");
-},2500);
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2500
+        );
+
 }
+
+
+/* =========================================================
+   امنیت HTML
+   ========================================================= */
 
 function escapeHTML(value){
-return String(value??"")
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
 }
+
 
 function escapeJS(value){
-return String(value??"")
-.replace(/\\/g,"\\\\")
-.replace(/'/g,"\\'");
+
+    return String(value ?? "")
+        .replace(/\\/g,"\\\\")
+        .replace(/'/g,"\\'");
+
 }
 
-renderProvinces();
+
+/* =========================================================
+   شروع برنامه
+   ========================================================= */
+
+loadHospitals();
 
 </script>
 
