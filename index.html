@@ -10,43 +10,107 @@
 
 <style>
 
+/* =========================================================
+   RESET
+   ========================================================= */
+
 *{
     box-sizing:border-box;
     margin:0;
     padding:0;
 }
 
+:root{
+    --blue:#2196f3;
+    --blue-dark:#1477c9;
+    --blue-light:#eef7ff;
+    --blue-border:#cfe6f8;
+
+    --bg:#f5f9fc;
+    --white:#ffffff;
+
+    --text:#17202a;
+    --text-soft:#64748b;
+
+    --border:#e1e9ef;
+    --border-light:#e9eff3;
+
+    --danger:#dc5555;
+}
+
+
+/* =========================================================
+   BODY
+   ========================================================= */
+
 body{
     font-family:Tahoma,Arial,sans-serif;
-    background:#050505;
-    color:#fff;
+    background:var(--bg);
+    color:var(--text);
     min-height:100vh;
 }
 
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
 .header{
+    background:#fff;
     padding:20px;
     text-align:center;
-    border-bottom:1px solid #222;
+    border-bottom:1px solid var(--border);
+    box-shadow:0 2px 12px rgba(30,90,130,.05);
 }
 
 .header h1{
     margin-bottom:15px;
+    font-size:24px;
+    color:var(--text);
 }
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
 
 .top-btn,
 .back-btn{
-    border:none;
-    padding:12px 18px;
+    border:1px solid var(--blue-border);
+    padding:11px 17px;
     border-radius:10px;
     cursor:pointer;
-    background:#222;
-    color:#fff;
+    background:var(--blue-light);
+    color:var(--blue-dark);
+    font-family:inherit;
+    font-size:13px;
+    transition:.18s;
 }
+
+.top-btn:hover,
+.back-btn:hover{
+    background:#dff0ff;
+    border-color:#b9dcf5;
+}
+
+.back-btn{
+    margin-bottom:5px;
+}
+
+
+/* =========================================================
+   CONTAINER
+   ========================================================= */
 
 .container{
     width:min(1200px,94%);
     margin:25px auto;
 }
+
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
 
 .search-box{
     display:flex;
@@ -56,71 +120,114 @@ body{
 
 .search-box input{
     flex:1;
-    padding:14px;
-    border-radius:10px;
-    border:1px solid #333;
-    background:#111;
-    color:#fff;
+    padding:13px 15px;
+    border-radius:11px;
+    border:1px solid var(--border);
+    background:#fff;
+    color:var(--text);
     outline:none;
+    font-family:inherit;
+    font-size:14px;
+    transition:.18s;
+}
+
+.search-box input::placeholder{
+    color:#9aa8b5;
+}
+
+.search-box input:focus{
+    border-color:#8bc8f5;
+    box-shadow:0 0 0 3px rgba(33,150,243,.08);
 }
 
 .search-clear{
     display:none;
-    padding:10px;
+    padding:10px 14px;
     cursor:pointer;
+    border:1px solid var(--border);
+    background:#fff;
+    color:#718096;
+    border-radius:10px;
+    font-family:inherit;
 }
 
 .search-clear.show{
     display:block;
 }
 
+
+/* =========================================================
+   GRID
+   ========================================================= */
+
 .grid{
     display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
-    gap:15px;
+    grid-template-columns:repeat(
+        auto-fill,
+        minmax(250px,1fr)
+    );
+    gap:14px;
 }
+
+
+/* =========================================================
+   CARDS
+   ========================================================= */
 
 .province-card,
 .hospital-card{
-    background:#101010;
-    border:1px solid #252525;
-    border-radius:15px;
-    padding:18px;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:17px;
     cursor:pointer;
-    transition:.2s;
+    transition:
+        transform .18s,
+        box-shadow .18s,
+        border-color .18s;
 }
 
 .province-card:hover,
 .hospital-card:hover{
     transform:translateY(-2px);
-    border-color:#555;
+    border-color:#c9dfef;
+    box-shadow:0 7px 22px rgba(31,94,130,.07);
 }
 
 .province-name,
 .hospital-name{
     font-weight:bold;
-    font-size:17px;
+    font-size:16px;
+    color:var(--text);
 }
 
 .province-count,
 .hospital-city{
-    color:#aaa;
+    color:var(--text-soft);
     margin-top:8px;
+    font-size:13px;
 }
 
 .province-status{
     display:flex;
     flex-wrap:wrap;
-    gap:6px;
+    gap:5px;
     margin-top:12px;
 }
 
 .mini-status{
     font-size:11px;
-    padding:5px 7px;
-    background:#1b1b1b;
-    border-radius:6px;
+    padding:5px 8px;
+    background:#f3f7fa;
+    color:#637587;
+    border:1px solid #e5edf2;
+    border-radius:7px;
 }
+
+
+/* =========================================================
+   HOSPITAL TITLE
+   ========================================================= */
 
 .hospital-title-row{
     display:flex;
@@ -130,99 +237,136 @@ body{
 }
 
 .delete-btn{
-    border:0;
-    background:#251010;
-    color:#ff7777;
-    border-radius:7px;
+    border:1px solid #f0d5d5;
+    background:#fff7f7;
+    color:var(--danger);
+    border-radius:8px;
     padding:6px 8px;
     cursor:pointer;
+    transition:.18s;
 }
+
+.delete-btn:hover{
+    background:#ffeded;
+}
+
+
+/* =========================================================
+   HOSPITAL STATUS
+   ========================================================= */
 
 .status-badge{
     display:inline-block;
     margin:12px 0;
-    padding:7px 10px;
-    border-radius:8px;
-    font-size:12px;
+    padding:6px 9px;
+    border-radius:7px;
+    font-size:11px;
+    background:#eef7ff;
+    color:var(--blue-dark);
+    border:1px solid #d5ebfb;
 }
 
-.status-ready{
-    background:#123d20;
-    color:#71e58c;
-}
-
-.status-no-answer{
-    background:#3b1717;
-    color:#ff8585;
-}
-
-.status-catalog{
-    background:#382d0d;
-    color:#ffd65c;
-}
-
-.status-follow-up{
-    background:#172c42;
-    color:#72bfff;
-}
-
+.status-ready,
+.status-no-answer,
+.status-catalog,
+.status-follow-up,
 .status-emed{
-    background:#301744;
-    color:#db83ff;
+    background:#eef7ff;
+    color:var(--blue-dark);
+    border-color:#d5ebfb;
 }
+
+
+/* =========================================================
+   PHONE BUTTONS
+   ========================================================= */
 
 .card-phone,
 .modal-phone{
     display:block;
     text-decoration:none;
-    color:#fff;
-    background:#181818;
-    border:1px solid #292929;
-    padding:10px;
+    color:var(--blue-dark);
+    background:#f7fbfe;
+    border:1px solid #dcecf7;
+    padding:10px 12px;
     margin-top:7px;
     border-radius:9px;
+    transition:.18s;
+    direction:ltr;
+    text-align:left;
+    font-size:14px;
 }
 
 .card-phone:hover,
 .modal-phone:hover{
-    background:#222;
+    background:#eaf6ff;
+    border-color:#bcdff5;
 }
+
+
+/* =========================================================
+   NOTE
+   ========================================================= */
 
 .note{
     margin-top:12px;
-    padding:10px;
-    background:#191919;
-    border-radius:8px;
-    color:#ccc;
+    padding:10px 12px;
+    background:#f7f9fb;
+    border:1px solid var(--border-light);
+    border-radius:9px;
+    color:var(--text-soft);
     font-size:12px;
     line-height:1.8;
 }
 
+
+/* =========================================================
+   EMPTY
+   ========================================================= */
+
 .empty{
     text-align:center;
     padding:40px;
-    color:#888;
+    color:#8997a5;
     grid-column:1/-1;
 }
+
+
+/* =========================================================
+   STATS
+   ========================================================= */
 
 .stats{
     display:flex;
     flex-wrap:wrap;
-    gap:8px;
+    gap:7px;
     margin:15px 0;
 }
 
 .stat{
-    background:#111;
-    border:1px solid #292929;
-    padding:10px 14px;
+    background:#fff;
+    border:1px solid var(--border);
+    color:var(--text-soft);
+    padding:9px 12px;
     border-radius:9px;
+    font-size:12px;
 }
+
+.stat strong{
+    color:var(--blue-dark);
+    margin-right:3px;
+}
+
+
+/* =========================================================
+   MODAL
+   ========================================================= */
 
 .modal{
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,.75);
+    background:rgba(30,55,75,.28);
+    backdrop-filter:blur(3px);
     display:none;
     align-items:center;
     justify-content:center;
@@ -238,72 +382,129 @@ body{
     width:min(600px,100%);
     max-height:90vh;
     overflow:auto;
-    background:#101010;
-    border:1px solid #333;
-    border-radius:18px;
+    background:#fff;
+    border:1px solid #dce7ee;
+    border-radius:17px;
     padding:20px;
+    box-shadow:0 20px 55px rgba(30,80,110,.16);
 }
 
 .modal-header{
     display:flex;
     justify-content:space-between;
     gap:15px;
-    margin-bottom:15px;
+    margin-bottom:18px;
+}
+
+.modal-header h2{
+    color:var(--text);
+    font-size:19px;
 }
 
 .close-btn{
-    border:0;
-    background:#252525;
-    color:#fff;
-    border-radius:8px;
+    border:1px solid var(--border);
+    background:#f7fafc;
+    color:#718096;
+    border-radius:9px;
     width:38px;
     height:38px;
     cursor:pointer;
+    font-size:14px;
 }
 
+.close-btn:hover{
+    background:#edf6fc;
+    color:var(--blue-dark);
+}
+
+.modal-box h3{
+    font-size:14px;
+    color:#263746;
+    margin-top:18px;
+    margin-bottom:9px;
+}
+
+
+/* =========================================================
+   STATUS BUTTONS
+   ========================================================= */
+
+/*
+   تمام وضعیت‌ها یکجا
+   فقط وضعیت انتخاب شده آبی است
+*/
+
 .status-buttons{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:8px;
-    margin-top:15px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+    margin-top:8px;
 }
 
 .status-btn{
-    padding:12px;
-    border:1px solid #333;
-    background:#181818;
-    color:#fff;
+    flex:1;
+    min-width:105px;
+    padding:10px 11px;
+    border:1px solid #dce6ed;
+    background:#f8fafc;
+    color:#667788;
     border-radius:9px;
     cursor:pointer;
+    font-family:inherit;
+    font-size:12px;
+    transition:.18s;
+}
+
+.status-btn:hover{
+    background:#eef7fd;
+    border-color:#bddcf1;
+    color:#2586c9;
 }
 
 .status-btn.active{
-    background:#333;
-    border-color:#777;
+    background:var(--blue);
+    color:#fff;
+    border-color:var(--blue);
+    box-shadow:0 3px 10px rgba(33,150,243,.18);
 }
+
+
+/* =========================================================
+   MODAL NOTE
+   ========================================================= */
 
 #modalNote{
     margin-top:15px;
-    padding:12px;
-    background:#181818;
+    padding:11px 12px;
+    background:#f7f9fb;
+    border:1px solid #e6edf2;
     border-radius:9px;
     line-height:1.8;
-    color:#ddd;
+    color:var(--text-soft);
+    font-size:12px;
 }
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
 
 .toast{
     position:fixed;
     bottom:20px;
     left:50%;
     transform:translateX(-50%) translateY(20px);
-    background:#222;
-    color:#fff;
-    padding:12px 18px;
+    background:#fff;
+    color:var(--blue-dark);
+    border:1px solid #cfe5f4;
+    padding:11px 17px;
     border-radius:10px;
+    box-shadow:0 8px 25px rgba(30,80,110,.12);
     opacity:0;
     pointer-events:none;
     transition:.25s;
     z-index:2000;
+    font-size:13px;
 }
 
 .toast.show{
@@ -311,20 +512,75 @@ body{
     transform:translateX(-50%) translateY(0);
 }
 
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
 .loading{
     text-align:center;
     padding:50px;
-    color:#aaa;
+    color:#8292a0;
 }
 
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
 @media(max-width:600px){
+
+    .header{
+        padding:17px 14px;
+    }
+
+    .header h1{
+        font-size:20px;
+    }
+
+    .container{
+        width:94%;
+        margin:18px auto;
+    }
 
     .grid{
         grid-template-columns:1fr;
     }
 
+    .province-card,
+    .hospital-card{
+        padding:15px;
+    }
+
+    .modal{
+        padding:10px;
+    }
+
+    .modal-box{
+        max-height:94vh;
+        padding:16px;
+        border-radius:15px;
+    }
+
     .status-buttons{
-        grid-template-columns:1fr;
+        display:grid;
+        grid-template-columns:repeat(2,1fr);
+        gap:7px;
+    }
+
+    .status-btn{
+        min-width:0;
+        padding:11px 6px;
+    }
+
+    .stats{
+        gap:5px;
+    }
+
+    .stat{
+        flex:1;
+        min-width:90px;
+        text-align:center;
     }
 
 }
@@ -333,7 +589,9 @@ body{
 
 </head>
 
+
 <body>
+
 
 <header class="header">
 
@@ -348,7 +606,10 @@ body{
 
 <main class="container">
 
-    <!-- صفحه استان‌ها -->
+
+    <!-- =====================================================
+         صفحه استان‌ها
+         ===================================================== -->
 
     <div id="provincePage">
 
@@ -371,6 +632,7 @@ body{
 
         </div>
 
+
         <div id="provinceGrid" class="grid">
 
             <div class="loading">
@@ -382,17 +644,32 @@ body{
     </div>
 
 
-    <!-- صفحه بیمارستان‌ها -->
+
+    <!-- =====================================================
+         صفحه بیمارستان‌ها
+         ===================================================== -->
 
     <div id="hospitalPage" style="display:none">
 
-        <button class="back-btn" onclick="showProvinces()">
+        <button
+            class="back-btn"
+            onclick="showProvinces()"
+        >
             ← بازگشت به استان‌ها
         </button>
 
-        <h2 id="hospitalPageTitle" style="margin-top:20px"></h2>
 
-        <div id="hospitalStats" class="stats"></div>
+        <h2
+            id="hospitalPageTitle"
+            style="margin-top:20px"
+        ></h2>
+
+
+        <div
+            id="hospitalStats"
+            class="stats"
+        ></div>
+
 
         <div class="search-box">
 
@@ -413,14 +690,21 @@ body{
 
         </div>
 
-        <div id="hospitalGrid" class="grid"></div>
+
+        <div
+            id="hospitalGrid"
+            class="grid"
+        ></div>
 
     </div>
 
 </main>
 
 
-<!-- Modal -->
+
+<!-- =========================================================
+     MODAL
+     ========================================================= -->
 
 <div
     id="modal"
@@ -430,6 +714,7 @@ body{
 
     <div class="modal-box">
 
+
         <div class="modal-header">
 
             <div>
@@ -438,10 +723,11 @@ body{
 
                 <div
                     id="modalCity"
-                    style="color:#aaa;margin-top:8px"
+                    style="color:#64748b;margin-top:8px"
                 ></div>
 
             </div>
+
 
             <button
                 class="close-btn"
@@ -453,19 +739,32 @@ body{
         </div>
 
 
-        <h3>وضعیت تماس</h3>
+
+        <!-- =================================================
+             شماره تلفن‌ها
+             ================================================= -->
+
+        <h3>
+            شماره تلفن‌ها
+        </h3>
+
+        <div id="modalPhones"></div>
+
+
+
+        <!-- =================================================
+             وضعیت تماس
+             ================================================= -->
+
+        <h3>
+            وضعیت تماس
+        </h3>
 
         <div
             id="statusButtons"
             class="status-buttons"
         ></div>
 
-
-        <h3 style="margin-top:20px">
-            شماره تلفن‌ها
-        </h3>
-
-        <div id="modalPhones"></div>
 
 
         <div id="modalNote"></div>
@@ -475,10 +774,16 @@ body{
 </div>
 
 
-<div id="toast" class="toast"></div>
+
+<div
+    id="toast"
+    class="toast"
+></div>
+
 
 
 <script>
+
 
 /* =========================================================
    اطلاعات استان‌ها
@@ -521,6 +826,7 @@ const provinces = [
 ];
 
 
+
 /* =========================================================
    اطلاعات بیمارستان‌ها
    ========================================================= */
@@ -528,50 +834,22 @@ const provinces = [
 let hospitals = {};
 
 
+
 /* =========================================================
    دریافت اطلاعات بیمارستان‌ها
-   =========================================================
-
-   این تابع دو نوع فایل را قبول می‌کند:
-
-   1. JSON استاندارد:
-      {
-          "فارس":[
-              {
-                  "id":1,
-                  "name":"...",
-                  "city":"...",
-                  "phones":["..."]
-              }
-          ]
-      }
-
-   2. فایل فعلی شما:
-      {
-          "فارس":[
-              {
-                  id:1,
-                  name:"...",
-                  city:"...",
-                  phones:["..."]
-              }
-          ]
-      }
-
-   بنابراین لازم نیست اطلاعات فعلی بیمارستان‌ها
-   را تغییر بدهید.
    ========================================================= */
 
 async function loadHospitals(){
 
     try{
 
-        const response = await fetch(
-            "./data/hospitals.json",
-            {
-                cache:"no-store"
-            }
-        );
+        const response =
+            await fetch(
+                "./data/hospitals.json",
+                {
+                    cache:"no-store"
+                }
+            );
 
 
         if(!response.ok){
@@ -582,10 +860,6 @@ async function loadHospitals(){
 
         }
 
-
-        /*
-         * فایل را ابتدا به صورت متن می‌گیریم.
-         */
 
         const text =
             await response.text();
@@ -603,11 +877,6 @@ async function loadHospitals(){
         let data;
 
 
-        /*
-         * مرحله اول:
-         * تلاش برای JSON استاندارد
-         */
-
         try{
 
             data =
@@ -615,17 +884,6 @@ async function loadHospitals(){
 
         }
         catch(jsonError){
-
-            /*
-             * مرحله دوم:
-             *
-             * اگر JSON استاندارد نبود،
-             * آن را به عنوان JavaScript Object
-             * پردازش می‌کنیم.
-             *
-             * این همان چیزی است که برای فایل فعلی
-             * شما لازم است.
-             */
 
             data =
                 Function(
@@ -636,10 +894,6 @@ async function loadHospitals(){
 
         }
 
-
-        /*
-         * بررسی ساختار اصلی
-         */
 
         if(
             !data ||
@@ -654,16 +908,9 @@ async function loadHospitals(){
         }
 
 
-        /*
-         * ذخیره اطلاعات
-         */
+        hospitals =
+            data;
 
-        hospitals = data;
-
-
-        /*
-         * نمایش استان‌ها
-         */
 
         renderProvinces();
 
@@ -711,6 +958,7 @@ async function loadHospitals(){
     }
 
 }
+
 
 
 /* =========================================================
@@ -1072,25 +1320,38 @@ const initialHospitalStatuses = {
 };
 
 
+
 /* =========================================================
    تنظیمات
    ========================================================= */
 
-const STATUS_KEY = "hospital_status_v4";
-const DELETED_KEY = "deleted_hospitals_v1";
+const STATUS_KEY =
+    "hospital_status_v4";
 
-let currentProvince = null;
-let currentHospital = null;
+const DELETED_KEY =
+    "deleted_hospitals_v1";
+
+let currentProvince =
+    null;
+
+let currentHospital =
+    null;
+
 
 const statusNames = {
 
     ready:"آماده تماس",
+
     "no-answer":"تماس بی‌پاسخ",
+
     catalog:"ارسال کاتالوگ",
+
     "follow-up":"پیگیری",
+
     emed:"eMed"
 
 };
+
 
 
 /* =========================================================
@@ -1121,35 +1382,55 @@ function normalizeText(value){
 function toEnglishDigits(value){
 
     return String(value || "")
-        .replace(/[۰-۹]/g,d =>
-            String("۰۱۲۳۴۵۶۷۸۹".indexOf(d))
+        .replace(
+            /[۰-۹]/g,
+            d =>
+                String(
+                    "۰۱۲۳۴۵۶۷۸۹".indexOf(d)
+                )
         )
-        .replace(/[٠-٩]/g,d =>
-            String("٠١٢٣٤٥٦٧٨٩".indexOf(d))
+        .replace(
+            /[٠-٩]/g,
+            d =>
+                String(
+                    "٠١٢٣٤٥٦٧٨٩".indexOf(d)
+                )
         );
 
 }
 
 
-function hospitalStatusKey(province,id){
+function hospitalStatusKey(
+    province,
+    id
+){
 
-    return normalizeText(province) + "_" + id;
+    return normalizeText(
+        province
+    ) + "_" + id;
 
 }
 
 
-function getHospitalStatus(province,id){
+function getHospitalStatus(
+    province,
+    id
+){
 
-    const key = hospitalStatusKey(
-        province,
-        id
-    );
+    const key =
+        hospitalStatusKey(
+            province,
+            id
+        );
+
 
     return localStorage.getItem(
         STATUS_KEY + "_" + key
     )
     ||
-    initialHospitalStatuses[province]?.[id]
+    initialHospitalStatuses[
+        province
+    ]?.[id]
     ||
     "no-answer";
 
@@ -1164,7 +1445,10 @@ function setHospitalStatus(
 
     localStorage.setItem(
         STATUS_KEY + "_" +
-        hospitalStatusKey(province,id),
+        hospitalStatusKey(
+            province,
+            id
+        ),
         status
     );
 
@@ -1210,15 +1494,19 @@ function getVisibleHospitals(
     province
 ){
 
-    return (hospitals[province] || [])
-        .filter(h =>
+    return (
+        hospitals[province] || []
+    )
+    .filter(
+        h =>
             !isHospitalDeleted(
                 province,
                 h.id
             )
-        );
+    );
 
 }
+
 
 
 /* =========================================================
@@ -1232,15 +1520,18 @@ function renderProvinces(){
             "provinceGrid"
         );
 
+
     const input =
         document.getElementById(
             "provinceSearch"
         );
 
+
     const clear =
         document.getElementById(
             "provinceClear"
         );
+
 
     const search =
         normalizeText(
@@ -1409,12 +1700,15 @@ function renderProvinces(){
             `;
 
 
-            grid.appendChild(card);
+            grid.appendChild(
+                card
+            );
 
         }
     );
 
 }
+
 
 
 /* =========================================================
@@ -1450,7 +1744,8 @@ function openProvince(
 
     document.getElementById(
         "hospitalSearch"
-    ).value = "";
+    ).value =
+        "";
 
 
     renderStats(
@@ -1463,6 +1758,7 @@ function openProvince(
     );
 
 }
+
 
 
 /* =========================================================
@@ -1541,6 +1837,7 @@ function renderStats(
 }
 
 
+
 /* =========================================================
    جستجوی بیمارستان
    ========================================================= */
@@ -1588,6 +1885,7 @@ function hospitalMatches(
 }
 
 
+
 /* =========================================================
    شماره تلفن
    ========================================================= */
@@ -1605,6 +1903,7 @@ function phoneHref(
     );
 
 }
+
 
 
 /* =========================================================
@@ -1634,6 +1933,7 @@ function statusClass(
     return "status-no-answer";
 
 }
+
 
 
 /* =========================================================
@@ -1686,7 +1986,8 @@ function renderHospitals(
         );
 
 
-    grid.innerHTML = "";
+    grid.innerHTML =
+        "";
 
 
     if(!list.length){
@@ -1753,7 +2054,9 @@ function renderHospitals(
                 <div class="hospital-title-row">
 
                     <div class="hospital-name">
-                        ${escapeHTML(hospital.name)}
+                        ${escapeHTML(
+                            hospital.name
+                        )}
                     </div>
 
                     <button
@@ -1822,6 +2125,7 @@ function renderHospitals(
 }
 
 
+
 /* =========================================================
    باز کردن بیمارستان
    ========================================================= */
@@ -1873,88 +2177,9 @@ function openHospital(
         );
 
 
-    const statusButtons =
-        document.getElementById(
-            "statusButtons"
-        );
-
-
-    statusButtons.innerHTML =
-        "";
-
-
-    Object.entries(
-        statusNames
-    )
-    .forEach(
-        ([key,label]) => {
-
-            const btn =
-                document.createElement(
-                    "button"
-                );
-
-
-            btn.className =
-                "status-btn";
-
-
-            if(
-                currentStatus === key
-            ){
-
-                btn.classList.add(
-                    "active"
-                );
-
-            }
-
-
-            btn.textContent =
-                label;
-
-
-            btn.onclick = () => {
-
-                setHospitalStatus(
-                    province,
-                    id,
-                    key
-                );
-
-
-                closeModal();
-
-
-                renderStats(
-                    province
-                );
-
-
-                renderHospitals(
-                    province
-                );
-
-
-                renderProvinces();
-
-
-                showToast(
-                    "وضعیت به «" +
-                    label +
-                    "» تغییر کرد"
-                );
-
-            };
-
-
-            statusButtons.appendChild(
-                btn
-            );
-
-        }
-    );
-
+    /* =====================================================
+       شماره‌ها
+       ===================================================== */
 
     const phones =
         document.getElementById(
@@ -1998,6 +2223,100 @@ function openHospital(
     );
 
 
+
+    /* =====================================================
+       وضعیت‌ها
+       ===================================================== */
+
+    const statusButtons =
+        document.getElementById(
+            "statusButtons"
+        );
+
+
+    statusButtons.innerHTML =
+        "";
+
+
+    Object.entries(
+        statusNames
+    )
+    .forEach(
+        ([key,label]) => {
+
+            const btn =
+                document.createElement(
+                    "button"
+                );
+
+
+            btn.className =
+                "status-btn";
+
+
+            if(
+                currentStatus === key
+            ){
+
+                btn.classList.add(
+                    "active"
+                );
+
+            }
+
+
+            btn.textContent =
+                label;
+
+
+            btn.onclick =
+                () => {
+
+                    setHospitalStatus(
+                        province,
+                        id,
+                        key
+                    );
+
+
+                    closeModal();
+
+
+                    renderStats(
+                        province
+                    );
+
+
+                    renderHospitals(
+                        province
+                    );
+
+
+                    renderProvinces();
+
+
+                    showToast(
+                        "وضعیت به «" +
+                        label +
+                        "» تغییر کرد"
+                    );
+
+                };
+
+
+            statusButtons.appendChild(
+                btn
+            );
+
+        }
+    );
+
+
+
+    /* =====================================================
+       یادداشت
+       ===================================================== */
+
     const note =
         document.getElementById(
             "modalNote"
@@ -2034,6 +2353,7 @@ function openHospital(
     );
 
 }
+
 
 
 /* =========================================================
@@ -2115,6 +2435,7 @@ function deleteHospital(
 }
 
 
+
 /* =========================================================
    برگشت
    ========================================================= */
@@ -2150,6 +2471,7 @@ function showProvinces(){
     renderProvinces();
 
 }
+
 
 
 /* =========================================================
@@ -2203,6 +2525,7 @@ document.addEventListener(
 );
 
 
+
 /* =========================================================
    جستجو
    ========================================================= */
@@ -2233,6 +2556,7 @@ function clearHospitalSearch(){
     );
 
 }
+
 
 
 /* =========================================================
@@ -2440,6 +2764,7 @@ function exportTXT(){
 }
 
 
+
 /* =========================================================
    Toast
    ========================================================= */
@@ -2485,6 +2810,7 @@ function showToast(
         );
 
 }
+
 
 
 /* =========================================================
@@ -2539,6 +2865,7 @@ function escapeJS(
     );
 
 }
+
 
 
 /* =========================================================
