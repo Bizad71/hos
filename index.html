@@ -13,26 +13,50 @@
 }
 
 :root{
-    --bg:#050506;
-    --bg2:#0b0b0e;
-    --card:rgba(20,20,24,.72);
-    --card2:rgba(30,30,35,.82);
-    --red:#e50914;
-    --red2:#ff3340;
-    --red-soft:rgba(229,9,20,.14);
-    --text:#fff;
-    --muted:#aaa;
-    --green:#21d07a;
-    --orange:#ff9f43;
-    --blue:#4da6ff;
-    --border:rgba(255,255,255,.09);
+    --bg:#f4f8fc;
+    --bg2:#ffffff;
+
+    --card:#ffffff;
+    --card2:#f8fbff;
+
+    --blue:#1677ff;
+    --blue2:#3b8cff;
+    --blue-dark:#0d5dcc;
+    --blue-soft:#eaf3ff;
+
+    --text:#172033;
+    --muted:#718096;
+
+    --green:#16a66a;
+    --green-soft:#eafaf3;
+
+    --orange:#ed9418;
+    --orange-soft:#fff6e7;
+
+    --red:#e5484d;
+    --red-soft:#fff0f1;
+
+    --border:#e3ebf5;
+}
+
+html{
+    scroll-behavior:smooth;
 }
 
 body{
     font-family:Tahoma,Arial,sans-serif;
     background:
-        radial-gradient(circle at 50% -10%,rgba(229,9,20,.20),transparent 35%),
-        linear-gradient(180deg,#050506,#0a0a0d 60%,#050506);
+        radial-gradient(
+            circle at 50% -15%,
+            rgba(22,119,255,.13),
+            transparent 38%
+        ),
+        linear-gradient(
+            180deg,
+            #ffffff 0%,
+            #f6f9fd 48%,
+            #f1f6fb 100%
+        );
     color:var(--text);
     min-height:100vh;
 }
@@ -46,14 +70,25 @@ button{
     cursor:pointer;
 }
 
+
+/* =========================================================
+   HEADER
+========================================================= */
+
 .header{
     position:sticky;
     top:0;
     z-index:50;
-    background:rgba(5,5,6,.88);
+
+    background:rgba(255,255,255,.88);
     backdrop-filter:blur(18px);
-    border-bottom:1px solid var(--border);
+
+    border-bottom:1px solid rgba(220,230,242,.85);
+
     padding:15px;
+
+    box-shadow:
+        0 5px 25px rgba(31,71,120,.06);
 }
 
 .header-inner{
@@ -65,13 +100,18 @@ button{
     text-align:center;
     font-size:24px;
     font-weight:900;
-    color:#fff;
+    color:#172033;
     margin-bottom:14px;
 }
 
 .logo span{
-    color:var(--red2);
+    color:var(--blue);
 }
+
+
+/* =========================================================
+   TOP BUTTONS
+========================================================= */
 
 .top-actions{
     display:flex;
@@ -81,28 +121,66 @@ button{
 }
 
 .top-btn{
-    border:1px solid rgba(229,9,20,.35);
-    background:rgba(229,9,20,.10);
+    border:1px solid #0d6ff0;
+
+    background:
+        linear-gradient(
+            135deg,
+            #1680ff,
+            #1267e8
+        );
+
     color:#fff;
+
     border-radius:12px;
-    padding:10px 14px;
+
+    padding:10px 16px;
+
     font-size:13px;
     font-weight:bold;
+
+    box-shadow:
+        0 6px 16px rgba(22,119,255,.20);
+
+    transition:
+        transform .2s,
+        box-shadow .2s,
+        background .2s;
 }
 
 .top-btn:hover{
-    background:rgba(229,9,20,.22);
+    background:
+        linear-gradient(
+            135deg,
+            #278aff,
+            #0d61dd
+        );
+
+    transform:translateY(-1px);
+
+    box-shadow:
+        0 9px 22px rgba(22,119,255,.25);
 }
+
+.top-btn:active{
+    transform:translateY(0);
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
 
 .container{
     max-width:1100px;
     margin:auto;
-    padding:20px 14px 50px;
+    padding:24px 14px 55px;
 }
 
 .page-title{
-    font-size:22px;
+    font-size:23px;
     font-weight:900;
+    color:#172033;
     margin-bottom:16px;
 }
 
@@ -113,6 +191,11 @@ button{
     margin-bottom:18px;
 }
 
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
 .search-box{
     position:relative;
     margin-bottom:18px;
@@ -120,74 +203,171 @@ button{
 
 .search-box input{
     width:100%;
-    height:50px;
-    background:rgba(255,255,255,.055);
-    border:1px solid var(--border);
-    border-radius:14px;
+    height:52px;
+
+    background:#ffffff;
+
+    border:1px solid #dce7f3;
+
+    border-radius:15px;
+
     outline:none;
-    color:#fff;
-    padding:0 45px 0 42px;
+
+    color:#172033;
+
+    padding:
+        0 46px 0 44px;
+
     font-size:14px;
+
+    box-shadow:
+        0 5px 20px rgba(35,75,120,.055);
+
+    transition:
+        border-color .2s,
+        box-shadow .2s;
+}
+
+.search-box input::placeholder{
+    color:#9aa8b8;
 }
 
 .search-box input:focus{
-    border-color:rgba(229,9,20,.55);
-    box-shadow:0 0 0 3px rgba(229,9,20,.08);
+    border-color:#78afff;
+
+    box-shadow:
+        0 0 0 4px rgba(22,119,255,.09),
+        0 7px 24px rgba(35,75,120,.07);
 }
 
 .search-icon{
     position:absolute;
     right:15px;
-    top:14px;
-    color:#888;
+    top:15px;
+
+    color:#7d8da1;
+
+    font-size:17px;
+
+    pointer-events:none;
 }
 
 .clear-search{
     position:absolute;
     left:10px;
-    top:9px;
+    top:10px;
+
     width:32px;
     height:32px;
-    border:0;
+
+    border:1px solid #dce7f3;
+
     border-radius:10px;
-    background:rgba(255,255,255,.07);
-    color:#aaa;
+
+    background:#f5f8fc;
+
+    color:#7d8da1;
+
     display:none;
+
+    transition:.2s;
+}
+
+.clear-search:hover{
+    background:#eaf3ff;
+    color:var(--blue);
+    border-color:#b9d5fb;
 }
 
 .clear-search.show{
     display:block;
 }
 
+
+/* =========================================================
+   PROVINCE GRID
+========================================================= */
+
 .province-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
-    gap:12px;
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(190px,1fr)
+        );
+    gap:13px;
 }
 
 .province-card{
-    background:var(--card);
-    border:1px solid var(--border);
+    position:relative;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #fafdff
+        );
+
+    border:1px solid #e1eaf4;
+
     border-radius:18px;
+
     padding:18px;
+
     min-height:110px;
-    transition:.2s;
-    box-shadow:0 10px 30px rgba(0,0,0,.20);
+
+    transition:
+        transform .2s,
+        box-shadow .2s,
+        border-color .2s;
+
+    box-shadow:
+        0 8px 28px rgba(35,75,120,.075);
+
+    overflow:hidden;
+}
+
+.province-card::before{
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    right:0;
+    left:0;
+
+    height:3px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #126be8,
+            #5ba3ff
+        );
+
+    opacity:.9;
 }
 
 .province-card:hover{
-    transform:translateY(-2px);
-    border-color:rgba(229,9,20,.35);
+    transform:translateY(-3px);
+
+    border-color:#bcd7f8;
+
+    box-shadow:
+        0 13px 32px rgba(35,75,120,.12);
 }
 
 .province-name{
     font-size:17px;
     font-weight:900;
+
+    color:#172033;
+
     margin-bottom:10px;
 }
 
 .province-count{
-    color:#aaa;
+    color:#718096;
     font-size:12px;
 }
 
@@ -200,144 +380,319 @@ button{
 
 .mini-status{
     font-size:10px;
+
     padding:4px 7px;
+
     border-radius:7px;
-    background:rgba(255,255,255,.06);
-    color:#bbb;
+
+    background:#f2f6fa;
+
+    color:#6e7e91;
+
+    border:1px solid #e5edf5;
 }
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
 
 .back-btn{
-    border:1px solid var(--border);
-    background:rgba(255,255,255,.05);
-    color:#fff;
-    padding:9px 13px;
+    border:1px solid #cfe0f4;
+
+    background:#ffffff;
+
+    color:#176bd8;
+
+    padding:9px 14px;
+
     border-radius:11px;
+
     margin-bottom:15px;
-}
 
-.hospital-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-    gap:13px;
-}
+    font-size:12px;
+    font-weight:bold;
 
-.hospital-card{
-    position:relative;
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:18px;
-    padding:16px;
+    box-shadow:
+        0 4px 14px rgba(35,75,120,.06);
+
     transition:.2s;
 }
 
+.back-btn:hover{
+    background:#edf5ff;
+
+    border-color:#a9caf2;
+
+    transform:translateY(-1px);
+}
+
+
+/* =========================================================
+   HOSPITAL GRID
+========================================================= */
+
+.hospital-grid{
+    display:grid;
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(280px,1fr)
+        );
+
+    gap:14px;
+}
+
+
+/* =========================================================
+   HOSPITAL CARD
+========================================================= */
+
+.hospital-card{
+    position:relative;
+
+    background:#ffffff;
+
+    border:1px solid #e1eaf4;
+
+    border-radius:18px;
+
+    padding:17px;
+
+    transition:
+        transform .2s,
+        border-color .2s,
+        box-shadow .2s;
+
+    box-shadow:
+        0 8px 26px rgba(35,75,120,.065);
+}
+
 .hospital-card:hover{
-    border-color:rgba(229,9,20,.35);
+    transform:translateY(-2px);
+
+    border-color:#bcd7f8;
+
+    box-shadow:
+        0 13px 32px rgba(35,75,120,.11);
 }
 
 .hospital-title-row{
     display:flex;
     align-items:flex-start;
     justify-content:space-between;
+
     gap:10px;
+
     margin-bottom:7px;
 }
 
 .hospital-name{
     font-weight:900;
+
     line-height:1.7;
+
     font-size:15px;
+
+    color:#172033;
+
     flex:1;
 }
 
 .delete-btn{
     flex:0 0 auto;
+
     width:35px;
     height:35px;
+
     border-radius:10px;
-    border:1px solid rgba(229,9,20,.30);
-    background:rgba(229,9,20,.09);
-    color:#ff5963;
+
+    border:1px solid #f0c8ca;
+
+    background:#fff6f6;
+
+    color:#e5484d;
+
     font-size:16px;
+
+    transition:.2s;
 }
 
 .delete-btn:hover{
-    background:rgba(229,9,20,.25);
-    color:#fff;
+    background:#ffe9ea;
+
+    border-color:#eba7aa;
+
+    color:#d83238;
+
+    transform:scale(1.04);
 }
 
 .hospital-city{
-    color:#888;
+    color:#8090a3;
+
     font-size:12px;
+
     margin-bottom:12px;
 }
+
+
+/* =========================================================
+   STATUS BADGES
+========================================================= */
 
 .status-badge{
     display:inline-flex;
-    padding:6px 9px;
+
+    padding:6px 10px;
+
     border-radius:9px;
+
     font-size:11px;
+
     font-weight:bold;
+
     margin-bottom:12px;
+
+    border:1px solid transparent;
 }
 
 .status-ready{
-    color:#61efa6;
-    background:rgba(33,208,122,.11);
+    color:#128257;
+
+    background:
+        var(--green-soft);
+
+    border-color:#c9efdf;
 }
 
 .status-no-answer{
-    color:#ff777e;
-    background:rgba(229,9,20,.11);
+    color:#d13c42;
+
+    background:
+        var(--red-soft);
+
+    border-color:#f7d1d3;
 }
 
 .status-catalog{
-    color:#ffbd70;
-    background:rgba(255,159,67,.11);
+    color:#c27a08;
+
+    background:
+        var(--orange-soft);
+
+    border-color:#f5dfb8;
 }
 
 .status-follow-up{
-    color:#72b7ff;
-    background:rgba(77,166,255,.11);
+    color:#146dd4;
+
+    background:
+        var(--blue-soft);
+
+    border-color:#c9def9;
 }
+
+
+/* =========================================================
+   PHONE BUTTONS
+========================================================= */
 
 .card-phone{
     width:100%;
-    border:1px solid rgba(255,255,255,.08);
-    background:rgba(255,255,255,.045);
-    color:#fff;
-    border-radius:10px;
-    padding:9px;
+
+    border:1px solid #dce7f3;
+
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff,
+            #f8fbfe
+        );
+
+    color:#176bd8;
+
+    border-radius:11px;
+
+    padding:10px;
+
     margin-top:7px;
+
     text-align:center;
+
     font-size:13px;
+
+    font-weight:bold;
+
     display:block;
+
     text-decoration:none;
+
+    transition:
+        background .2s,
+        border-color .2s,
+        transform .2s,
+        box-shadow .2s;
 }
 
 .card-phone:hover{
-    border-color:rgba(229,9,20,.4);
-    background:rgba(229,9,20,.10);
+    border-color:#9fc5f3;
+
+    background:#edf6ff;
+
+    color:#075fca;
+
+    transform:translateY(-1px);
+
+    box-shadow:
+        0 5px 15px rgba(22,119,255,.08);
 }
+
+
+/* =========================================================
+   NOTE
+========================================================= */
 
 .note{
     margin-top:11px;
+
     padding:10px;
+
     border-radius:11px;
-    background:rgba(255,255,255,.04);
-    color:#bbb;
+
+    background:#f7f9fc;
+
+    border:1px solid #e7edf4;
+
+    color:#68788c;
+
     font-size:11px;
+
     line-height:1.8;
 }
 
+
+/* =========================================================
+   MODAL
+========================================================= */
+
 .modal{
     position:fixed;
+
     inset:0;
-    background:rgba(0,0,0,.75);
+
+    background:
+        rgba(22,42,70,.32);
+
     backdrop-filter:blur(8px);
+
     display:none;
+
     align-items:center;
     justify-content:center;
+
     padding:15px;
+
     z-index:100;
 }
 
@@ -347,72 +702,161 @@ button{
 
 .modal-box{
     width:min(520px,100%);
+
     max-height:90vh;
+
     overflow:auto;
-    background:#111114;
-    border:1px solid rgba(255,255,255,.10);
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #f9fcff
+        );
+
+    border:1px solid #dce7f3;
+
     border-radius:22px;
+
     padding:20px;
-    box-shadow:0 30px 80px rgba(0,0,0,.55);
+
+    box-shadow:
+        0 30px 80px rgba(31,65,105,.22);
 }
 
 .modal-header{
     display:flex;
+
     align-items:flex-start;
+
     justify-content:space-between;
+
     gap:10px;
+
     margin-bottom:16px;
 }
 
 .modal-title{
     font-size:18px;
+
     font-weight:900;
+
     line-height:1.7;
+
+    color:#172033;
 }
 
 .modal-city{
-    color:#888;
+    color:#7c8da1;
+
     font-size:12px;
+
     margin-top:4px;
 }
 
 .close-btn{
     width:36px;
     height:36px;
-    border:0;
+
+    border:1px solid #dce7f3;
+
     border-radius:10px;
-    background:rgba(255,255,255,.06);
-    color:#aaa;
+
+    background:#f5f8fc;
+
+    color:#718096;
+
     font-size:18px;
+
+    transition:.2s;
 }
 
+.close-btn:hover{
+    background:#eaf3ff;
+
+    color:#176bd8;
+
+    border-color:#bdd6f4;
+}
+
+
+/* =========================================================
+   STATUS BUTTONS
+========================================================= */
+
 .status-title{
-    color:#999;
+    color:#6e7e91;
+
     font-size:12px;
+
     margin-bottom:9px;
+
+    font-weight:bold;
 }
 
 .status-buttons{
     display:grid;
+
     grid-template-columns:1fr 1fr;
+
     gap:8px;
+
     margin-bottom:18px;
 }
 
 .status-btn{
-    border:1px solid var(--border);
-    background:rgba(255,255,255,.045);
-    color:#fff;
+    border:1px solid #dce7f3;
+
+    background:#f9fbfd;
+
+    color:#526276;
+
     padding:12px 8px;
+
     border-radius:12px;
+
     font-size:12px;
+
     font-weight:bold;
+
+    transition:
+        background .2s,
+        color .2s,
+        border-color .2s,
+        transform .2s;
+}
+
+.status-btn:hover{
+    background:#edf5ff;
+
+    color:#176bd8;
+
+    border-color:#b9d5f5;
+
+    transform:translateY(-1px);
 }
 
 .status-btn.active{
-    border-color:var(--red);
-    background:var(--red-soft);
+    border-color:#4d96f5;
+
+    background:
+        linear-gradient(
+            135deg,
+            #eaf4ff,
+            #dceeff
+        );
+
+    color:#0965d5;
+
+    box-shadow:
+        inset 0 0 0 1px rgba(22,119,255,.05),
+        0 4px 12px rgba(22,119,255,.08);
 }
+
+
+/* =========================================================
+   MODAL PHONES
+========================================================= */
 
 .modal-phones{
     display:grid;
@@ -421,81 +865,179 @@ button{
 
 .modal-phone{
     text-decoration:none;
-    color:#fff;
-    background:rgba(255,255,255,.055);
-    border:1px solid var(--border);
+
+    color:#176bd8;
+
+    background:#f9fbfd;
+
+    border:1px solid #dce7f3;
+
     border-radius:12px;
+
     padding:13px;
+
     text-align:center;
+
     direction:ltr;
+
+    font-weight:bold;
+
+    transition:.2s;
 }
 
 .modal-phone:hover{
-    background:rgba(229,9,20,.12);
-    border-color:rgba(229,9,20,.4);
+    background:#edf6ff;
+
+    border-color:#9fc5f3;
+
+    color:#075fca;
+
+    transform:translateY(-1px);
 }
 
 .modal-note{
     margin-top:15px;
-    color:#bbb;
-    background:rgba(255,255,255,.04);
+
+    color:#66778b;
+
+    background:#f7f9fc;
+
+    border:1px solid #e5edf5;
+
     padding:12px;
+
     border-radius:12px;
+
     font-size:12px;
+
     line-height:1.8;
 }
 
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
 .empty{
     text-align:center;
+
     padding:50px 20px;
-    color:#777;
+
+    color:#8291a3;
+
+    background:#ffffff;
+
+    border:1px dashed #d9e5f1;
+
+    border-radius:16px;
 }
+
+
+/* =========================================================
+   STATS
+========================================================= */
 
 .stats{
     display:flex;
+
     gap:7px;
+
     flex-wrap:wrap;
+
     margin-bottom:17px;
 }
 
 .stat{
-    background:rgba(255,255,255,.045);
-    border:1px solid var(--border);
+    background:#ffffff;
+
+    border:1px solid #dfe9f3;
+
     border-radius:10px;
+
     padding:7px 10px;
-    color:#aaa;
+
+    color:#718096;
+
     font-size:11px;
+
+    box-shadow:
+        0 3px 10px rgba(35,75,120,.04);
 }
 
 .stat strong{
-    color:#fff;
+    color:#176bd8;
 }
+
+
+/* =========================================================
+   TOAST
+========================================================= */
 
 .toast{
     position:fixed;
+
     bottom:20px;
     left:50%;
-    transform:translateX(-50%) translateY(20px);
-    background:#17171b;
-    border:1px solid rgba(255,255,255,.10);
-    color:#fff;
+
+    transform:
+        translateX(-50%)
+        translateY(20px);
+
+    background:#ffffff;
+
+    border:1px solid #dce7f3;
+
+    color:#26364c;
+
     padding:12px 17px;
+
     border-radius:12px;
+
     font-size:12px;
+
+    font-weight:bold;
+
     opacity:0;
+
     pointer-events:none;
+
     transition:.25s;
+
     z-index:200;
+
+    box-shadow:
+        0 12px 30px rgba(31,65,105,.16);
 }
 
 .toast.show{
     opacity:1;
-    transform:translateX(-50%) translateY(0);
+
+    transform:
+        translateX(-50%)
+        translateY(0);
 }
 
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
 @media(max-width:600px){
+
+    .header{
+        padding:13px;
+    }
+
+    .container{
+        padding:
+            20px
+            12px
+            45px;
+    }
+
     .province-grid{
         grid-template-columns:1fr 1fr;
+        gap:10px;
     }
 
     .hospital-grid{
@@ -511,8 +1053,25 @@ button{
         font-size:14px;
     }
 
+    .province-count{
+        font-size:11px;
+    }
+
     .logo{
         font-size:21px;
+    }
+
+    .page-title{
+        font-size:21px;
+    }
+
+    .top-btn{
+        width:100%;
+        max-width:300px;
+    }
+
+    .search-box input{
+        height:50px;
     }
 }
 </style>
