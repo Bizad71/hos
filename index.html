@@ -1,16 +1,12 @@
 
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>مدیریت بیمارستان‌ها</title>
 
 <style>
-
 *{
     box-sizing:border-box;
     margin:0;
@@ -18,2534 +14,1451 @@
 }
 
 :root{
-    --bg:#f5f7fb;
-    --card:#ffffff;
-    --primary:#2563eb;
-    --primary-dark:#1d4ed8;
-    --text:#172033;
-    --muted:#697386;
-    --border:#e5e7eb;
-
-    --ready:#16a34a;
-    --no-answer:#dc2626;
-    --catalog:#2563eb;
-    --follow:#d97706;
+    --bg:#050506;
+    --bg2:#0b0b0e;
+    --card:rgba(20,20,24,.72);
+    --card2:rgba(30,30,35,.82);
+    --red:#e50914;
+    --red2:#ff3340;
+    --red-soft:rgba(229,9,20,.14);
+    --text:#fff;
+    --muted:#aaa;
+    --green:#21d07a;
+    --orange:#ff9f43;
+    --blue:#4da6ff;
+    --border:rgba(255,255,255,.09);
 }
 
 body{
     font-family:Tahoma,Arial,sans-serif;
-    background:var(--bg);
+    background:
+        radial-gradient(circle at 50% -10%,rgba(229,9,20,.20),transparent 35%),
+        linear-gradient(180deg,#050506,#0a0a0d 60%,#050506);
     color:var(--text);
     min-height:100vh;
 }
 
 button,
-input,
-a{
+input{
     font-family:inherit;
 }
 
-header{
-    background:var(--card);
-    border-bottom:1px solid var(--border);
+button{
+    cursor:pointer;
+}
 
+.header{
     position:sticky;
     top:0;
-    z-index:100;
+    z-index:50;
+    background:rgba(5,5,6,.88);
+    backdrop-filter:blur(18px);
+    border-bottom:1px solid var(--border);
+    padding:15px;
 }
 
 .header-inner{
     max-width:1100px;
     margin:auto;
-
-    min-height:70px;
-    padding:12px 18px;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    gap:15px;
 }
 
 .logo{
-    font-size:22px;
+    text-align:center;
+    font-size:24px;
+    font-weight:900;
+    color:#fff;
+    margin-bottom:14px;
+}
+
+.logo span{
+    color:var(--red2);
+}
+
+.top-actions{
+    display:flex;
+    gap:8px;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+
+.top-btn{
+    border:1px solid rgba(229,9,20,.35);
+    background:rgba(229,9,20,.10);
+    color:#fff;
+    border-radius:12px;
+    padding:10px 14px;
+    font-size:13px;
     font-weight:bold;
-    color:var(--primary);
 }
 
-.header-title{
-    font-size:15px;
-    color:var(--muted);
+.top-btn:hover{
+    background:rgba(229,9,20,.22);
 }
 
-main{
+.container{
     max-width:1100px;
     margin:auto;
-    padding:25px 18px 50px;
+    padding:20px 14px 50px;
 }
 
 .page-title{
-    margin-bottom:7px;
-    font-size:25px;
-    font-weight:bold;
+    font-size:22px;
+    font-weight:900;
+    margin-bottom:16px;
 }
 
-.page-description{
+.page-subtitle{
     color:var(--muted);
-    font-size:14px;
-    margin-bottom:25px;
+    font-size:13px;
+    margin-top:-8px;
+    margin-bottom:18px;
 }
-
-
-/* =========================
-   SEARCH
-========================= */
 
 .search-box{
     position:relative;
-    margin-bottom:20px;
+    margin-bottom:18px;
 }
 
-.search-input{
+.search-box input{
     width:100%;
-
+    height:50px;
+    background:rgba(255,255,255,.055);
     border:1px solid var(--border);
-    background:#fff;
-
     border-radius:14px;
-
-    padding:14px 48px 14px 45px;
-
-    font-size:14px;
-
-    color:var(--text);
-
     outline:none;
-
-    transition:.2s;
+    color:#fff;
+    padding:0 45px 0 42px;
+    font-size:14px;
 }
 
-.search-input:focus{
-    border-color:var(--primary);
-
-    box-shadow:
-        0 0 0 3px rgba(37,99,235,.10);
-}
-
-.search-input::placeholder{
-    color:#9ca3af;
+.search-box input:focus{
+    border-color:rgba(229,9,20,.55);
+    box-shadow:0 0 0 3px rgba(229,9,20,.08);
 }
 
 .search-icon{
     position:absolute;
-
-    right:16px;
-    top:50%;
-
-    transform:translateY(-50%);
-
-    font-size:18px;
-
-    pointer-events:none;
+    right:15px;
+    top:14px;
+    color:#888;
 }
 
 .clear-search{
     position:absolute;
-
     left:10px;
-    top:50%;
-
-    transform:translateY(-50%);
-
-    width:30px;
-    height:30px;
-
-    border:none;
-    border-radius:50%;
-
-    background:#f1f5f9;
-
-    color:var(--muted);
-
-    cursor:pointer;
-
+    top:9px;
+    width:32px;
+    height:32px;
+    border:0;
+    border-radius:10px;
+    background:rgba(255,255,255,.07);
+    color:#aaa;
     display:none;
-
-    align-items:center;
-    justify-content:center;
-
-    font-size:19px;
 }
 
 .clear-search.show{
-    display:flex;
+    display:block;
 }
-
-.search-result-count{
-    margin-top:-8px;
-    margin-bottom:14px;
-
-    font-size:12px;
-    color:var(--muted);
-}
-
-.search-hint{
-    margin-top:-8px;
-    margin-bottom:17px;
-
-    font-size:12px;
-    color:var(--muted);
-}
-
-
-/* =========================
-   PROVINCES
-========================= */
 
 .province-grid{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:14px;
+    grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
+    gap:12px;
 }
 
 .province-card{
-    border:1px solid var(--border);
     background:var(--card);
-
-    border-radius:16px;
-    padding:20px;
-
-    cursor:pointer;
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:18px;
+    min-height:110px;
     transition:.2s;
-
-    min-height:90px;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    gap:10px;
+    box-shadow:0 10px 30px rgba(0,0,0,.20);
 }
 
 .province-card:hover{
-    border-color:var(--primary);
-
     transform:translateY(-2px);
-
-    box-shadow:
-        0 8px 25px rgba(0,0,0,.06);
+    border-color:rgba(229,9,20,.35);
 }
 
 .province-name{
     font-size:17px;
-    font-weight:bold;
+    font-weight:900;
+    margin-bottom:10px;
 }
 
 .province-count{
+    color:#aaa;
     font-size:12px;
-    color:var(--muted);
-    margin-top:7px;
 }
 
-.arrow{
-    width:34px;
-    height:34px;
-
-    border-radius:50%;
-
-    background:#eff6ff;
-    color:var(--primary);
-
+.province-status{
     display:flex;
-    align-items:center;
-    justify-content:center;
-
-    font-size:18px;
+    gap:5px;
+    margin-top:12px;
+    flex-wrap:wrap;
 }
 
-
-/* =========================
-   BACK
-========================= */
-
-.back-button{
-    border:none;
-    background:transparent;
-
-    color:var(--primary);
-
-    font-size:15px;
-
-    cursor:pointer;
-
-    margin-bottom:20px;
-
-    padding:5px 0;
+.mini-status{
+    font-size:10px;
+    padding:4px 7px;
+    border-radius:7px;
+    background:rgba(255,255,255,.06);
+    color:#bbb;
 }
 
+.back-btn{
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.05);
+    color:#fff;
+    padding:9px 13px;
+    border-radius:11px;
+    margin-bottom:15px;
+}
 
-/* =========================
-   HOSPITAL
-========================= */
-
-.hospital-list{
-    display:flex;
-    flex-direction:column;
-    gap:12px;
+.hospital-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+    gap:13px;
 }
 
 .hospital-card{
+    position:relative;
     background:var(--card);
-
     border:1px solid var(--border);
-
-    border-radius:16px;
-
-    padding:18px;
-
-    cursor:pointer;
-
+    border-radius:18px;
+    padding:16px;
     transition:.2s;
 }
 
 .hospital-card:hover{
-    border-color:var(--primary);
-
-    box-shadow:
-        0 7px 22px rgba(0,0,0,.06);
+    border-color:rgba(229,9,20,.35);
 }
 
-.hospital-top{
+.hospital-title-row{
     display:flex;
-
-    align-items:center;
-
+    align-items:flex-start;
     justify-content:space-between;
-
-    gap:15px;
+    gap:10px;
+    margin-bottom:7px;
 }
 
 .hospital-name{
+    font-weight:900;
+    line-height:1.7;
+    font-size:15px;
+    flex:1;
+}
+
+.delete-btn{
+    flex:0 0 auto;
+    width:35px;
+    height:35px;
+    border-radius:10px;
+    border:1px solid rgba(229,9,20,.30);
+    background:rgba(229,9,20,.09);
+    color:#ff5963;
     font-size:16px;
+}
 
-    font-weight:bold;
-
-    line-height:1.8;
+.delete-btn:hover{
+    background:rgba(229,9,20,.25);
+    color:#fff;
 }
 
 .hospital-city{
-    color:var(--muted);
-
-    font-size:13px;
-
-    margin-top:5px;
+    color:#888;
+    font-size:12px;
+    margin-bottom:12px;
 }
 
-
-/* =========================
-   STATUS
-========================= */
-
-.status{
-    white-space:nowrap;
-
-    padding:7px 11px;
-
-    border-radius:30px;
-
-    font-size:12px;
-
+.status-badge{
+    display:inline-flex;
+    padding:6px 9px;
+    border-radius:9px;
+    font-size:11px;
     font-weight:bold;
+    margin-bottom:12px;
 }
 
 .status-ready{
-    background:#dcfce7;
-    color:var(--ready);
+    color:#61efa6;
+    background:rgba(33,208,122,.11);
 }
 
 .status-no-answer{
-    background:#fee2e2;
-    color:var(--no-answer);
+    color:#ff777e;
+    background:rgba(229,9,20,.11);
 }
 
 .status-catalog{
-    background:#dbeafe;
-    color:var(--catalog);
+    color:#ffbd70;
+    background:rgba(255,159,67,.11);
 }
 
-.status-follow{
-    background:#fef3c7;
-    color:var(--follow);
+.status-follow-up{
+    color:#72b7ff;
+    background:rgba(77,166,255,.11);
 }
 
+.card-phone{
+    width:100%;
+    border:1px solid rgba(255,255,255,.08);
+    background:rgba(255,255,255,.045);
+    color:#fff;
+    border-radius:10px;
+    padding:9px;
+    margin-top:7px;
+    text-align:center;
+    font-size:13px;
+    display:block;
+    text-decoration:none;
+}
 
-/* =========================
-   MODAL
-========================= */
+.card-phone:hover{
+    border-color:rgba(229,9,20,.4);
+    background:rgba(229,9,20,.10);
+}
+
+.note{
+    margin-top:11px;
+    padding:10px;
+    border-radius:11px;
+    background:rgba(255,255,255,.04);
+    color:#bbb;
+    font-size:11px;
+    line-height:1.8;
+}
 
 .modal{
     position:fixed;
-
     inset:0;
-
-    background:rgba(15,23,42,.55);
-
+    background:rgba(0,0,0,.75);
+    backdrop-filter:blur(8px);
     display:none;
-
     align-items:center;
     justify-content:center;
-
-    padding:18px;
-
-    z-index:1000;
+    padding:15px;
+    z-index:100;
 }
 
-.modal.active{
+.modal.show{
     display:flex;
 }
 
 .modal-box{
-    width:100%;
-    max-width:550px;
-
+    width:min(520px,100%);
     max-height:90vh;
-
-    overflow-y:auto;
-
-    background:white;
-
+    overflow:auto;
+    background:#111114;
+    border:1px solid rgba(255,255,255,.10);
     border-radius:22px;
-
-    padding:23px;
-
-    box-shadow:
-        0 25px 70px rgba(0,0,0,.2);
+    padding:20px;
+    box-shadow:0 30px 80px rgba(0,0,0,.55);
 }
 
 .modal-header{
     display:flex;
-
     align-items:flex-start;
-
     justify-content:space-between;
-
-    gap:15px;
-
-    margin-bottom:20px;
+    gap:10px;
+    margin-bottom:16px;
 }
 
 .modal-title{
-    font-size:20px;
-
-    font-weight:bold;
-
-    line-height:1.8;
+    font-size:18px;
+    font-weight:900;
+    line-height:1.7;
 }
 
-.close-button{
+.modal-city{
+    color:#888;
+    font-size:12px;
+    margin-top:4px;
+}
+
+.close-btn{
     width:36px;
     height:36px;
-
-    border:none;
-
-    border-radius:50%;
-
-    background:#f1f5f9;
-
-    cursor:pointer;
-
-    font-size:20px;
-
-    flex-shrink:0;
+    border:0;
+    border-radius:10px;
+    background:rgba(255,255,255,.06);
+    color:#aaa;
+    font-size:18px;
 }
 
-.section-title{
-    font-size:14px;
-
-    font-weight:bold;
-
-    margin-bottom:10px;
-}
-
-.phone-list{
-    display:flex;
-
-    flex-direction:column;
-
-    gap:9px;
-
-    margin-bottom:25px;
-}
-
-.phone-button{
-    text-decoration:none;
-
-    background:#eff6ff;
-
-    border:1px solid #dbeafe;
-
-    color:var(--primary);
-
-    border-radius:12px;
-
-    padding:13px 15px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    direction:ltr;
-
-    font-size:15px;
-
-    font-weight:bold;
-
-    transition:.2s;
-}
-
-.phone-button:hover{
-    background:#dbeafe;
-}
-
-.phone-icon{
-    direction:rtl;
-}
-
-
-/* =========================
-   INFO
-========================= */
-
-.modal-info{
-    background:#f8fafc;
-
-    border:1px solid var(--border);
-
-    border-radius:13px;
-
-    padding:12px;
-
-    margin-bottom:20px;
-
+.status-title{
+    color:#999;
     font-size:12px;
-
-    color:var(--muted);
-
-    line-height:2;
+    margin-bottom:9px;
 }
-
-.modal-info:empty{
-    display:none;
-}
-
-
-/* =========================
-   STATUS BUTTONS
-========================= */
 
 .status-buttons{
     display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-bottom:18px;
+}
 
-    grid-template-columns:repeat(4,1fr);
+.status-btn{
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.045);
+    color:#fff;
+    padding:12px 8px;
+    border-radius:12px;
+    font-size:12px;
+    font-weight:bold;
+}
 
+.status-btn.active{
+    border-color:var(--red);
+    background:var(--red-soft);
+}
+
+.modal-phones{
+    display:grid;
     gap:8px;
 }
 
-.status-button{
-    border:2px solid transparent;
-
+.modal-phone{
+    text-decoration:none;
+    color:#fff;
+    background:rgba(255,255,255,.055);
+    border:1px solid var(--border);
     border-radius:12px;
-
-    padding:13px 7px;
-
-    cursor:pointer;
-
-    font-weight:bold;
-
-    font-size:11px;
-
-    transition:.2s;
+    padding:13px;
+    text-align:center;
+    direction:ltr;
 }
 
-.status-button.ready{
-    background:#dcfce7;
-    color:var(--ready);
+.modal-phone:hover{
+    background:rgba(229,9,20,.12);
+    border-color:rgba(229,9,20,.4);
 }
 
-.status-button.no-answer{
-    background:#fee2e2;
-    color:var(--no-answer);
+.modal-note{
+    margin-top:15px;
+    color:#bbb;
+    background:rgba(255,255,255,.04);
+    padding:12px;
+    border-radius:12px;
+    font-size:12px;
+    line-height:1.8;
 }
-
-.status-button.catalog{
-    background:#dbeafe;
-    color:var(--catalog);
-}
-
-.status-button.follow{
-    background:#fef3c7;
-    color:var(--follow);
-}
-
-.status-button.selected{
-    border-color:currentColor;
-
-    transform:scale(.97);
-}
-
-
-/* =========================
-   EMPTY
-========================= */
 
 .empty{
-    background:white;
-
-    border:1px solid var(--border);
-
-    border-radius:16px;
-
-    padding:30px;
-
     text-align:center;
-
-    color:var(--muted);
-
-    line-height:2;
+    padding:50px 20px;
+    color:#777;
 }
 
+.stats{
+    display:flex;
+    gap:7px;
+    flex-wrap:wrap;
+    margin-bottom:17px;
+}
 
-/* =========================
-   MOBILE
-========================= */
+.stat{
+    background:rgba(255,255,255,.045);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:7px 10px;
+    color:#aaa;
+    font-size:11px;
+}
 
-@media(max-width:700px){
+.stat strong{
+    color:#fff;
+}
 
-    .header-inner{
-        min-height:60px;
-    }
+.toast{
+    position:fixed;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%) translateY(20px);
+    background:#17171b;
+    border:1px solid rgba(255,255,255,.10);
+    color:#fff;
+    padding:12px 17px;
+    border-radius:12px;
+    font-size:12px;
+    opacity:0;
+    pointer-events:none;
+    transition:.25s;
+    z-index:200;
+}
 
-    .header-title{
-        display:none;
-    }
+.toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+}
 
-    main{
-        padding:20px 14px 40px;
-    }
-
-    .page-title{
-        font-size:22px;
-    }
-
+@media(max-width:600px){
     .province-grid{
-        grid-template-columns:repeat(2,1fr);
-        gap:10px;
-    }
-
-    .province-card{
-        padding:15px;
-        min-height:80px;
-        border-radius:14px;
-    }
-
-    .province-name{
-        font-size:15px;
-    }
-
-    .arrow{
-        width:29px;
-        height:29px;
-        font-size:15px;
-    }
-
-    .hospital-card{
-        padding:15px;
-    }
-
-    .hospital-top{
-        align-items:flex-start;
-    }
-
-    .hospital-name{
-        font-size:14px;
-    }
-
-    .status{
-        font-size:10px;
-        padding:6px 8px;
-    }
-
-    .status-buttons{
         grid-template-columns:1fr 1fr;
     }
 
-    .status-button{
-        padding:14px 5px;
-    }
-
-    .modal{
-        align-items:flex-end;
-        padding:0;
-    }
-
-    .modal-box{
-        max-width:none;
-
-        max-height:92vh;
-
-        border-radius:22px 22px 0 0;
-
-        padding:20px;
-    }
-
-}
-
-@media(max-width:380px){
-
-    .province-grid{
+    .hospital-grid{
         grid-template-columns:1fr;
     }
 
-    .status-buttons{
-        grid-template-columns:1fr;
+    .province-card{
+        min-height:95px;
+        padding:14px;
     }
 
+    .province-name{
+        font-size:14px;
+    }
+
+    .logo{
+        font-size:21px;
+    }
 }
-
-
-/* =========================
-   HOSPITAL NUMBER
-========================= */
-
-.hospital-number{
-    color:#94a3b8;
-    font-size:11px;
-    margin-bottom:3px;
-}
-
 </style>
-
 </head>
-
 
 <body>
 
+<header class="header">
+    <div class="header-inner">
+        <div class="logo">
+            مدیریت <span>بیمارستان‌ها</span>
+        </div>
 
-<header>
-
-<div class="header-inner">
-
-    <div class="logo">
-        مدیریت مراکز
+        <div class="top-actions">
+            <button class="top-btn" onclick="exportTXT()">
+                💾 خروجی اطلاعات
+            </button>
+        </div>
     </div>
-
-    <div class="header-title">
-        استان‌ها و بیمارستان‌ها
-    </div>
-
-</div>
-
 </header>
 
+<main class="container">
 
-<main>
+    <div id="provincePage">
+        <div class="page-title">استان‌ها</div>
+        <div class="page-subtitle">
+            استان موردنظر را انتخاب کنید
+        </div>
+
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input
+                id="provinceSearch"
+                type="text"
+                placeholder="جستجوی استان..."
+                oninput="renderProvinces()"
+            >
+            <button
+                id="provinceClear"
+                class="clear-search"
+                onclick="clearProvinceSearch()"
+            >×</button>
+        </div>
+
+        <div id="provinceGrid" class="province-grid"></div>
+    </div>
 
 
-<!-- =========================
-     PROVINCES PAGE
-========================= -->
+    <div id="hospitalPage" style="display:none">
 
-<section id="provincesPage">
-
-    <h1 class="page-title">
-        استان‌ها
-    </h1>
-
-    <p class="page-description">
-        استان مورد نظر را انتخاب کنید تا لیست بیمارستان‌ها نمایش داده شود.
-    </p>
-
-
-    <div class="search-box">
-
-        <span class="search-icon">🔎</span>
-
-        <input
-            id="provinceSearch"
-            class="search-input"
-            type="search"
-            placeholder="جستجوی استان..."
-            autocomplete="off"
-        >
-
-        <button
-            id="clearProvinceSearch"
-            class="clear-search"
-            type="button">
-
-            ×
-
+        <button class="back-btn" onclick="showProvinces()">
+            ← بازگشت به استان‌ها
         </button>
 
-    </div>
+        <div class="page-title" id="hospitalPageTitle"></div>
 
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input
+                id="hospitalSearch"
+                type="text"
+                placeholder="جستجوی بیمارستان، شهر، وضعیت یا یادداشت..."
+                oninput="renderHospitals(currentProvince)"
+            >
+            <button
+                id="hospitalClear"
+                class="clear-search"
+                onclick="clearHospitalSearch()"
+            >×</button>
+        </div>
 
-    <div
-        id="provinceSearchCount"
-        class="search-result-count">
-    </div>
+        <div id="hospitalStats" class="stats"></div>
 
-
-    <div
-        class="province-grid"
-        id="provinceGrid">
-    </div>
-
-</section>
-
-
-
-<!-- =========================
-     HOSPITAL PAGE
-========================= -->
-
-<section
-    id="hospitalsPage"
-    style="display:none;">
-
-    <button
-        class="back-button"
-        onclick="showProvinces()">
-
-        ← بازگشت به استان‌ها
-
-    </button>
-
-
-    <h1
-        class="page-title"
-        id="provinceTitle">
-    </h1>
-
-
-    <p
-        class="page-description"
-        id="provinceDescription">
-    </p>
-
-
-    <div class="search-box">
-
-        <span class="search-icon">
-            🔎
-        </span>
-
-        <input
-            id="hospitalSearch"
-            class="search-input"
-            type="search"
-            placeholder="نام بیمارستان، شهر یا وضعیت تماس..."
-            autocomplete="off"
-        >
-
-        <button
-            id="clearHospitalSearch"
-            class="clear-search"
-            type="button">
-
-            ×
-
-        </button>
+        <div id="hospitalGrid" class="hospital-grid"></div>
 
     </div>
-
-
-    <div class="search-hint">
-
-        مثال:
-        نمازی،
-        فسا،
-        کاشان،
-        نجف آباد،
-        ولیعصر،
-        آماده تماس،
-        تماس بی‌پاسخ،
-        ارسال کاتالوگ،
-        پیگیری
-
-    </div>
-
-
-    <div
-        id="hospitalSearchCount"
-        class="search-result-count">
-    </div>
-
-
-    <div
-        class="hospital-list"
-        id="hospitalList">
-    </div>
-
-</section>
 
 </main>
 
 
-
-<!-- =========================
-     MODAL
-========================= -->
-
-<div
-    class="modal"
-    id="hospitalModal">
-
+<div id="modal" class="modal" onclick="closeModalByBackdrop(event)">
     <div class="modal-box">
 
-
         <div class="modal-header">
-
             <div>
-
-                <div
-                    class="modal-title"
-                    id="modalHospitalName">
-                </div>
-
-                <div
-                    class="hospital-city"
-                    id="modalHospitalCity">
-                </div>
-
+                <div id="modalTitle" class="modal-title"></div>
+                <div id="modalCity" class="modal-city"></div>
             </div>
 
-
-            <button
-                class="close-button"
-                onclick="closeModal()">
-
-                ×
-
-            </button>
-
+            <button class="close-btn" onclick="closeModal()">×</button>
         </div>
 
-
-        <div class="section-title">
-            شماره تماس
+        <div class="status-title">
+            وضعیت بیمارستان
         </div>
 
+        <div id="statusButtons" class="status-buttons"></div>
 
-        <div
-            class="phone-list"
-            id="modalPhones">
+        <div class="status-title">
+            شماره تلفن‌ها
         </div>
 
+        <div id="modalPhones" class="modal-phones"></div>
 
-        <div
-            class="modal-info"
-            id="modalInfo">
-        </div>
-
-
-        <div class="section-title">
-            وضعیت تماس
-        </div>
-
-
-        <div class="status-buttons">
-
-            <button
-                class="status-button ready"
-                id="statusReady"
-                onclick="setHospitalStatus('ready')">
-
-                آماده تماس
-
-            </button>
-
-
-            <button
-                class="status-button no-answer"
-                id="statusNoAnswer"
-                onclick="setHospitalStatus('no-answer')">
-
-                تماس بی‌پاسخ
-
-            </button>
-
-
-            <button
-                class="status-button catalog"
-                id="statusCatalog"
-                onclick="setHospitalStatus('catalog')">
-
-                ارسال کاتالوگ
-
-            </button>
-
-
-            <button
-                class="status-button follow"
-                id="statusFollow"
-                onclick="setHospitalStatus('follow')">
-
-                پیگیری
-
-            </button>
-
-        </div>
+        <div id="modalNote" class="modal-note" style="display:none"></div>
 
     </div>
-
 </div>
 
+
+<div id="toast" class="toast"></div>
 
 
 <script>
 
-
 /* =========================================================
-   PROVINCES
+   استان‌ها
 ========================================================= */
 
 const provinces = [
-
-    "فارس",
+    "آذربایجان شرقی",
+    "آذربایجان غربی",
+    "اردبیل",
     "اصفهان",
     "البرز",
+    "ایلام",
+    "بوشهر",
+    "تهران",
+    "چهارمحال و بختیاری",
+    "خراسان جنوبی",
+    "خراسان رضوی",
+    "خراسان شمالی",
+    "خوزستان",
+    "زنجان",
+    "سمنان",
+    "سیستان و بلوچستان",
+    "فارس",
     "قزوین",
-    "آذربایجان غربی",
+    "قم",
+    "کردستان",
+    "کرمان",
+    "کرمانشاه",
+    "کهگیلویه و بویراحمد",
+    "گلستان",
+    "گیلان",
+    "لرستان",
     "مازندران",
     "مرکزی",
-    "خراسان رضوی",
-    "قم",
-    "چهارمحال بختیاری",
-    "خراسان جنوبی",
-    "کردستان",
-    "لرستان",
-    "زنجان",
-    "کرمانشاه",
-    "آذربایجان شرقی",
-    "گیلان",
-    "تهران",
     "هرمزگان",
-    "اردبیل",
-    "بوشهر",
-    "گلستان",
     "همدان",
-    "سیستان و بلوچستان",
-    "کهگیلویه و بویراحمد",
-    "کرمان",
-    "سمنان",
-    "یزد",
-    "خراسان شمالی",
-    "ایلام",
-    "خوزستان"
-
+    "یزد"
 ];
 
 
 /* =========================================================
-   HOSPITALS
+   اطلاعات بیمارستان‌ها
 ========================================================= */
 
 const hospitals = {
 
-
-/* =========================================================
-   FARS
-========================================================= */
-
 "فارس":[
-
-{ id:1, name:"بیمارستان تخصصی و فوق تخصصی دکتر فرهمندفر", city:"شیراز", phones:["07136264748"] },
-
-{ id:2, name:"بیمارستان حافظ", city:"شیراز", phones:["07136271532","07136271534"] },
-
-{ id:3, name:"بیمارستان چمران", city:"شیراز", phones:["07136240101"] },
-
-{ id:4, name:"بیمارستان نمازی", city:"شیراز", phones:["07136474332","07136474334","07136474335","07136474338","07136474340","07136474361"] },
-
-{ id:5, name:"بیمارستان پیوند ابوعلی سینا", city:"شیراز (صدرا)", phones:["07136407061","07136407062","07136407063","07136407064"] },
-
-{ id:6, name:"بیمارستان شهید رجایی", city:"شیراز", phones:["07136364001"] },
-
-{ id:7, name:"بیمارستان سوانح سوختگی و ترمیمی امیرالمؤمنین (ع)", city:"صدرا", phones:["07136146100","07136146101"] },
-
-{ id:8, name:"بیمارستان مرکزی MRI", city:"شیراز", phones:["07136284411","07136284412","07136284414","07136284416","07136284418","07136284420"] },
-
-{ id:9, name:"بیمارستان اردیبهشت", city:"شیراز", phones:["07136284821","07136284822","07136284823","07136284824","07136284825"] },
-
-{ id:10, name:"بیمارستان امام هادی", city:"فراشبند", phones:["07138758312"] },
-
-{ id:11, name:"بیمارستان اعصاب و روان استاد محرری", city:"شیراز", phones:["07136277503"] },
-
-{ id:12, name:"بیمارستان مادر و کودک غدیر", city:"شیراز", phones:["07132279701"] },
-
-{ id:13, name:"بیمارستان حضرت قائم (عج)", city:"فیروزآباد", phones:["07138727092","07138727093","07138727094","07138727095"] },
-
-{ id:14, name:"بیمارستان دکتر علی شریعتی", city:"فسا", phones:["07153350116","07153350117"] },
-
-{ id:15, name:"بیمارستان حضرت ولیعصر (عج)", city:"فسا", phones:["07153315011","07153315012","07153315014","07153315015","07153315021","07153315026"] },
-
-{ id:16, name:"بیمارستان امام سجاد (ع)", city:"خشت و کنار تخته (کازرون)", phones:["07142444052","07142444053","07142444054"] },
-
-{ id:17, name:"بیمارستان امام محمد باقر (ع)", city:"قیر و کارزین", phones:["07154526507","07154526291","07154526292","07154526293"] },
-
-{ id:18, name:"بیمارستان ولیعصر (عج)", city:"کازرون", phones:["07142227080","07142227081","07142227083"] },
-
-{ id:19, name:"بیمارستان امام رضا (ع)", city:"لارستان", phones:["07152242101"] },
-
-{ id:20, name:"بیمارستان امیرالمؤمنین (ع)", city:"گراش", phones:["07152440001","07152440002","07152440003"] },
-
-{ id:21, name:"بیمارستان امیدوار", city:"اوز", phones:["07152512535","07152512536","07152512537","07152512538"] },
-
-{ id:22, name:"بیمارستان ولیعصر (ع)", city:"لامرد", phones:["07152722201"] },
-
-{ id:23, name:"بیمارستان علی اصغر (ع)", city:"بیرم", phones:["07152552604"] },
-
-{ id:24, name:"بیمارستان بعثت", city:"اشکنان", phones:["07152762030","07152762031","07152762032"] },
-
-{ id:25, name:"بیمارستان شهید مطهری", city:"مرودشت", phones:["07143342060","07143342061","07143342062","07143342063","07143342064","07143342065","07143342066"] },
-
-{ id:26, name:"بیمارستان ولیعصر (عج)", city:"اقلید", phones:["07144529341","07144529342","07144529343","07144529344"] },
-
-{ id:27, name:"بیمارستان ولی عصر", city:"بوانات", phones:["07144406931"] },
-
-{ id:28, name:"بیمارستان امام جعفر صادق (ع)", city:"پاسارگاد", phones:["07145563990","07143563991","07143563992","07143563993","07143563994","07143563995"] },
-
-{ id:29, name:"بیمارستان پیمانیه", city:"جهرم", phones:["07154230011","07154230012"] },
-
-{ id:30, name:"بیمارستان استاد مطهری", city:"جهرم", phones:["07154331201","07154333002","07154333003","07154333004"] },
-
-{ id:31, name:"بیمارستان خاتم الانبیا", city:"خفر", phones:["07154503073"] },
-
-{ id:32, name:"بیمارستان ولی عصر (عج)", city:"خرم‌بید", phones:["07144451021","07144451025"] },
-
-{ id:33, name:"بیمارستان جوادالائمه (ع)", city:"خرامه", phones:["07132728443","07132728440"] },
-
-{ id:34, name:"بیمارستان سیدالشهدا", city:"قادرآباد", phones:["07144493949"] },
-
-{ id:35, name:"بیمارستان نبی اکرم (ص)", city:"خنج", phones:["07152620051","07152620052","07152620053","07152620054"] },
-
-{ id:36, name:"بیمارستان امام حسن مجتبی (ع)", city:"داراب", phones:["07153526990"] },
-
-{ id:37, name:"بیمارستان امام حسن عسکری (ع)", city:"زرقان", phones:["07132620027"] },
-
-{ id:38, name:"بیمارستان امام موسی کاظم (ع)", city:"زرین‌دشت", phones:["07153725500","07153722978","07153725501"] },
-
-{ id:39, name:"بیمارستان امام حسین (ع)", city:"سپیدان", phones:["07136725245"] },
-
-{ id:40, name:"بیمارستان شهدای سروستان", city:"سروستان", phones:["07137842111","07137842112"] },
-
-{ id:41, name:"بیمارستان شهید آیت‌الله دستغیب", city:"شیراز", phones:["07132284780","07132289307","07132288064"] },
-
-{ id:42, name:"بیمارستان شهید بهشتی", city:"شیراز", phones:["07132241161"] },
-
-{ id:43, name:"بیمارستان شفا", city:"شیراز", phones:["07132339017","07132339015"] },
-
-{ id:44, name:"بیمارستان فقیهی", city:"شیراز", phones:["07132351087","07132351089","07132351090","07132351092","07132351094","07132351096","07132351098","07132351099"] },
-
-{ id:45, name:"بیمارستان پارس", city:"شیراز", phones:["07132336006"] },
-
-{ id:46, name:"بیمارستان امامی", city:"شیراز", phones:["07132360141"] },
-
-{ id:47, name:"بیمارستان تخصصی و فوق تخصصی شهریار", city:"شیراز", phones:["07132337905"] },
-
-{ id:48, name:"بیمارستان ایران ناجا", city:"شیراز", phones:["07132332370"] },
-
-{ id:49, name:"بیمارستان مسلمین", city:"شیراز", phones:["07132135000"] },
-
-{ id:50, name:"بیمارستان حضرت علی اصغر (ع)", city:"شیراز", phones:["07132288602","07132288603","07132288604","07132288605","07132288606"] },
-
-{ id:51, name:"بیمارستان علوی", city:"شیراز", phones:["07132248327"] },
-
-{ id:52, name:"بیمارستان 576 ارتش", city:"شیراز", phones:["07132263546","07132263547"] },
-
-{ id:53, name:"بیمارستان میرحسینی", city:"شیراز", phones:["07132284433","07132284434"] },
-
-{ id:54, name:"بیمارستان زینبیه", city:"شیراز", phones:["07137266812","07137266813","07137266814","07137266815","07137266816","07137266817","07137266819"] },
-
-{ id:55, name:"بیمارستان قلب الزهرا (س) و کودکان شهید حجازی", city:"شیراز", phones:["07137398811","07137398812","07137398813","07137398814","07137398815"] },
-
-{ id:56, name:"بیمارستان جنّت", city:"شیراز", phones:["07138226362"] },
-
-{ id:57, name:"بیمارستان مادر و کودک شوشتری", city:"شیراز", phones:["07132324803"] },
-
-{ id:58, name:"بیمارستان دنا", city:"شیراز", phones:["07136490411"] },
-
-{ id:59, name:"بیمارستان بعثت", city:"شیراز", phones:["07136359379","07136359382","07136359383","07136359387"] },
-
-{ id:60, name:"بیمارستان تخصصی و فوق تخصصی کوثر", city:"شیراز", phones:["07136141000"] },
-
-{ id:61, name:"بیمارستان انکولوژی امیر", city:"شیراز", phones:["07136323532"] },
-
-{ id:62, name:"بیمارستان خلیلی", city:"شیراز", phones:["07136291470"] },
-
-{ id:63, name:"بیمارستان امام خمینی", city:"آباده", phones:["07144361133"] }
-
+{id:1,name:"بیمارستان تخصصی و فوق تخصصی دکتر فرهمندفر",city:"شیراز",phones:["07136264748"]},
+{id:2,name:"بیمارستان حافظ",city:"شیراز",phones:["07136271532","07136271534"]},
+{id:3,name:"بیمارستان چمران",city:"شیراز",phones:["07136240101"]},
+{id:4,name:"بیمارستان نمازی",city:"شیراز",phones:["07136474332","07136474334","07136474335","07136474338","07136474340","07136474361"]},
+{id:5,name:"بیمارستان پیوند ابوعلی سینا",city:"شیراز (صدرا)",phones:["07136407061","07136407062","07136407063","07136407064"]},
+{id:6,name:"بیمارستان شهید رجایی",city:"شیراز",phones:["07136364001"]},
+{id:7,name:"بیمارستان سوانح سوختگی و ترمیمی امیرالمؤمنین (ع)",city:"صدرا",phones:["07136146100","07136146101"]},
+{id:8,name:"بیمارستان مرکزی MRI",city:"شیراز",phones:["07136284411","07136284412","07136284414","07136284416","07136284418","07136284420"]},
+{id:9,name:"بیمارستان اردیبهشت",city:"شیراز",phones:["07136284821","07136284822","07136284823","07136284824","07136284825"]},
+{id:10,name:"بیمارستان امام هادی",city:"فراشبند",phones:["07138758312"]},
+{id:11,name:"بیمارستان اعصاب و روان استاد محرری",city:"شیراز",phones:["07136277503"]},
+{id:12,name:"بیمارستان مادر و کودک غدیر",city:"شیراز",phones:["07132279701"]},
+{id:13,name:"بیمارستان حضرت قائم (عج)",city:"فیروزآباد",phones:["07138727092","07138727093","07138727094","07138727095"]},
+{id:14,name:"بیمارستان دکتر علی شریعتی",city:"فسا",phones:["07153350116","07153350117"]},
+{id:15,name:"بیمارستان حضرت ولیعصر (عج)",city:"فسا",phones:["07153315011","07153315012","07153315014","07153315015","07153315021","07153315026"]},
+{id:16,name:"بیمارستان امام سجاد (ع)",city:"خشت و کنار تخته (کازرون)",phones:["07142444052","07142444053","07142444054"]},
+{id:17,name:"بیمارستان امام محمد باقر (ع)",city:"قیر و کارزین",phones:["07154526507","07154526291","07154526292","07154526293"]},
+{id:18,name:"بیمارستان ولیعصر (عج)",city:"کازرون",phones:["07142227080","07142227081","07142227083"]},
+{id:19,name:"بیمارستان امام رضا (ع)",city:"لارستان",phones:["07152242101"]},
+{id:20,name:"بیمارستان امیرالمؤمنین (ع)",city:"گراش",phones:["07152440001","07152440002","07152440003"]},
+{id:21,name:"بیمارستان امیدوار",city:"اوز",phones:["07152512535","07152512536","07152512537","07152512538"]},
+{id:22,name:"بیمارستان ولیعصر (ع)",city:"لامرد",phones:["07152722201"]},
+{id:23,name:"بیمارستان علی اصغر (ع)",city:"بیرم",phones:["07152552604"]},
+{id:24,name:"بیمارستان بعثت",city:"اشکنان",phones:["07152762030","07152762031","07152762032"]},
+{id:25,name:"بیمارستان شهید مطهری",city:"مرودشت",phones:["07143342060","07143342061","07143342062","07143342063","07143342064","07143342065","07143342066"]},
+{id:26,name:"بیمارستان ولیعصر (عج)",city:"اقلید",phones:["07144529341","07144529342","07144529343","07144529344"]},
+{id:27,name:"بیمارستان ولی عصر",city:"بوانات",phones:["07144406931"]},
+{id:28,name:"بیمارستان امام جعفر صادق (ع)",city:"پاسارگاد",phones:["07145563990","07143563991","07143563992","07143563993","07143563994","07143563995"]},
+{id:29,name:"بیمارستان پیمانیه",city:"جهرم",phones:["07154230011","07154230012"]},
+{id:30,name:"بیمارستان استاد مطهری",city:"جهرم",phones:["07154331201","07154333002","07154333003","07154333004"]},
+{id:31,name:"بیمارستان خاتم الانبیا",city:"خفر",phones:["07154503073"]},
+{id:32,name:"بیمارستان ولی عصر (عج)",city:"خرم‌بید",phones:["07144451021","07144451025"]},
+{id:33,name:"بیمارستان جوادالائمه (ع)",city:"خرامه",phones:["07132728443","07132728440"]},
+{id:34,name:"بیمارستان سیدالشهدا",city:"قادرآباد",phones:["07144493949"]},
+{id:35,name:"بیمارستان نبی اکرم (ص)",city:"خنج",phones:["07152620051","07152620052","07152620053","07152620054"]},
+{id:36,name:"بیمارستان امام حسن مجتبی (ع)",city:"داراب",phones:["07153526990"]},
+{id:37,name:"بیمارستان امام حسن عسکری (ع)",city:"زرقان",phones:["07132620027"]},
+{id:38,name:"بیمارستان امام موسی کاظم (ع)",city:"زرین‌دشت",phones:["07153725500","07153722978","07153725501"]},
+{id:39,name:"بیمارستان امام حسین (ع)",city:"سپیدان",phones:["07136725245"]},
+{id:40,name:"بیمارستان شهدای سروستان",city:"سروستان",phones:["07137842111","07137842112"]},
+{id:41,name:"بیمارستان شهید آیت‌الله دستغیب",city:"شیراز",phones:["07132284780","07132289307","07132288064"]},
+{id:42,name:"بیمارستان شهید بهشتی",city:"شیراز",phones:["07132241161"]},
+{id:43,name:"بیمارستان شفا",city:"شیراز",phones:["07132339017","07132339015"]},
+{id:44,name:"بیمارستان فقیهی",city:"شیراز",phones:["07132351087","07132351089","07132351090","07132351092","07132351094","07132351096","07132351098","07132351099"]},
+{id:45,name:"بیمارستان پارس",city:"شیراز",phones:["07132336006"]},
+{id:46,name:"بیمارستان امامی",city:"شیراز",phones:["07132360141"]},
+{id:47,name:"بیمارستان تخصصی و فوق تخصصی شهریار",city:"شیراز",phones:["07132337905"]},
+{id:48,name:"بیمارستان ایران ناجا",city:"شیراز",phones:["07132332370"]},
+{id:49,name:"بیمارستان مسلمین",city:"شیراز",phones:["07132135000"]},
+{id:50,name:"بیمارستان حضرت علی اصغر (ع)",city:"شیراز",phones:["07132288602","07132288603","07132288604","07132288605","07132288606"]},
+{id:51,name:"بیمارستان علوی",city:"شیراز",phones:["07132248327"]},
+{id:52,name:"بیمارستان 576 ارتش",city:"شیراز",phones:["07132263546","07132263547"]},
+{id:53,name:"بیمارستان میرحسینی",city:"شیراز",phones:["07132284433","07132284434"]},
+{id:54,name:"بیمارستان زینبیه",city:"شیراز",phones:["07137266812","07137266813","07137266814","07137266815","07137266816","07137266817","07137266819"]},
+{id:55,name:"بیمارستان قلب الزهرا (س) و کودکان شهید حجازی",city:"شیراز",phones:["07137398811","07137398812","07137398813","07137398814","07137398815"]},
+{id:56,name:"بیمارستان جنّت",city:"شیراز",phones:["07138226362"]},
+{id:57,name:"بیمارستان مادر و کودک شوشتری",city:"شیراز",phones:["07132324803"]},
+{id:58,name:"بیمارستان دنا",city:"شیراز",phones:["07136490411"]},
+{id:59,name:"بیمارستان بعثت",city:"شیراز",phones:["07136359379","07136359382","07136359383","07136359387"]},
+{id:60,name:"بیمارستان تخصصی و فوق تخصصی کوثر",city:"شیراز",phones:["07136141000"]},
+{id:61,name:"بیمارستان انکولوژی امیر",city:"شیراز",phones:["07136323532"]},
+{id:62,name:"بیمارستان خلیلی",city:"شیراز",phones:["07136291470"]},
+{id:63,name:"بیمارستان امام خمینی",city:"آباده",phones:["07144361133"]}
 ],
 
 
-/* =========================================================
-   ISFAHAN
-========================================================= */
-
-"اصفهان":[
-
-{ id:101, name:"بیمارستان آموزشی پژوهشی خورشید", city:"اصفهان", phones:["0342222127"] },
-
-{ id:102, name:"بیمارستان بهارستان (خانواده)", city:"اصفهان", phones:["03136201393","03136201389","03136201396","03136201392","03136201394"] },
-
-{ id:103, name:"بیمارستان میلاد", city:"اصفهان", phones:["03135130"] },
-
-{ id:104, name:"بیمارستان بوعلی", city:"چادگان", phones:["03157726974"] },
-
-{ id:105, name:"بیمارستان شهید یغمایی", city:"اصفهان", phones:["03146322020"] },
-
-{ id:106, name:"بیمارستان فاطمیه", city:"خوانسار", phones:["03157779000"] },
-
-{ id:107, name:"بیمارستان امام حسین(ع)", city:"گلپایگان", phones:["03157241021","03157241020","03157241025","03157241024","03157241023","03157241022"] },
-
-{ id:108, name:"بیمارستان خاتم الانبیا", city:"نطنز", phones:["03154222066"] },
-
-{ id:109, name:"بیمارستان زنان و زایمان شهید رجایی", city:"آران و بیدگل", phones:["03154724142","03154724141"] },
-
-{ id:110, name:"بیمارستان سیدالشهداء", city:"آران و بیدگل", phones:["03154724041","03154724042","03154724043"] },
-
-{ id:111, name:"بیمارستان متینی", city:"کاشان", phones:["03155342024","03155342020","03155342021","03155342023","03155342022"] },
-
-{ id:112, name:"بیمارستان شهید بهشتی", city:"کاشان", phones:["03155540026","03155540027","03155540029","03155540028"] },
-
-{ id:113, name:"بیمارستان شبیه خوانی", city:"کاشان", phones:["03155460101","03155460199","03155460102","03155460180"] },
-
-{ id:114, name:"بیمارستان نقوی", city:"کاشان", phones:["03155451580","03155450031","03155451515"] },
-
-{ id:115, name:"بیمارستان صاحب الزمان", city:"شهرضا", phones:["03153223000"] },
-
-{ id:116, name:"بیمارستان سیدالشهدا", city:"سمیرم", phones:["03153667614","03153667612","03153667615","03153667616","03153667617","03153667618","03153667619","03153667613"] },
-
-{ id:117, name:"بیمارستان حضرت رسول اکرم (ص)", city:"فریدونشهر", phones:["03157592042"] },
-
-{ id:118, name:"بیمارستان شهید رجایی", city:"گلدشت نجف آباد", phones:["03142232585"] },
-
-{ id:119, name:"بیمارستان آیت اله مدرس", city:"نجف آباد", phones:["03142232085"] },
-
-{ id:120, name:"بیمارستان بهنیا", city:"تیران و کرون", phones:["03142226776"] },
-
-{ id:121, name:"بیمارستان فاطمه الزهرا (س)", city:"نجف آباد", phones:["03142443112","03142443114","03142443115","03142443116","03142443117","03142443113"] },
-
-{ id:122, name:"بیمارستان شهید محمد منتظری", city:"نجف آباد", phones:["03142643000"] },
-
-{ id:123, name:"بیمارستان محمدرسول الله (ص)", city:"مبارکه", phones:["03152674565","03152674566","03152674567","03152674568","03152674569","03152674570","03155272222"] },
-
-{ id:124, name:"بیمارستان شهید مطهری ذوب آهن", city:"اصفهان / لنجان", phones:["03152653131"] },
-
-{ id:125, name:"بیمارستان شهدای لنجان", city:"زرین شهر", phones:["03152237326"] },
-
-{ id:126, name:"بیمارستان امام خمینی (ره)", city:"فلاورجان", phones:["03133033560","03137421011"] },
-
-{ id:127, name:"بیمارستان شهید اشرفی اصفهانی", city:"خمینی شهر", phones:["03133625081"] },
-
-{ id:128, name:"بیمارستان 577 ارتش", city:"اصفهان", phones:["03136240021","74772"] },
-
-{ id:129, name:"بیمارستان الزهرا (س)", city:"اصفهان", phones:["03136685555","03136202020"] },
-
-{ id:130, name:"بیمارستان دکتر علی شریعتی", city:"اصفهان", phones:["03136272009","03136272001"] },
-
-{ id:131, name:"بیمارستان حجتیه", city:"اصفهان", phones:["03136306001","03136306002","03136306003","03136306004"] },
-
-{ id:132, name:"بیمارستان امیرالمومنین", city:"شهرضا", phones:["03153515667"] },
-
-{ id:133, name:"بیمارستان دکتر غرضی", city:"اصفهان", phones:["03134509909","03134509908","03134509907","03134509906","03134509905","031344509904","03134509903","03134509902","03134509901"] },
-
-{ id:134, name:"بیمارستان سیدالشهداء (ع)", city:"اصفهان", phones:["03132350218","03132350219","03132350216","03132350215","03132350214","03132350213","03132350212","03132350211","03132350210","03132350217"] },
-
-{ id:135, name:"بیمارستان فوق تخصصی قلب سعدی", city:"اصفهان", phones:["03136273034","03136273033","03136273032","03136273031"] },
-
-{ id:136, name:"بیمارستان تخصصی خانواده", city:"اصفهان", phones:["03136201392","03136201396","03136201394","03136201393","03136201389"] },
-
-{ id:137, name:"بیمارستان 577 ارتش", city:"اصفهان", phones:["03136281200"] },
-
-{ id:138, name:"بیمارستان امام خمینی", city:"سمیرم", phones:["03153666056"] },
-
-{ id:139, name:"بیمارستان شهید رجائی", city:"داران", phones:["03157222540"] },
-
-{ id:140, name:"بیمارستان ساعی", city:"خمینی شهر", phones:["03123248077","03133606427"] },
-
-{ id:141, name:"بیمارستان حشمتیه", city:"نایین", phones:["03146259061","03146259062","03146259063"] },
-
-{ id:142, name:"بیمارستان شهید دکتر بهشتی", city:"اردستان", phones:["03154244112","03154246072","03154246075","03154246078","03154247305","03154247306","03154247307","03154244110","03154246073"] },
-
-{ id:143, name:"بیمارستان حضرت محمد (ص)", city:"میمه", phones:["03145424441","03145424444","03145427575"] },
-
-{ id:144, name:"بیمارستان گلدیس", city:"شاهین شهر", phones:["03133033600","03145260801"] },
-
-{ id:145, name:"بیمارستان عسکریه", city:"اصفهان", phones:["03132250041"] },
-
-{ id:146, name:"بیمارستان جرجانی", city:"اصفهان", phones:["03134451997","03134451996"] },
-
-{ id:147, name:"بیمارستان کودکان حضرت امام حسین(ع)", city:"اصفهان", phones:["03133866266"] },
-
-{ id:148, name:"بیمارستان زهرای مرضیه (س)", city:"اصفهان", phones:["03134456061"] },
-
-{ id:149, name:"بیمارستان امیرالمؤمنین (ع)", city:"اصفهان", phones:["03132291071","03132296355"] },
-
-{ id:150, name:"بیمارستان آیت الله صدوقی", city:"اصفهان", phones:["03132912000","03132912500"] },
-
-{ id:151, name:"بیمارستان فیض", city:"اصفهان", phones:["03134452038","03134452037","03134452036","03134452035","03134452034","03134452033","03134452032","03134452031"] },
-
-{ id:152, name:"بیمارستان امین", city:"اصفهان", phones:["03134455051","03131122020"] },
-
-{ id:153, name:"بیمارستان نور و حضرت علی اصغر (ع)", city:"اصفهان", phones:["03132222127","03132222129","03132222130","03132222131","03132222132","03132222133","03132222134","03132222135","03132222128"] },
-
-{ id:154, name:"بیمارستان سوختگی امام موسی کاظم (ع)", city:"اصفهان", phones:["03133457670","03133457672","03133457673","03133457671"] },
-
-{ id:155, name:"بیمارستان احمدیه", city:"اصفهان", phones:["03133351560"] },
-
-{ id:156, name:"بیمارستان مهرگان", city:"اصفهان", phones:["03132330043"] },
-
-{ id:157, name:"بیمارستان اصفهان", city:"اصفهان", phones:["03132330018","03132330017","03132330016","03132330015"] },
-
-{ id:158, name:"بیمارستان سینا", city:"اصفهان", phones:["03132205025"] },
-
-{ id:159, name:"بیمارستان شهدای دهاقان", city:"دهاقان", phones:["03153338801","03153338802","03153338803","03153338804","03153338805"] },
-
-{ id:160, name:"بیمارستان فاطمیه", city:"بادرود", phones:["03154346220"] },
-
-{ id:161, name:"بیمارستان قلب شهید دکتر چمران", city:"اصفهان", phones:["03132600961","03132600962","03132600963","03132600964","03132600965"] },
-
-{ id:162, name:"بیمارستان سپاهان", city:"اصفهان", phones:["03136613082","03136613083","03136613084","03136613085","03136613086"] },
-
-{ id:163, name:"بیمارستان حضرت زهرا", city:"اصفهان", phones:["03135511197","03135511196","03135511195"] },
-
-{ id:164, name:"بیمارستان فوق تخصصی قلب سعدی", city:"اصفهان", phones:["03136273034","03136273033","03136273032","03136273031"] },
-
-{ id:165, name:"بیمارستان رز", city:"اصفهان", phones:["0315506"] }
-
+"البرز":[
+{id:1,name:"بیمارستان فاطمه الزهرا",city:"البرز",phones:["026-37723035"]},
+{id:2,name:"بیمارستان امام جعفر صادق",city:"البرز",phones:["026-44210925"]},
+{id:3,name:"بیمارستان البرز",city:"البرز",phones:["026-34924209"]},
+{id:4,name:"بیمارستان شهید باهنر",city:"البرز",phones:["026-32562358"]},
+{id:5,name:"بیمارستان رجایی",city:"البرز",phones:["026-34552002"]},
+{id:6,name:"بیمارستان شهید مدنی",city:"البرز",phones:["026-34427001"]},
+{id:7,name:"بیمارستان آرام",city:"البرز",phones:["026-36111000"]},
+{id:8,name:"بیمارستان قائم",city:"البرز",phones:["026-32771000"]},
+{id:9,name:"بیمارستان امام خمینی",city:"البرز",phones:["026-32234370"]},
+{id:10,name:"بیمارستان امام حسین",city:"البرز",phones:["026-36220118"]},
+{id:11,name:"بیمارستان دکتر شریعتی",city:"البرز",phones:["026-37305001"]},
+{id:12,name:"بیمارستان کوثر",city:"البرز",phones:["026-34544061"]},
+{id:13,name:"بیمارستان مریم",city:"البرز",phones:["026-33502347"]},
+{id:14,name:"بیمارستان کسری",city:"البرز",phones:["026-34416232"]},
+{id:15,name:"بیمارستان ثارالله",city:"البرز",phones:["026-33305204"]},
+{id:16,name:"بیمارستان نور (چشم‌پزشکی)",city:"البرز",phones:["026-35800"],note:"09385141451 خانم مهندس شکیبا در واتس‌اپ ارسال شد"}
+],
+
+
+"قزوین":[
+{id:1,name:"بیمارستان تخصصی اطفال قدس قزوین",city:"قزوین",phones:["02833334810","02833334809","02833334808","02833334807"],note:"09364821559 خانم مهندس روغنی تجهیزات"},
+{id:2,name:"بیمارستان 22 بهمن قزوین",city:"قزوین",phones:["02833555054"]},
+{id:3,name:"بیمارستان خیریه رحیمیان البرز",city:"قزوین",phones:["02832229701","02832229899","02832229898","02832223831"]},
+{id:4,name:"بیمارستان امیرالمومنین (ع) بوئین زهرا",city:"بوئین زهرا",phones:["02834225381","02834225382"]},
+{id:5,name:"بیمارستان تامین اجتماعی امیرالمومنین تاکستان",city:"تاکستان",phones:["02835220101"]},
+{id:6,name:"بیمارستان تخصصی ولیعصر آبیک",city:"آبیک",phones:["02832898001"]},
+{id:7,name:"بیمارستان شهداء آبیک",city:"آبیک",phones:["02832880923","02832880921","02832880920","02832880922"]},
+{id:8,name:"بیمارستان ولایت قزوین",city:"قزوین",phones:["02833790643"]},
+{id:9,name:"بیمارستان شفاء تاکستان",city:"تاکستان",phones:["02835249211","02835249212","02835249213","02835249214","02835249215","02835249216","02835249217","02835249218","02835249219","02835249220"]},
+{id:10,name:"بیمارستان شهید رجائی قزوین",city:"قزوین",phones:["02833335800"]},
+{id:11,name:"بیمارستان مهرگان قزوین",city:"قزوین",phones:["02833365160","02833365169"]},
+{id:12,name:"بیمارستان بوعلی سینا قزوین",city:"قزوین",phones:["02833339049"]},
+{id:13,name:"بیمارستان پاستور قزوین",city:"قزوین",phones:["02833378011","02833378012","02833378013","02833378014","02833378015","02833378016","02833378017"]},
+{id:14,name:"بیمارستان دهخدا قزوین",city:"قزوین",phones:["02833342060","02833342050"]},
+{id:15,name:"بیمارستان زکریای رازی قزوین",city:"قزوین",phones:["02833665008","02833665007","02833665009"]},
+{id:16,name:"بیمارستان 553 ارتش قزوین",city:"قزوین",phones:["02833326020"]},
+{id:17,name:"بیمارستان کوثر قزوین",city:"قزوین",phones:["02833236376","02833236375","02833236374"]}
 ]
 
 };
 
 
 /* =========================================================
-   STATUS NAMES
+   وضعیت‌های اولیه
 ========================================================= */
 
-const statusNames = {
+const initialHospitalStatuses = {
 
-    "ready":"آماده تماس",
+"فارس":{
+1:"catalog",
+4:"catalog",
+8:"catalog",
+9:"catalog",
+15:"catalog",
+59:"catalog",
+60:"catalog",
+63:"catalog"
+},
 
-    "no-answer":"تماس بی‌پاسخ",
+"البرز":{
+1:"ready",
+2:"ready",
+4:"ready",
+5:"ready",
+6:"ready",
+7:"ready",
+8:"ready",
+10:"ready",
+11:"ready",
+12:"ready",
+13:"ready",
+16:"catalog"
+},
 
-    "catalog":"ارسال کاتالوگ",
-
-    "follow":"پیگیری"
+"قزوین":{
+1:"catalog",
+8:"ready",
+9:"ready",
+10:"ready",
+11:"ready",
+12:"ready",
+13:"ready",
+14:"ready",
+15:"ready",
+16:"ready",
+17:"ready"
+}
 
 };
 
 
 /* =========================================================
-   INITIAL STATUS
+   تنظیمات ذخیره‌سازی
 ========================================================= */
 
-/*
-    فارس:
-    catalog = 1,4,8,9,15,59,60,63
-    no-answer = بقیه
-*/
+const STATUS_KEY = "hospital_status_v4";
+const DELETED_KEY = "deleted_hospitals_v1";
 
-
-const initialHospitalStatuses = {};
-
-
-/* فارس */
-
-[
-    1,4,8,9,15,59,60,63
-].forEach(id => {
-
-    initialHospitalStatuses[
-        "fars_" + id
-    ] = "catalog";
-
-});
-
-
-for(let i=1;i<=63;i++){
-
-    if(!initialHospitalStatuses["fars_"+i]){
-
-        initialHospitalStatuses[
-            "fars_" + i
-        ] = "no-answer";
-
-    }
-
-}
+let currentProvince = null;
+let currentHospital = null;
 
 
 /* =========================================================
-   اصفهان
+   نرمال‌سازی متن فارسی
 ========================================================= */
 
-/*
-    catalog:
-    6,29,32,41,45,52,54,60,63,65
+function normalizeText(value){
 
-    follow:
-    53
-
-    no-answer:
-    بقیه
-*/
-
-
-[
-    6,29,32,41,45,52,54,60,63,65
-].forEach(number => {
-
-    initialHospitalStatuses[
-        "isfahan_" + number
-    ] = "catalog";
-
-});
-
-
-initialHospitalStatuses[
-    "isfahan_53"
-] = "follow";
-
-
-for(let i=1;i<=65;i++){
-
-    if(!initialHospitalStatuses["isfahan_"+i]){
-
-        initialHospitalStatuses[
-            "isfahan_" + i
-        ] = "no-answer";
-
-    }
-
-}
-
-
-/* =========================================================
-   توضیحات مهم اصفهان
-========================================================= */
-
-const hospitalNotes = {
-
-    106:
-    "آقای مهندس صفایی تجهیزات پزشکی بیمارستان فاطمیه خوانسار - 09351324267",
-
-    129:
-    "09130130989 مهندس عابدزاده - چندتا مانیتور برای تعمیر دارن ولی باید شخص ثالث داشته باشیم",
-
-    132:
-    "09138730664 خانم مهندس مصیبی - تجهیزات / همکار",
-
-    141:
-    "09162866729 خانم مهندس عبداللهی - تجهیزات",
-
-    145:
-    "09131173505 آقای مهندس اسلامی - تجهیزات مانیتور خارجی نداشتند ولی کاتالوگ ارسال شد",
-
-    152:
-    "09131023475 خانم مهندس حریری - شنبه کاتالوگ ارسال شود. با همکارشون صحبت کردم",
-
-    153:
-    "گفتند هر وقت شخص ثالث اوکی کردین تماس بگیرین",
-
-    154:
-    "09024077171 آقای مهندس وثوق",
-
-    160:
-    "09300511693 خانم مهندس کمالی",
-
-    165:
-    "5506"
-
-};
-
-
-/* =========================================================
-   MAP HOSPITAL IDS TO PROVINCE
-========================================================= */
-
-function getHospitalStorageKey(province,id){
-
-    if(province === "فارس"){
-
-        return "fars_" + id;
-
-    }
-
-    if(province === "اصفهان"){
-
-        return "isfahan_" + (
-            id - 100
-        );
-
-    }
-
-    return province + "_" + id;
-
-}
-
-
-/* =========================================================
-   GET STATUS
-========================================================= */
-
-function getHospitalStatus(
-    province,
-    hospital
-){
-
-    const key =
-        "hospital_status_" +
-        getHospitalStorageKey(
-            province,
-            hospital.id
-        );
-
-
-    const saved =
-        localStorage.getItem(key);
-
-
-    if(saved){
-
-        return saved;
-
-    }
-
-
-    const initialKey =
-        getHospitalStorageKey(
-            province,
-            hospital.id
-        );
-
-
-    return initialHospitalStatuses[
-        initialKey
-    ] || null;
-
-}
-
-
-/* =========================================================
-   NORMALIZE TEXT
-========================================================= */
-
-function normalizeText(text){
-
-    return String(text || "")
-
+    return String(value || "")
         .toLowerCase()
-
         .replace(/ي/g,"ی")
         .replace(/ى/g,"ی")
         .replace(/ك/g,"ک")
         .replace(/ة/g,"ه")
         .replace(/ۀ/g,"ه")
         .replace(/ؤ/g,"و")
-        .replace(/إ|أ|ٱ/g,"ا")
-
+        .replace(/إ/g,"ا")
+        .replace(/أ/g,"ا")
+        .replace(/ٱ/g,"ا")
         .replace(/‌/g," ")
-
+        .replace(/\u200c/g," ")
         .replace(/\s+/g," ")
-
         .trim();
-
 }
 
 
 /* =========================================================
-   STATUS SEARCH TEXT
+   تبدیل اعداد فارسی به انگلیسی
 ========================================================= */
 
-function getStatusSearchText(status){
+function toEnglishDigits(value){
 
-    if(status === "ready"){
-
-        return `
-            آماده تماس
-            اماده تماس
-            آماده
-            اماده
-        `;
-
-    }
-
-
-    if(status === "no-answer"){
-
-        return `
-            تماس بی پاسخ
-            تماس بیپاسخ
-            بی پاسخ
-            بیپاسخ
-        `;
-
-    }
-
-
-    if(status === "catalog"){
-
-        return `
-            ارسال کاتالوگ
-            کاتالوگ
-            کاتالوگ ارسال شد
-        `;
-
-    }
-
-
-    if(status === "follow"){
-
-        return `
-            پیگیری
-            پی گيری
-        `;
-
-    }
-
-
-    return "وضعیت ثبت نشده";
-
+    return String(value || "")
+        .replace(/[۰-۹]/g,d =>
+            String("۰۱۲۳۴۵۶۷۸۹".indexOf(d))
+        )
+        .replace(/[٠-٩]/g,d =>
+            String("٠١٢٣٤٥٦٧٨٩".indexOf(d))
+        );
 }
 
 
 /* =========================================================
-   SEARCH MATCH
+   کلید یکتا برای وضعیت
+   چون ID در استان‌های مختلف تکرار می‌شود
 ========================================================= */
 
-function matchesHospitalSearch(
-    province,
-    hospital,
-    query
-){
-
-    const normalizedQuery =
-        normalizeText(query);
+function hospitalStatusKey(province,id){
+    return normalizeText(province) + "_" + id;
+}
 
 
-    if(!normalizedQuery){
+/* =========================================================
+   وضعیت بیمارستان
+========================================================= */
 
-        return true;
+const statusNames = {
+    ready:"آماده تماس",
+    "no-answer":"تماس بی‌پاسخ",
+    catalog:"ارسال کاتالوگ",
+    "follow-up":"پیگیری"
+};
 
+
+function getHospitalStatus(province,id){
+
+    const key = hospitalStatusKey(province,id);
+
+    return localStorage.getItem(STATUS_KEY + "_" + key)
+        || initialHospitalStatuses[province]?.[id]
+        || "no-answer";
+}
+
+
+function setHospitalStatus(province,id,status){
+
+    const key = hospitalStatusKey(province,id);
+
+    localStorage.setItem(
+        STATUS_KEY + "_" + key,
+        status
+    );
+}
+
+
+/* =========================================================
+   حذف بیمارستان‌ها
+========================================================= */
+
+function getDeletedHospitals(){
+
+    try{
+        return JSON.parse(
+            localStorage.getItem(DELETED_KEY) || "{}"
+        );
+    }catch(e){
+        return {};
     }
+}
 
 
-    const status =
-        getHospitalStatus(
-            province,
-            hospital
-        );
+function isHospitalDeleted(province,id){
+
+    const deleted = getDeletedHospitals();
+
+    return !!deleted[
+        hospitalStatusKey(province,id)
+    ];
+}
 
 
-    const statusText =
-        statusNames[status] ||
-        "وضعیت ثبت نشده";
+function getVisibleHospitals(province){
+
+    return (hospitals[province] || [])
+        .filter(h => !isHospitalDeleted(province,h.id));
+}
 
 
-    const note =
-        hospitalNotes[
-            hospital.id
-        ] || "";
+/* =========================================================
+   حذف بیمارستان
+========================================================= */
 
+function deleteHospital(event,province,id){
 
-    const searchableText =
-        normalizeText(
+    event.stopPropagation();
 
-            hospital.name +
-            " " +
-            hospital.city +
-            " " +
-            statusText +
-            " " +
-            getStatusSearchText(status) +
-            " " +
-            note
+    const hospital = (hospitals[province] || [])
+        .find(h => h.id === id);
 
-        );
+    if(!hospital) return;
 
-
-    const words =
-        normalizedQuery
-            .split(" ")
-            .filter(Boolean);
-
-
-    return words.every(
-        word =>
-            searchableText.includes(word)
+    const confirmed = confirm(
+        `آیا از حذف «${hospital.name}» مطمئن هستید؟\n\n` +
+        `این بیمارستان از لیست سایت حذف می‌شود.`
     );
 
-}
+    if(!confirmed) return;
 
+    const deleted = getDeletedHospitals();
 
-/* =========================================================
-   RENDER PROVINCES
-========================================================= */
+    deleted[
+        hospitalStatusKey(province,id)
+    ] = true;
 
-function renderProvinces(){
-
-    const grid =
-        document.getElementById(
-            "provinceGrid"
-        );
-
-
-    const countBox =
-        document.getElementById(
-            "provinceSearchCount"
-        );
-
-
-    const input =
-        document.getElementById(
-            "provinceSearch"
-        );
-
-
-    const query =
-        normalizeText(
-            input.value
-        );
-
-
-    grid.innerHTML = "";
-
-
-    const filtered =
-        provinces.filter(
-            province => {
-
-                if(!query){
-
-                    return true;
-
-                }
-
-
-                return normalizeText(
-                    province
-                ).includes(query);
-
-            }
-        );
-
-
-    countBox.textContent =
-        query
-        ? `نمایش ${filtered.length} از ${provinces.length} استان`
-        : `${provinces.length} استان`;
-
-
-    if(filtered.length === 0){
-
-        grid.innerHTML = `
-
-            <div class="empty">
-
-                استانی با این نام پیدا نشد.
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    filtered.forEach(
-        province => {
-
-            const count =
-                hospitals[province]
-                ? hospitals[province].length
-                : 0;
-
-
-            const card =
-                document.createElement("div");
-
-
-            card.className =
-                "province-card";
-
-
-            card.onclick =
-                () => openProvince(
-                    province
-                );
-
-
-            card.innerHTML = `
-
-                <div>
-
-                    <div class="province-name">
-                        ${province}
-                    </div>
-
-                    <div class="province-count">
-
-                        ${
-                            count > 0
-                            ? count + " بیمارستان"
-                            : "اطلاعات هنوز وارد نشده"
-                        }
-
-                    </div>
-
-                </div>
-
-
-                <div class="arrow">
-                    ←
-                </div>
-
-            `;
-
-
-            grid.appendChild(card);
-
-        }
+    localStorage.setItem(
+        DELETED_KEY,
+        JSON.stringify(deleted)
     );
 
-}
+    showToast("بیمارستان حذف شد");
 
-
-/* =========================================================
-   OPEN PROVINCE
-========================================================= */
-
-function openProvince(province){
-
-    currentProvince =
-        province;
-
-
-    document
-        .getElementById(
-            "provincesPage"
-        )
-        .style.display = "none";
-
-
-    document
-        .getElementById(
-            "hospitalsPage"
-        )
-        .style.display = "block";
-
-
-    document
-        .getElementById(
-            "provinceTitle"
-        )
-        .textContent = province;
-
-
-    const provinceHospitals =
-        hospitals[province] || [];
-
-
-    document
-        .getElementById(
-            "provinceDescription"
-        )
-        .textContent =
-
-        provinceHospitals.length
-
-        ? `${provinceHospitals.length} بیمارستان ثبت شده`
-
-        : "هنوز اطلاعات بیمارستان‌های این استان وارد نشده است.";
-
-
-    renderHospitals(province);
-
-}
-
-
-/* =========================================================
-   CURRENT PROVINCE
-========================================================= */
-
-let currentProvince = null;
-
-let selectedHospital = null;
-
-
-/* =========================================================
-   RENDER HOSPITALS
-========================================================= */
-
-function renderHospitals(province){
-
-    const list =
-        document.getElementById(
-            "hospitalList"
-        );
-
-
-    const searchInput =
-        document.getElementById(
-            "hospitalSearch"
-        );
-
-
-    const countBox =
-        document.getElementById(
-            "hospitalSearchCount"
-        );
-
-
-    const provinceHospitals =
-        hospitals[province] || [];
-
-
-    const query =
-        normalizeText(
-            searchInput.value
-        );
-
-
-    list.innerHTML = "";
-
-
-    const filtered =
-        provinceHospitals.filter(
-            hospital =>
-                matchesHospitalSearch(
-                    province,
-                    hospital,
-                    query
-                )
-        );
-
-
-    countBox.textContent =
-
-        query
-
-        ? `نمایش ${filtered.length} از ${provinceHospitals.length} بیمارستان`
-
-        : `${provinceHospitals.length} بیمارستان`;
-
-
-    if(filtered.length === 0){
-
-        list.innerHTML = `
-
-            <div class="empty">
-
-                موردی با این جستجو پیدا نشد.
-
-                <br>
-
-                نام بیمارستان، شهر یا وضعیت تماس را امتحان کنید.
-
-            </div>
-
-        `;
-
-        return;
-
+    if(currentProvince === province){
+        renderStats(province);
+        renderHospitals(province);
     }
-
-
-    filtered.forEach(
-        hospital => {
-
-            const card =
-                document.createElement("div");
-
-
-            card.className =
-                "hospital-card";
-
-
-            const currentStatus =
-                getHospitalStatus(
-                    province,
-                    hospital
-                );
-
-
-            card.onclick =
-                () => openHospital(
-                    province,
-                    hospital
-                );
-
-
-            const number =
-                province === "اصفهان"
-                ? hospital.id - 100
-                : hospital.id;
-
-
-            card.innerHTML = `
-
-                <div class="hospital-top">
-
-                    <div>
-
-                        <div class="hospital-number">
-                            ردیف ${number}
-                        </div>
-
-                        <div class="hospital-name">
-                            ${hospital.name}
-                        </div>
-
-                        <div class="hospital-city">
-                            ${hospital.city}
-                        </div>
-
-                    </div>
-
-
-                    <div
-                        class="status ${getStatusClass(currentStatus)}">
-
-                        ${
-                            statusNames[currentStatus]
-                            || "وضعیت ثبت نشده"
-                        }
-
-                    </div>
-
-                </div>
-
-            `;
-
-
-            list.appendChild(card);
-
-        }
-    );
-
 }
 
 
 /* =========================================================
-   SHOW PROVINCES
+   نمایش استان‌ها
 ========================================================= */
 
 function showProvinces(){
 
-    document
-        .getElementById(
-            "hospitalsPage"
-        )
-        .style.display = "none";
-
-
-    document
-        .getElementById(
-            "provincesPage"
-        )
-        .style.display = "block";
-
-
     currentProvince = null;
+    currentHospital = null;
 
+    document.getElementById("provincePage").style.display = "block";
+    document.getElementById("hospitalPage").style.display = "none";
 
-    const hospitalSearch =
-        document.getElementById(
-            "hospitalSearch"
-        );
-
-
-    hospitalSearch.value = "";
-
-
-    updateClearButton(
-        hospitalSearch,
-
-        document.getElementById(
-            "clearHospitalSearch"
-        )
-    );
-
+    document.getElementById("hospitalSearch").value = "";
 
     renderProvinces();
+}
 
+
+function renderProvinces(){
+
+    const grid = document.getElementById("provinceGrid");
+    const input = document.getElementById("provinceSearch");
+    const clear = document.getElementById("provinceClear");
+
+    const search = normalizeText(input.value);
+
+    clear.classList.toggle("show",!!search);
+
+    const filtered = provinces.filter(province =>
+        normalizeText(province).includes(search)
+    );
+
+    grid.innerHTML = "";
+
+    if(!filtered.length){
+
+        grid.innerHTML = `
+            <div class="empty">
+                استانی با این نام پیدا نشد.
+            </div>
+        `;
+
+        return;
+    }
+
+    filtered.forEach(province => {
+
+        const list = getVisibleHospitals(province);
+
+        const ready = list.filter(h =>
+            getHospitalStatus(province,h.id) === "ready"
+        ).length;
+
+        const noAnswer = list.filter(h =>
+            getHospitalStatus(province,h.id) === "no-answer"
+        ).length;
+
+        const catalog = list.filter(h =>
+            getHospitalStatus(province,h.id) === "catalog"
+        ).length;
+
+        const followUp = list.filter(h =>
+            getHospitalStatus(province,h.id) === "follow-up"
+        ).length;
+
+        const card = document.createElement("div");
+
+        card.className = "province-card";
+
+        card.onclick = () => openProvince(province);
+
+        card.innerHTML = `
+            <div class="province-name">
+                ${escapeHTML(province)}
+            </div>
+
+            <div class="province-count">
+                ${list.length} بیمارستان
+            </div>
+
+            ${
+                list.length
+                ? `
+                <div class="province-status">
+                    <span class="mini-status">آماده: ${ready}</span>
+                    <span class="mini-status">بی‌پاسخ: ${noAnswer}</span>
+                    <span class="mini-status">کاتالوگ: ${catalog}</span>
+                    <span class="mini-status">پیگیری: ${followUp}</span>
+                </div>
+                `
+                : `
+                <div class="province-count" style="margin-top:10px">
+                    بدون بیمارستان
+                </div>
+                `
+            }
+        `;
+
+        grid.appendChild(card);
+    });
 }
 
 
 /* =========================================================
-   OPEN HOSPITAL
+   باز کردن استان
 ========================================================= */
 
-function openHospital(
-    province,
-    hospital
-){
+function openProvince(province){
 
-    selectedHospital =
-        hospital;
+    currentProvince = province;
 
+    document.getElementById("provincePage").style.display = "none";
+    document.getElementById("hospitalPage").style.display = "block";
 
-    document
-        .getElementById(
-            "modalHospitalName"
-        )
-        .textContent =
-            hospital.name;
+    document.getElementById("hospitalPageTitle").textContent =
+        "بیمارستان‌های " + province;
+
+    renderStats(province);
+    renderHospitals(province);
+}
 
 
-    document
-        .getElementById(
-            "modalHospitalCity"
-        )
-        .textContent =
-            hospital.city;
+/* =========================================================
+   آمار
+========================================================= */
+
+function renderStats(province){
+
+    const list = getVisibleHospitals(province);
+
+    const ready = list.filter(h =>
+        getHospitalStatus(province,h.id) === "ready"
+    ).length;
+
+    const noAnswer = list.filter(h =>
+        getHospitalStatus(province,h.id) === "no-answer"
+    ).length;
+
+    const catalog = list.filter(h =>
+        getHospitalStatus(province,h.id) === "catalog"
+    ).length;
+
+    const followUp = list.filter(h =>
+        getHospitalStatus(province,h.id) === "follow-up"
+    ).length;
+
+    document.getElementById("hospitalStats").innerHTML = `
+        <div class="stat">
+            کل: <strong>${list.length}</strong>
+        </div>
+
+        <div class="stat">
+            آماده تماس: <strong>${ready}</strong>
+        </div>
+
+        <div class="stat">
+            بی‌پاسخ: <strong>${noAnswer}</strong>
+        </div>
+
+        <div class="stat">
+            کاتالوگ: <strong>${catalog}</strong>
+        </div>
+
+        <div class="stat">
+            پیگیری: <strong>${followUp}</strong>
+        </div>
+    `;
+}
 
 
-    const phones =
-        document.getElementById(
-            "modalPhones"
+/* =========================================================
+   جستجوی بیمارستان
+========================================================= */
+
+function hospitalMatches(hospital,province,search){
+
+    if(!search) return true;
+
+    const tokens = normalizeText(search)
+        .split(" ")
+        .filter(Boolean);
+
+    const status = getHospitalStatus(province,hospital.id);
+
+    const statusText = statusNames[status] || "";
+
+    const searchable = normalizeText([
+        hospital.name,
+        hospital.city,
+        statusText,
+        hospital.note || "",
+        ...(hospital.phones || [])
+    ].join(" "));
+
+    return tokens.every(token =>
+        searchable.includes(token)
+    );
+}
+
+
+/* =========================================================
+   نمایش بیمارستان‌ها
+========================================================= */
+
+function renderHospitals(province){
+
+    const grid = document.getElementById("hospitalGrid");
+
+    const input = document.getElementById("hospitalSearch");
+    const clear = document.getElementById("hospitalClear");
+
+    const search = input.value;
+
+    clear.classList.toggle(
+        "show",
+        !!normalizeText(search)
+    );
+
+    const list = getVisibleHospitals(province)
+        .filter(h => hospitalMatches(h,province,search));
+
+    grid.innerHTML = "";
+
+    if(!list.length){
+
+        grid.innerHTML = `
+            <div class="empty">
+                بیمارستانی با این جستجو پیدا نشد.
+            </div>
+        `;
+
+        return;
+    }
+
+    list.forEach(hospital => {
+
+        const status = getHospitalStatus(
+            province,
+            hospital.id
         );
 
+        const card = document.createElement("div");
 
-    phones.innerHTML = "";
+        card.className = "hospital-card";
 
+        card.onclick = () =>
+            openHospital(province,hospital.id);
 
-    hospital.phones.forEach(
-        phone => {
+        const statusClass =
+            status === "ready"
+            ? "status-ready"
+            : status === "catalog"
+            ? "status-catalog"
+            : status === "follow-up"
+            ? "status-follow-up"
+            : "status-no-answer";
 
-            const button =
-                document.createElement("a");
+        const phonesHTML =
+            (hospital.phones || [])
+            .map(phone => {
 
-
-            button.className =
-                "phone-button";
-
-
-            /*
-                برای شماره‌هایی مثل:
-                03152653131-7
-                یا مقادیر دارای خط تیره
-                فقط خود شماره را دستکاری نمی‌کنیم.
-            */
-
-            button.href =
-                "tel:" +
-                phone
+                const tel =
+                    toEnglishDigits(phone)
                     .replace(/[^\d+]/g,"");
 
+                return `
+                    <a
+                        class="card-phone"
+                        href="tel:${tel}"
+                        onclick="event.stopPropagation()"
+                    >
+                        📞 ${escapeHTML(phone)}
+                    </a>
+                `;
+            })
+            .join("");
 
-            button.innerHTML = `
+        card.innerHTML = `
 
-                <span>
-                    ${phone}
-                </span>
+            <div class="hospital-title-row">
 
-                <span class="phone-icon">
-                    📞 تماس
-                </span>
+                <div class="hospital-name">
+                    ${escapeHTML(hospital.name)}
+                </div>
 
-            `;
+                <button
+                    class="delete-btn"
+                    title="حذف بیمارستان"
+                    onclick="deleteHospital(event,'${escapeJS(province)}',${hospital.id})"
+                >
+                    🗑
+                </button>
+
+            </div>
+
+            <div class="hospital-city">
+                📍 ${escapeHTML(hospital.city)}
+            </div>
+
+            <div class="status-badge ${statusClass}">
+                ${statusNames[status]}
+            </div>
+
+            <div>
+                ${phonesHTML}
+            </div>
+
+            ${
+                hospital.note
+                ? `
+                    <div class="note">
+                        📝 ${escapeHTML(hospital.note)}
+                    </div>
+                `
+                : ""
+            }
+
+        `;
+
+        grid.appendChild(card);
+    });
+}
 
 
-            phones.appendChild(button);
+/* =========================================================
+   باز کردن بیمارستان
+========================================================= */
 
+function openHospital(province,id){
+
+    const hospital = (hospitals[province] || [])
+        .find(h => h.id === id);
+
+    if(!hospital) return;
+
+    if(isHospitalDeleted(province,id)) return;
+
+    currentHospital = hospital;
+
+    document.getElementById("modalTitle").textContent =
+        hospital.name;
+
+    document.getElementById("modalCity").textContent =
+        "📍 " + hospital.city;
+
+    const status =
+        getHospitalStatus(province,id);
+
+    const statusButtons =
+        document.getElementById("statusButtons");
+
+    statusButtons.innerHTML = "";
+
+    Object.entries(statusNames).forEach(
+        ([key,label]) => {
+
+            const btn =
+                document.createElement("button");
+
+            btn.className = "status-btn";
+
+            if(status === key){
+                btn.classList.add("active");
+            }
+
+            btn.textContent = label;
+
+            btn.onclick = () => {
+
+                setHospitalStatus(
+                    province,
+                    id,
+                    key
+                );
+
+                closeModal();
+
+                renderStats(province);
+                renderHospitals(province);
+
+                showToast(
+                    "وضعیت به «" + label + "» تغییر کرد"
+                );
+            };
+
+            statusButtons.appendChild(btn);
         }
     );
 
 
-    const info =
-        document.getElementById(
-            "modalInfo"
-        );
+    const phones =
+        document.getElementById("modalPhones");
+
+    phones.innerHTML = "";
+
+    (hospital.phones || []).forEach(phone => {
+
+        const tel =
+            toEnglishDigits(phone)
+            .replace(/[^\d+]/g,"");
+
+        const a =
+            document.createElement("a");
+
+        a.className = "modal-phone";
+        a.href = "tel:" + tel;
+        a.textContent = "📞 " + phone;
+
+        phones.appendChild(a);
+    });
 
 
-    info.textContent =
-        hospitalNotes[
-            hospital.id
-        ] || "";
+    const note =
+        document.getElementById("modalNote");
+
+    if(hospital.note){
+
+        note.style.display = "block";
+        note.textContent = "📝 " + hospital.note;
+
+    }else{
+
+        note.style.display = "none";
+        note.textContent = "";
+    }
 
 
-    updateStatusButtons(
-        province,
-        hospital
-    );
-
-
-    document
-        .getElementById(
-            "hospitalModal"
-        )
-        .classList.add("active");
-
+    document.getElementById("modal")
+        .classList.add("show");
 }
 
 
 /* =========================================================
-   CLOSE MODAL
+   بستن مودال
 ========================================================= */
 
 function closeModal(){
 
-    document
-        .getElementById(
-            "hospitalModal"
-        )
-        .classList.remove("active");
+    document.getElementById("modal")
+        .classList.remove("show");
 
-
-    selectedHospital = null;
-
+    currentHospital = null;
 }
 
 
-/* =========================================================
-   SET STATUS
-========================================================= */
+function closeModalByBackdrop(event){
 
-function setHospitalStatus(status){
-
-    if(!selectedHospital){
-
-        return;
-
+    if(event.target === event.currentTarget){
+        closeModal();
     }
-
-
-    const key =
-        "hospital_status_" +
-
-        getHospitalStorageKey(
-            currentProvince,
-            selectedHospital.id
-        );
-
-
-    localStorage.setItem(
-        key,
-        status
-    );
-
-
-    updateStatusButtons(
-        currentProvince,
-        selectedHospital
-    );
-
-
-    closeModal();
-
-
-    /*
-       جستجوی فعلی حفظ می‌شود.
-    */
-
-    if(currentProvince){
-
-        renderHospitals(
-            currentProvince
-        );
-
-    }
-
 }
 
-
-/* =========================================================
-   STATUS CLASS
-========================================================= */
-
-function getStatusClass(status){
-
-    if(status === "ready"){
-
-        return "status-ready";
-
-    }
-
-
-    if(status === "no-answer"){
-
-        return "status-no-answer";
-
-    }
-
-
-    if(status === "catalog"){
-
-        return "status-catalog";
-
-    }
-
-
-    if(status === "follow"){
-
-        return "status-follow";
-
-    }
-
-
-    return "";
-
-}
-
-
-/* =========================================================
-   UPDATE STATUS BUTTONS
-========================================================= */
-
-function updateStatusButtons(
-    province,
-    hospital
-){
-
-    if(!hospital){
-
-        return;
-
-    }
-
-
-    const current =
-        getHospitalStatus(
-            province,
-            hospital
-        );
-
-
-    document
-        .getElementById(
-            "statusReady"
-        )
-        .classList.toggle(
-            "selected",
-            current === "ready"
-        );
-
-
-    document
-        .getElementById(
-            "statusNoAnswer"
-        )
-        .classList.toggle(
-            "selected",
-            current === "no-answer"
-        );
-
-
-    document
-        .getElementById(
-            "statusCatalog"
-        )
-        .classList.toggle(
-            "selected",
-            current === "catalog"
-        );
-
-
-    document
-        .getElementById(
-            "statusFollow"
-        )
-        .classList.toggle(
-            "selected",
-            current === "follow"
-        );
-
-}
-
-
-/* =========================================================
-   CLEAR BUTTON
-========================================================= */
-
-function updateClearButton(
-    input,
-    button
-){
-
-    if(input.value.trim()){
-
-        button.classList.add("show");
-
-    }else{
-
-        button.classList.remove("show");
-
-    }
-
-}
-
-
-/* =========================================================
-   PROVINCE SEARCH
-========================================================= */
-
-const provinceSearch =
-    document.getElementById(
-        "provinceSearch"
-    );
-
-
-const clearProvinceSearch =
-    document.getElementById(
-        "clearProvinceSearch"
-    );
-
-
-provinceSearch.addEventListener(
-    "input",
-    function(){
-
-        updateClearButton(
-            provinceSearch,
-            clearProvinceSearch
-        );
-
-
-        renderProvinces();
-
-    }
-);
-
-
-clearProvinceSearch.addEventListener(
-    "click",
-    function(){
-
-        provinceSearch.value = "";
-
-
-        updateClearButton(
-            provinceSearch,
-            clearProvinceSearch
-        );
-
-
-        renderProvinces();
-
-
-        provinceSearch.focus();
-
-    }
-);
-
-
-/* =========================================================
-   HOSPITAL SEARCH
-========================================================= */
-
-const hospitalSearch =
-    document.getElementById(
-        "hospitalSearch"
-    );
-
-
-const clearHospitalSearch =
-    document.getElementById(
-        "clearHospitalSearch"
-    );
-
-
-hospitalSearch.addEventListener(
-    "input",
-    function(){
-
-        updateClearButton(
-            hospitalSearch,
-            clearHospitalSearch
-        );
-
-
-        if(currentProvince){
-
-            renderHospitals(
-                currentProvince
-            );
-
-        }
-
-    }
-);
-
-
-clearHospitalSearch.addEventListener(
-    "click",
-    function(){
-
-        hospitalSearch.value = "";
-
-
-        updateClearButton(
-            hospitalSearch,
-            clearHospitalSearch
-        );
-
-
-        if(currentProvince){
-
-            renderHospitals(
-                currentProvince
-            );
-
-        }
-
-
-        hospitalSearch.focus();
-
-    }
-);
-
-
-/* =========================================================
-   MODAL BACKDROP
-========================================================= */
-
-document
-    .getElementById(
-        "hospitalModal"
-    )
-    .addEventListener(
-        "click",
-        function(event){
-
-            if(event.target === this){
-
-                closeModal();
-
-            }
-
-        }
-    );
-
-
-/* =========================================================
-   ESC
-========================================================= */
 
 document.addEventListener(
     "keydown",
-    function(event){
+    event => {
 
         if(event.key === "Escape"){
-
             closeModal();
-
         }
 
     }
@@ -2553,14 +1466,215 @@ document.addEventListener(
 
 
 /* =========================================================
-   INITIAL LOAD
+   پاک کردن جستجو
 ========================================================= */
+
+function clearProvinceSearch(){
+
+    document.getElementById("provinceSearch").value = "";
+
+    renderProvinces();
+}
+
+
+function clearHospitalSearch(){
+
+    document.getElementById("hospitalSearch").value = "";
+
+    renderHospitals(currentProvince);
+}
+
+
+/* =========================================================
+   خروجی TXT
+========================================================= */
+
+function exportTXT(){
+
+    let output = "";
+
+    output += "========================================\n";
+    output += "گزارش اطلاعات بیمارستان‌ها\n";
+    output += "========================================\n\n";
+
+    output += "تاریخ تهیه گزارش: ";
+    output += new Date().toLocaleString("fa-IR");
+    output += "\n\n";
+
+
+    let total = 0;
+
+    provinces.forEach(province => {
+
+        const list =
+            getVisibleHospitals(province);
+
+        if(!list.length) return;
+
+        output += "\n";
+        output += "########################################\n";
+        output += "استان: " + province + "\n";
+        output += "تعداد: " + list.length + "\n";
+        output += "########################################\n\n";
+
+
+        list.forEach((hospital,index) => {
+
+            total++;
+
+            const status =
+                getHospitalStatus(
+                    province,
+                    hospital.id
+                );
+
+            output +=
+                `${index + 1}. ${hospital.name}\n`;
+
+            output +=
+                `شهر: ${hospital.city}\n`;
+
+            output +=
+                `وضعیت: ${statusNames[status]}\n`;
+
+            output += "تلفن‌ها:\n";
+
+            (hospital.phones || [])
+                .forEach(phone => {
+
+                    output +=
+                        "  " + phone + "\n";
+                });
+
+
+            if(hospital.note){
+
+                output +=
+                    "یادداشت: " +
+                    hospital.note +
+                    "\n";
+            }
+
+            output +=
+                "----------------------------------------\n\n";
+        });
+    });
+
+
+    output += "\n========================================\n";
+    output += "تعداد کل بیمارستان‌های فعال: " + total + "\n";
+    output += "========================================\n";
+
+
+    const blob =
+        new Blob(
+            ["\uFEFF" + output],
+            {type:"text/plain;charset=utf-8"}
+        );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const a =
+        document.createElement("a");
+
+    a.href = url;
+
+    a.download =
+        "hospital-data-" +
+        new Date()
+            .toISOString()
+            .slice(0,10) +
+        ".txt";
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    a.remove();
+
+    URL.revokeObjectURL(url);
+
+    showToast("فایل اطلاعات ساخته شد");
+}
+
+
+/* =========================================================
+   Toast
+========================================================= */
+
+let toastTimer = null;
+
+function showToast(message){
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer =
+        setTimeout(() => {
+
+            toast.classList.remove("show");
+
+        },2500);
+}
+
+
+/* =========================================================
+   امنیت نمایش متن
+========================================================= */
+
+function escapeHTML(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+
+function escapeJS(value){
+
+    return String(value ?? "")
+        .replace(/\\/g,"\\\\")
+        .replace(/'/g,"\\'");
+}
+
+
+/* =========================================================
+   وضعیت اولیه را فقط در صورت نیاز نگه می‌داریم
+   تغییرات دستی کاربر روی localStorage ذخیره می‌شوند.
+========================================================= */
+
+function initializeInitialStatuses(){
+
+    /*
+       وضعیت‌های اولیه از initialHospitalStatuses
+       مستقیماً خوانده می‌شوند.
+
+       به محض اینکه کاربر وضعیت را تغییر دهد،
+       مقدار جدید داخل localStorage ذخیره می‌شود.
+    */
+}
+
+
+/* =========================================================
+   شروع برنامه
+========================================================= */
+
+initializeInitialStatuses();
 
 renderProvinces();
 
 </script>
 
 </body>
-
 </html>
 
