@@ -429,11 +429,6 @@ body{
    STATUS BUTTONS
    ========================================================= */
 
-/*
-   تمام وضعیت‌ها یکجا
-   فقط وضعیت انتخاب شده آبی است
-*/
-
 .status-buttons{
     display:flex;
     flex-wrap:wrap;
@@ -597,7 +592,10 @@ body{
 
     <h1>مدیریت بیمارستان‌ها</h1>
 
-    <button class="top-btn" onclick="exportTXT()">
+    <button
+        class="top-btn"
+        onclick="exportTXT()"
+    >
         💾 خروجی اطلاعات
     </button>
 
@@ -633,7 +631,10 @@ body{
         </div>
 
 
-        <div id="provinceGrid" class="grid">
+        <div
+            id="provinceGrid"
+            class="grid"
+        >
 
             <div class="loading">
                 در حال دریافت اطلاعات...
@@ -649,7 +650,10 @@ body{
          صفحه بیمارستان‌ها
          ===================================================== -->
 
-    <div id="hospitalPage" style="display:none">
+    <div
+        id="hospitalPage"
+        style="display:none"
+    >
 
         <button
             class="back-btn"
@@ -786,7 +790,7 @@ body{
 
 
 /* =========================================================
-   اطلاعات استان‌ها
+   استان‌ها
    ========================================================= */
 
 const provinces = [
@@ -826,139 +830,41 @@ const provinces = [
 ];
 
 
-
-/* =========================================================
-   اطلاعات بیمارستان‌ها
-   ========================================================= */
-
 let hospitals = {};
 
+let currentProvince = null;
+
+let currentHospital = null;
 
 
 /* =========================================================
-   دریافت اطلاعات بیمارستان‌ها
+   کلیدهای LocalStorage
    ========================================================= */
 
-async function loadHospitals(){
+const STATUS_KEY =
+    "hospital_status_v4";
 
-    try{
-
-        const response =
-            await fetch(
-                "./data/hospitals.json",
-                {
-                    cache:"no-store"
-                }
-            );
+const DELETED_KEY =
+    "deleted_hospitals_v1";
 
 
-        if(!response.ok){
+/* =========================================================
+   نام وضعیت‌ها
+   ========================================================= */
 
-            throw new Error(
-                "HTTP " + response.status
-            );
+const statusNames = {
 
-        }
+    ready:"آماده تماس",
 
+    "no-answer":"تماس بی‌پاسخ",
 
-        const text =
-            await response.text();
+    catalog:"ارسال کاتالوگ",
 
+    "follow-up":"پیگیری",
 
-        if(!text.trim()){
+    emed:"eMed"
 
-            throw new Error(
-                "فایل hospitals.json خالی است"
-            );
-
-        }
-
-
-        let data;
-
-
-        try{
-
-            data =
-                JSON.parse(text);
-
-        }
-        catch(jsonError){
-
-            data =
-                Function(
-                    '"use strict"; return (' +
-                    text +
-                    ');'
-                )();
-
-        }
-
-
-        if(
-            !data ||
-            typeof data !== "object" ||
-            Array.isArray(data)
-        ){
-
-            throw new Error(
-                "ساختار hospitals.json صحیح نیست"
-            );
-
-        }
-
-
-        hospitals =
-            data;
-
-
-        renderProvinces();
-
-
-        console.log(
-            "Hospital data loaded successfully:",
-            hospitals
-        );
-
-    }
-    catch(error){
-
-        console.error(
-            "خطا در دریافت hospitals.json:",
-            error
-        );
-
-
-        document.getElementById(
-            "provinceGrid"
-        ).innerHTML = `
-
-            <div class="empty">
-
-                ❌ خطا در دریافت اطلاعات بیمارستان‌ها
-
-                <br><br>
-
-                مطمئن شوید فایل زیر وجود دارد:
-
-                <br>
-
-                <b>data/hospitals.json</b>
-
-                <br><br>
-
-                <small style="color:#777">
-                    ${escapeHTML(error.message)}
-                </small>
-
-            </div>
-
-        `;
-
-    }
-
-}
-
+};
 
 
 /* =========================================================
@@ -1322,40 +1228,109 @@ const initialHospitalStatuses = {
 
 
 /* =========================================================
-   تنظیمات
+   دریافت فایل hospitals.json
    ========================================================= */
 
-const STATUS_KEY =
-    "hospital_status_v4";
+async function loadHospitals(){
 
-const DELETED_KEY =
-    "deleted_hospitals_v1";
+    try{
 
-let currentProvince =
-    null;
+        const response =
+            await fetch(
+                "./data/hospitals.json",
+                {
+                    cache:"no-store"
+                }
+            );
 
-let currentHospital =
-    null;
+
+        if(!response.ok){
+
+            throw new Error(
+                "HTTP " + response.status
+            );
+
+        }
 
 
-const statusNames = {
+        const text =
+            await response.text();
 
-    ready:"آماده تماس",
 
-    "no-answer":"تماس بی‌پاسخ",
+        if(!text.trim()){
 
-    catalog:"ارسال کاتالوگ",
+            throw new Error(
+                "فایل hospitals.json خالی است"
+            );
 
-    "follow-up":"پیگیری",
+        }
 
-    emed:"eMed"
 
-};
+        let data;
+
+
+        try{
+
+            data =
+                JSON.parse(text);
+
+        }
+        catch(error){
+
+            data =
+                Function(
+                    '"use strict"; return (' +
+                    text +
+                    ');'
+                )();
+
+        }
+
+
+        hospitals =
+            data;
+
+
+        renderProvinces();
+
+    }
+    catch(error){
+
+        console.error(error);
+
+
+        document.getElementById(
+            "provinceGrid"
+        ).innerHTML = `
+
+            <div class="empty">
+
+                ❌ خطا در دریافت اطلاعات
+
+                <br><br>
+
+                فایل
+                <b>data/hospitals.json</b>
+                را بررسی کنید.
+
+                <br><br>
+
+                <small>
+                    ${escapeHTML(error.message)}
+                </small>
+
+            </div>
+
+        `;
+
+    }
+
+}
 
 
 
 /* =========================================================
-   توابع کمکی
+   نرمال‌سازی متن
    ========================================================= */
 
 function normalizeText(value){
@@ -1400,6 +1375,11 @@ function toEnglishDigits(value){
 }
 
 
+
+/* =========================================================
+   کلید بیمارستان
+   ========================================================= */
+
 function hospitalStatusKey(
     province,
     id
@@ -1411,6 +1391,11 @@ function hospitalStatusKey(
 
 }
 
+
+
+/* =========================================================
+   وضعیت بیمارستان
+   ========================================================= */
 
 function getHospitalStatus(
     province,
@@ -1455,6 +1440,11 @@ function setHospitalStatus(
 }
 
 
+
+/* =========================================================
+   بیمارستان‌های حذف‌شده
+   ========================================================= */
+
 function getDeletedHospitals(){
 
     try{
@@ -1466,7 +1456,7 @@ function getDeletedHospitals(){
         );
 
     }
-    catch(e){
+    catch(error){
 
         return {};
 
@@ -1480,7 +1470,11 @@ function isHospitalDeleted(
     id
 ){
 
-    return !!getDeletedHospitals()[
+    const deleted =
+        getDeletedHospitals();
+
+
+    return !!deleted[
         hospitalStatusKey(
             province,
             id
@@ -1490,6 +1484,11 @@ function isHospitalDeleted(
 }
 
 
+
+/* =========================================================
+   فقط بیمارستان‌های فعال
+   ========================================================= */
+
 function getVisibleHospitals(
     province
 ){
@@ -1498,10 +1497,10 @@ function getVisibleHospitals(
         hospitals[province] || []
     )
     .filter(
-        h =>
+        hospital =>
             !isHospitalDeleted(
                 province,
-                h.id
+                hospital.id
             )
     );
 
@@ -1510,7 +1509,7 @@ function getVisibleHospitals(
 
 
 /* =========================================================
-   استان‌ها
+   نمایش استان‌ها
    ========================================================= */
 
 function renderProvinces(){
@@ -1547,13 +1546,15 @@ function renderProvinces(){
 
     const filtered =
         provinces.filter(
-            p =>
-                normalizeText(p)
-                    .includes(search)
+            province =>
+                normalizeText(
+                    province
+                ).includes(search)
         );
 
 
-    grid.innerHTML = "";
+    grid.innerHTML =
+        "";
 
 
     if(!filtered.length){
@@ -1578,49 +1579,16 @@ function renderProvinces(){
                 );
 
 
-            const counts = {
+            const countStatus =
+                status =>
 
-                ready:list.filter(
-                    h =>
-                        getHospitalStatus(
-                            province,
-                            h.id
-                        ) === "ready"
-                ).length,
-
-                noAnswer:list.filter(
-                    h =>
-                        getHospitalStatus(
-                            province,
-                            h.id
-                        ) === "no-answer"
-                ).length,
-
-                catalog:list.filter(
-                    h =>
-                        getHospitalStatus(
-                            province,
-                            h.id
-                        ) === "catalog"
-                ).length,
-
-                followUp:list.filter(
-                    h =>
-                        getHospitalStatus(
-                            province,
-                            h.id
-                        ) === "follow-up"
-                ).length,
-
-                emed:list.filter(
-                    h =>
-                        getHospitalStatus(
-                            province,
-                            h.id
-                        ) === "emed"
-                ).length
-
-            };
+                    list.filter(
+                        hospital =>
+                            getHospitalStatus(
+                                province,
+                                hospital.id
+                            ) === status
+                    ).length;
 
 
             const card =
@@ -1657,27 +1625,27 @@ function renderProvinces(){
                     <div class="province-status">
 
                         <span class="mini-status">
-                            آماده: ${counts.ready}
+                            آماده: ${countStatus("ready")}
                         </span>
 
                         <span class="mini-status">
-                            بی‌پاسخ: ${counts.noAnswer}
+                            بی‌پاسخ: ${countStatus("no-answer")}
                         </span>
 
                         <span class="mini-status">
-                            کاتالوگ: ${counts.catalog}
+                            کاتالوگ: ${countStatus("catalog")}
                         </span>
 
                         <span class="mini-status">
-                            پیگیری: ${counts.followUp}
+                            پیگیری: ${countStatus("follow-up")}
                         </span>
 
                         ${
-                            counts.emed
+                            countStatus("emed")
                             ?
                             `
                             <span class="mini-status">
-                                eMed: ${counts.emed}
+                                eMed: ${countStatus("emed")}
                             </span>
                             `
                             :
@@ -1776,13 +1744,14 @@ function renderStats(
 
 
     const count =
-        s =>
+        status =>
+
             list.filter(
-                h =>
+                hospital =>
                     getHospitalStatus(
                         province,
-                        h.id
-                    ) === s
+                        hospital.id
+                    ) === status
             ).length;
 
 
@@ -1792,44 +1761,32 @@ function renderStats(
 
         <div class="stat">
             کل:
-            <strong>
-                ${list.length}
-            </strong>
+            <strong>${list.length}</strong>
         </div>
 
         <div class="stat">
             آماده تماس:
-            <strong>
-                ${count("ready")}
-            </strong>
+            <strong>${count("ready")}</strong>
         </div>
 
         <div class="stat">
             بی‌پاسخ:
-            <strong>
-                ${count("no-answer")}
-            </strong>
+            <strong>${count("no-answer")}</strong>
         </div>
 
         <div class="stat">
             کاتالوگ:
-            <strong>
-                ${count("catalog")}
-            </strong>
+            <strong>${count("catalog")}</strong>
         </div>
 
         <div class="stat">
             پیگیری:
-            <strong>
-                ${count("follow-up")}
-            </strong>
+            <strong>${count("follow-up")}</strong>
         </div>
 
         <div class="stat">
             eMed:
-            <strong>
-                ${count("emed")}
-            </strong>
+            <strong>${count("emed")}</strong>
         </div>
 
     `;
@@ -1839,7 +1796,7 @@ function renderStats(
 
 
 /* =========================================================
-   جستجوی بیمارستان
+   جستجو
    ========================================================= */
 
 function hospitalMatches(
@@ -1853,9 +1810,11 @@ function hospitalMatches(
 
 
     const tokens =
-        normalizeText(search)
-            .split(" ")
-            .filter(Boolean);
+        normalizeText(
+            search
+        )
+        .split(" ")
+        .filter(Boolean);
 
 
     const status =
@@ -1881,56 +1840,6 @@ function hospitalMatches(
         token =>
             searchable.includes(token)
     );
-
-}
-
-
-
-/* =========================================================
-   شماره تلفن
-   ========================================================= */
-
-function phoneHref(
-    phone
-){
-
-    return toEnglishDigits(
-        phone
-    )
-    .replace(
-        /[^\d+]/g,
-        ""
-    );
-
-}
-
-
-
-/* =========================================================
-   کلاس وضعیت
-   ========================================================= */
-
-function statusClass(
-    status
-){
-
-    if(status === "ready")
-        return "status-ready";
-
-
-    if(status === "catalog")
-        return "status-catalog";
-
-
-    if(status === "follow-up")
-        return "status-follow-up";
-
-
-    if(status === "emed")
-        return "status-emed";
-
-
-    return "status-no-answer";
 
 }
 
@@ -1977,9 +1886,9 @@ function renderHospitals(
             province
         )
         .filter(
-            h =>
+            hospital =>
                 hospitalMatches(
-                    h,
+                    hospital,
                     province,
                     search
                 )
@@ -2127,6 +2036,52 @@ function renderHospitals(
 
 
 /* =========================================================
+   وضعیت کلاس
+   ========================================================= */
+
+function statusClass(
+    status
+){
+
+    if(status === "ready")
+        return "status-ready";
+
+    if(status === "catalog")
+        return "status-catalog";
+
+    if(status === "follow-up")
+        return "status-follow-up";
+
+    if(status === "emed")
+        return "status-emed";
+
+    return "status-no-answer";
+
+}
+
+
+
+/* =========================================================
+   شماره تلفن
+   ========================================================= */
+
+function phoneHref(
+    phone
+){
+
+    return toEnglishDigits(
+        phone
+    )
+    .replace(
+        /[^\d+]/g,
+        ""
+    );
+
+}
+
+
+
+/* =========================================================
    باز کردن بیمارستان
    ========================================================= */
 
@@ -2169,12 +2124,6 @@ function openHospital(
         "📍 " +
         (hospital.city || "");
 
-
-    const currentStatus =
-        getHospitalStatus(
-            province,
-            id
-        );
 
 
     /* =====================================================
@@ -2238,19 +2187,26 @@ function openHospital(
         "";
 
 
+    const currentStatus =
+        getHospitalStatus(
+            province,
+            id
+        );
+
+
     Object.entries(
         statusNames
     )
     .forEach(
         ([key,label]) => {
 
-            const btn =
+            const button =
                 document.createElement(
                     "button"
                 );
 
 
-            btn.className =
+            button.className =
                 "status-btn";
 
 
@@ -2258,18 +2214,18 @@ function openHospital(
                 currentStatus === key
             ){
 
-                btn.classList.add(
+                button.classList.add(
                     "active"
                 );
 
             }
 
 
-            btn.textContent =
+            button.textContent =
                 label;
 
 
-            btn.onclick =
+            button.onclick =
                 () => {
 
                     setHospitalStatus(
@@ -2305,7 +2261,7 @@ function openHospital(
 
 
             statusButtons.appendChild(
-                btn
+                button
             );
 
         }
@@ -2383,7 +2339,7 @@ function deleteHospital(
 
     if(
         !confirm(
-            `آیا از حذف «${hospital.name}» مطمئن هستید؟\n\nاین بیمارستان از لیست سایت حذف می‌شود.`
+            `آیا از حذف «${hospital.name}» مطمئن هستید؟`
         )
     )
         return;
@@ -2409,11 +2365,6 @@ function deleteHospital(
     );
 
 
-    showToast(
-        "بیمارستان حذف شد"
-    );
-
-
     if(
         currentProvince === province
     ){
@@ -2432,12 +2383,17 @@ function deleteHospital(
 
     renderProvinces();
 
+
+    showToast(
+        "بیمارستان حذف شد"
+    );
+
 }
 
 
 
 /* =========================================================
-   برگشت
+   بازگشت
    ========================================================= */
 
 function showProvinces(){
@@ -2527,7 +2483,7 @@ document.addEventListener(
 
 
 /* =========================================================
-   جستجو
+   پاک کردن جستجو
    ========================================================= */
 
 function clearProvinceSearch(){
@@ -2560,37 +2516,21 @@ function clearHospitalSearch(){
 
 
 /* =========================================================
-   خروجی TXT
+   خروجی JSON
    ========================================================= */
+
+/*
+   نکته مهم:
+
+   getVisibleHospitals()
+   فقط مراکزی را برمی‌گرداند که حذف نشده‌اند.
+
+   بنابراین مراکز حذف‌شده اصلاً وارد فایل خروجی نمی‌شوند.
+*/
 
 function exportTXT(){
 
-    let output =
-        "";
-
-
-    output +=
-        "========================================\n";
-
-
-    output +=
-        "گزارش اطلاعات بیمارستان‌ها\n";
-
-
-    output +=
-        "========================================\n\n";
-
-
-    output +=
-        "تاریخ تهیه گزارش: " +
-        new Date().toLocaleString(
-            "fa-IR"
-        ) +
-        "\n\n";
-
-
-    let total =
-        0;
+    const exportData = {};
 
 
     provinces.forEach(
@@ -2606,113 +2546,73 @@ function exportTXT(){
                 return;
 
 
-            output +=
-                "\n########################################\n";
+            exportData[province] =
+                list.map(
+                    hospital => {
+
+                        const item = {
+
+                            id:
+                                hospital.id,
+
+                            name:
+                                hospital.name,
+
+                            city:
+                                hospital.city,
+
+                            phones:
+                                hospital.phones || []
+
+                        };
 
 
-            output +=
-                "استان: " +
-                province +
-                "\n";
+                        if(
+                            hospital.note
+                        ){
 
-
-            output +=
-                "تعداد: " +
-                list.length +
-                "\n";
-
-
-            output +=
-                "########################################\n\n";
-
-
-            list.forEach(
-                (hospital,index) => {
-
-                    total++;
-
-
-                    const status =
-                        getHospitalStatus(
-                            province,
-                            hospital.id
-                        );
-
-
-                    output +=
-                        `${index+1}. ${hospital.name}\n`;
-
-
-                    output +=
-                        `شهر: ${hospital.city || ""}\n`;
-
-
-                    output +=
-                        `وضعیت: ${
-                            statusNames[status] || ""
-                        }\n`;
-
-
-                    output +=
-                        "تلفن‌ها:\n";
-
-
-                    (hospital.phones || [])
-                    .forEach(
-                        phone => {
-
-                            output +=
-                                "  " +
-                                phone +
-                                "\n";
+                            item.note =
+                                hospital.note;
 
                         }
-                    );
 
 
-                    if(hospital.note){
-
-                        output +=
-                            "یادداشت: " +
-                            hospital.note +
-                            "\n";
+                        return item;
 
                     }
-
-
-                    output +=
-                        "----------------------------------------\n\n";
-
-                }
-            );
+                );
 
         }
     );
 
 
-    output +=
-        "\n========================================\n";
+
+    /* =====================================================
+       تبدیل به JSON
+       ===================================================== */
+
+    const json =
+        JSON.stringify(
+            exportData,
+            null,
+            4
+        );
 
 
-    output +=
-        "تعداد کل بیمارستان‌های فعال: " +
-        total +
-        "\n";
 
-
-    output +=
-        "========================================\n";
-
+    /* =====================================================
+       ساخت فایل
+       ===================================================== */
 
     const blob =
         new Blob(
             [
                 "\uFEFF" +
-                output
+                json
             ],
             {
                 type:
-                    "text/plain;charset=utf-8"
+                    "application/json;charset=utf-8"
             }
         );
 
@@ -2734,11 +2634,11 @@ function exportTXT(){
 
 
     a.download =
-        "hospital-data-" +
+        "hospitals-export-" +
         new Date()
             .toISOString()
             .slice(0,10) +
-        ".txt";
+        ".json";
 
 
     document.body.appendChild(
@@ -2758,7 +2658,7 @@ function exportTXT(){
 
 
     showToast(
-        "فایل اطلاعات ساخته شد"
+        "فایل JSON ساخته شد"
     );
 
 }
@@ -2869,7 +2769,7 @@ function escapeJS(
 
 
 /* =========================================================
-   شروع برنامه
+   شروع
    ========================================================= */
 
 loadHospitals();
@@ -2877,4 +2777,5 @@ loadHospitals();
 </script>
 
 </body>
+
 </html>
