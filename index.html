@@ -522,14 +522,44 @@ const provinces = [
 
 
 /* =========================================================
-   اطلاعات بیمارستان‌ها از JSON
+   اطلاعات بیمارستان‌ها
    ========================================================= */
 
 let hospitals = {};
 
 
 /* =========================================================
-   دریافت JSON
+   دریافت اطلاعات بیمارستان‌ها
+   =========================================================
+
+   این تابع دو نوع فایل را قبول می‌کند:
+
+   1. JSON استاندارد:
+      {
+          "فارس":[
+              {
+                  "id":1,
+                  "name":"...",
+                  "city":"...",
+                  "phones":["..."]
+              }
+          ]
+      }
+
+   2. فایل فعلی شما:
+      {
+          "فارس":[
+              {
+                  id:1,
+                  name:"...",
+                  city:"...",
+                  phones:["..."]
+              }
+          ]
+      }
+
+   بنابراین لازم نیست اطلاعات فعلی بیمارستان‌ها
+   را تغییر بدهید.
    ========================================================= */
 
 async function loadHospitals(){
@@ -543,22 +573,114 @@ async function loadHospitals(){
             }
         );
 
+
         if(!response.ok){
 
             throw new Error(
-                "خطا در دریافت hospitals.json"
+                "HTTP " + response.status
             );
 
         }
 
-        hospitals = await response.json();
+
+        /*
+         * فایل را ابتدا به صورت متن می‌گیریم.
+         */
+
+        const text =
+            await response.text();
+
+
+        if(!text.trim()){
+
+            throw new Error(
+                "فایل hospitals.json خالی است"
+            );
+
+        }
+
+
+        let data;
+
+
+        /*
+         * مرحله اول:
+         * تلاش برای JSON استاندارد
+         */
+
+        try{
+
+            data =
+                JSON.parse(text);
+
+        }
+        catch(jsonError){
+
+            /*
+             * مرحله دوم:
+             *
+             * اگر JSON استاندارد نبود،
+             * آن را به عنوان JavaScript Object
+             * پردازش می‌کنیم.
+             *
+             * این همان چیزی است که برای فایل فعلی
+             * شما لازم است.
+             */
+
+            data =
+                Function(
+                    '"use strict"; return (' +
+                    text +
+                    ');'
+                )();
+
+        }
+
+
+        /*
+         * بررسی ساختار اصلی
+         */
+
+        if(
+            !data ||
+            typeof data !== "object" ||
+            Array.isArray(data)
+        ){
+
+            throw new Error(
+                "ساختار hospitals.json صحیح نیست"
+            );
+
+        }
+
+
+        /*
+         * ذخیره اطلاعات
+         */
+
+        hospitals = data;
+
+
+        /*
+         * نمایش استان‌ها
+         */
 
         renderProvinces();
+
+
+        console.log(
+            "Hospital data loaded successfully:",
+            hospitals
+        );
 
     }
     catch(error){
 
-        console.error(error);
+        console.error(
+            "خطا در دریافت hospitals.json:",
+            error
+        );
+
 
         document.getElementById(
             "provinceGrid"
@@ -575,6 +697,12 @@ async function loadHospitals(){
                 <br>
 
                 <b>data/hospitals.json</b>
+
+                <br><br>
+
+                <small style="color:#777">
+                    ${escapeHTML(error.message)}
+                </small>
 
             </div>
 
@@ -1012,7 +1140,10 @@ function hospitalStatusKey(province,id){
 
 function getHospitalStatus(province,id){
 
-    const key = hospitalStatusKey(province,id);
+    const key = hospitalStatusKey(
+        province,
+        id
+    );
 
     return localStorage.getItem(
         STATUS_KEY + "_" + key
@@ -1025,7 +1156,11 @@ function getHospitalStatus(province,id){
 }
 
 
-function setHospitalStatus(province,id,status){
+function setHospitalStatus(
+    province,
+    id,
+    status
+){
 
     localStorage.setItem(
         STATUS_KEY + "_" +
@@ -1041,7 +1176,9 @@ function getDeletedHospitals(){
     try{
 
         return JSON.parse(
-            localStorage.getItem(DELETED_KEY) || "{}"
+            localStorage.getItem(
+                DELETED_KEY
+            ) || "{}"
         );
 
     }
@@ -1054,20 +1191,31 @@ function getDeletedHospitals(){
 }
 
 
-function isHospitalDeleted(province,id){
+function isHospitalDeleted(
+    province,
+    id
+){
 
     return !!getDeletedHospitals()[
-        hospitalStatusKey(province,id)
+        hospitalStatusKey(
+            province,
+            id
+        )
     ];
 
 }
 
 
-function getVisibleHospitals(province){
+function getVisibleHospitals(
+    province
+){
 
     return (hospitals[province] || [])
         .filter(h =>
-            !isHospitalDeleted(province,h.id)
+            !isHospitalDeleted(
+                province,
+                h.id
+            )
         );
 
 }
@@ -1080,28 +1228,42 @@ function getVisibleHospitals(province){
 function renderProvinces(){
 
     const grid =
-        document.getElementById("provinceGrid");
+        document.getElementById(
+            "provinceGrid"
+        );
 
     const input =
-        document.getElementById("provinceSearch");
+        document.getElementById(
+            "provinceSearch"
+        );
 
     const clear =
-        document.getElementById("provinceClear");
+        document.getElementById(
+            "provinceClear"
+        );
 
     const search =
-        normalizeText(input.value);
+        normalizeText(
+            input.value
+        );
+
 
     clear.classList.toggle(
         "show",
         !!search
     );
 
+
     const filtered =
-        provinces.filter(p =>
-            normalizeText(p).includes(search)
+        provinces.filter(
+            p =>
+                normalizeText(p)
+                    .includes(search)
         );
 
+
     grid.innerHTML = "";
+
 
     if(!filtered.length){
 
@@ -1115,118 +1277,142 @@ function renderProvinces(){
 
     }
 
-    filtered.forEach(province => {
 
-        const list =
-            getVisibleHospitals(province);
+    filtered.forEach(
+        province => {
 
-        const counts = {
-
-            ready:list.filter(
-                h => getHospitalStatus(
-                    province,h.id
-                ) === "ready"
-            ).length,
-
-            noAnswer:list.filter(
-                h => getHospitalStatus(
-                    province,h.id
-                ) === "no-answer"
-            ).length,
-
-            catalog:list.filter(
-                h => getHospitalStatus(
-                    province,h.id
-                ) === "catalog"
-            ).length,
-
-            followUp:list.filter(
-                h => getHospitalStatus(
-                    province,h.id
-                ) === "follow-up"
-            ).length,
-
-            emed:list.filter(
-                h => getHospitalStatus(
-                    province,h.id
-                ) === "emed"
-            ).length
-
-        };
+            const list =
+                getVisibleHospitals(
+                    province
+                );
 
 
-        const card =
-            document.createElement("div");
+            const counts = {
 
-        card.className =
-            "province-card";
+                ready:list.filter(
+                    h =>
+                        getHospitalStatus(
+                            province,
+                            h.id
+                        ) === "ready"
+                ).length,
 
-        card.onclick =
-            () => openProvince(province);
+                noAnswer:list.filter(
+                    h =>
+                        getHospitalStatus(
+                            province,
+                            h.id
+                        ) === "no-answer"
+                ).length,
+
+                catalog:list.filter(
+                    h =>
+                        getHospitalStatus(
+                            province,
+                            h.id
+                        ) === "catalog"
+                ).length,
+
+                followUp:list.filter(
+                    h =>
+                        getHospitalStatus(
+                            province,
+                            h.id
+                        ) === "follow-up"
+                ).length,
+
+                emed:list.filter(
+                    h =>
+                        getHospitalStatus(
+                            province,
+                            h.id
+                        ) === "emed"
+                ).length
+
+            };
 
 
-        card.innerHTML = `
+            const card =
+                document.createElement(
+                    "div"
+                );
 
-            <div class="province-name">
-                ${escapeHTML(province)}
-            </div>
 
-            <div class="province-count">
-                ${list.length} بیمارستان
-            </div>
+            card.className =
+                "province-card";
 
-            ${
-                list.length
-                ?
-                `
-                <div class="province-status">
 
-                    <span class="mini-status">
-                        آماده: ${counts.ready}
-                    </span>
+            card.onclick =
+                () =>
+                    openProvince(
+                        province
+                    );
 
-                    <span class="mini-status">
-                        بی‌پاسخ: ${counts.noAnswer}
-                    </span>
 
-                    <span class="mini-status">
-                        کاتالوگ: ${counts.catalog}
-                    </span>
+            card.innerHTML = `
 
-                    <span class="mini-status">
-                        پیگیری: ${counts.followUp}
-                    </span>
+                <div class="province-name">
+                    ${escapeHTML(province)}
+                </div>
 
-                    ${
-                        counts.emed
-                        ?
-                        `
+                <div class="province-count">
+                    ${list.length} بیمارستان
+                </div>
+
+                ${
+                    list.length
+                    ?
+                    `
+                    <div class="province-status">
+
                         <span class="mini-status">
-                            eMed: ${counts.emed}
+                            آماده: ${counts.ready}
                         </span>
-                        `
-                        :
-                        ""
-                    }
 
-                </div>
-                `
-                :
-                `
-                <div
-                    class="province-count"
-                    style="margin-top:10px"
-                >
-                    بدون بیمارستان
-                </div>
-                `
-            }
+                        <span class="mini-status">
+                            بی‌پاسخ: ${counts.noAnswer}
+                        </span>
 
-        `;
+                        <span class="mini-status">
+                            کاتالوگ: ${counts.catalog}
+                        </span>
 
-        grid.appendChild(card);
+                        <span class="mini-status">
+                            پیگیری: ${counts.followUp}
+                        </span>
 
-    });
+                        ${
+                            counts.emed
+                            ?
+                            `
+                            <span class="mini-status">
+                                eMed: ${counts.emed}
+                            </span>
+                            `
+                            :
+                            ""
+                        }
+
+                    </div>
+                    `
+                    :
+                    `
+                    <div
+                        class="province-count"
+                        style="margin-top:10px"
+                    >
+                        بدون بیمارستان
+                    </div>
+                    `
+                }
+
+            `;
+
+
+            grid.appendChild(card);
+
+        }
+    );
 
 }
 
@@ -1235,29 +1421,46 @@ function renderProvinces(){
    باز کردن استان
    ========================================================= */
 
-function openProvince(province){
+function openProvince(
+    province
+){
 
-    currentProvince = province;
+    currentProvince =
+        province;
+
 
     document.getElementById(
         "provincePage"
-    ).style.display = "none";
+    ).style.display =
+        "none";
+
 
     document.getElementById(
         "hospitalPage"
-    ).style.display = "block";
+    ).style.display =
+        "block";
+
 
     document.getElementById(
         "hospitalPageTitle"
     ).textContent =
-        "بیمارستان‌های " + province;
+        "بیمارستان‌های " +
+        province;
+
 
     document.getElementById(
         "hospitalSearch"
     ).value = "";
 
-    renderStats(province);
-    renderHospitals(province);
+
+    renderStats(
+        province
+    );
+
+
+    renderHospitals(
+        province
+    );
 
 }
 
@@ -1266,19 +1469,25 @@ function openProvince(province){
    آمار
    ========================================================= */
 
-function renderStats(province){
+function renderStats(
+    province
+){
 
     const list =
-        getVisibleHospitals(province);
+        getVisibleHospitals(
+            province
+        );
+
 
     const count =
-        s => list.filter(
-            h =>
-                getHospitalStatus(
-                    province,
-                    h.id
-                ) === s
-        ).length;
+        s =>
+            list.filter(
+                h =>
+                    getHospitalStatus(
+                        province,
+                        h.id
+                    ) === s
+            ).length;
 
 
     document.getElementById(
@@ -1286,32 +1495,45 @@ function renderStats(province){
     ).innerHTML = `
 
         <div class="stat">
-            کل: <strong>${list.length}</strong>
+            کل:
+            <strong>
+                ${list.length}
+            </strong>
         </div>
 
         <div class="stat">
             آماده تماس:
-            <strong>${count("ready")}</strong>
+            <strong>
+                ${count("ready")}
+            </strong>
         </div>
 
         <div class="stat">
             بی‌پاسخ:
-            <strong>${count("no-answer")}</strong>
+            <strong>
+                ${count("no-answer")}
+            </strong>
         </div>
 
         <div class="stat">
             کاتالوگ:
-            <strong>${count("catalog")}</strong>
+            <strong>
+                ${count("catalog")}
+            </strong>
         </div>
 
         <div class="stat">
             پیگیری:
-            <strong>${count("follow-up")}</strong>
+            <strong>
+                ${count("follow-up")}
+            </strong>
         </div>
 
         <div class="stat">
             eMed:
-            <strong>${count("emed")}</strong>
+            <strong>
+                ${count("emed")}
+            </strong>
         </div>
 
     `;
@@ -1332,16 +1554,19 @@ function hospitalMatches(
     if(!search)
         return true;
 
+
     const tokens =
         normalizeText(search)
             .split(" ")
             .filter(Boolean);
+
 
     const status =
         getHospitalStatus(
             province,
             hospital.id
         );
+
 
     const searchable =
         normalizeText([
@@ -1367,10 +1592,17 @@ function hospitalMatches(
    شماره تلفن
    ========================================================= */
 
-function phoneHref(phone){
+function phoneHref(
+    phone
+){
 
-    return toEnglishDigits(phone)
-        .replace(/[^\d+]/g,"");
+    return toEnglishDigits(
+        phone
+    )
+    .replace(
+        /[^\d+]/g,
+        ""
+    );
 
 }
 
@@ -1379,19 +1611,25 @@ function phoneHref(phone){
    کلاس وضعیت
    ========================================================= */
 
-function statusClass(status){
+function statusClass(
+    status
+){
 
     if(status === "ready")
         return "status-ready";
 
+
     if(status === "catalog")
         return "status-catalog";
+
 
     if(status === "follow-up")
         return "status-follow-up";
 
+
     if(status === "emed")
         return "status-emed";
+
 
     return "status-no-answer";
 
@@ -1402,24 +1640,31 @@ function statusClass(status){
    نمایش بیمارستان‌ها
    ========================================================= */
 
-function renderHospitals(province){
+function renderHospitals(
+    province
+){
 
     const grid =
         document.getElementById(
             "hospitalGrid"
         );
 
+
     const input =
         document.getElementById(
             "hospitalSearch"
         );
+
 
     const clear =
         document.getElementById(
             "hospitalClear"
         );
 
-    const search = input.value;
+
+    const search =
+        input.value;
+
 
     clear.classList.toggle(
         "show",
@@ -1428,14 +1673,17 @@ function renderHospitals(province){
 
 
     const list =
-        getVisibleHospitals(province)
-            .filter(h =>
+        getVisibleHospitals(
+            province
+        )
+        .filter(
+            h =>
                 hospitalMatches(
                     h,
                     province,
                     search
                 )
-            );
+        );
 
 
     grid.innerHTML = "";
@@ -1454,110 +1702,122 @@ function renderHospitals(province){
     }
 
 
-    list.forEach(hospital => {
+    list.forEach(
+        hospital => {
 
-        const status =
-            getHospitalStatus(
-                province,
-                hospital.id
-            );
-
-
-        const card =
-            document.createElement("div");
-
-        card.className =
-            "hospital-card";
-
-        card.onclick =
-            () =>
-                openHospital(
+            const status =
+                getHospitalStatus(
                     province,
                     hospital.id
                 );
 
 
-        const phonesHTML =
-            (hospital.phones || [])
-            .map(phone => `
-
-                <a
-                    class="card-phone"
-                    href="tel:${phoneHref(phone)}"
-                    onclick="event.stopPropagation()"
-                >
-                    📞 ${escapeHTML(phone)}
-                </a>
-
-            `)
-            .join("");
+            const card =
+                document.createElement(
+                    "div"
+                );
 
 
-        card.innerHTML = `
+            card.className =
+                "hospital-card";
 
-            <div class="hospital-title-row">
 
-                <div class="hospital-name">
-                    ${escapeHTML(hospital.name)}
+            card.onclick =
+                () =>
+                    openHospital(
+                        province,
+                        hospital.id
+                    );
+
+
+            const phonesHTML =
+                (hospital.phones || [])
+                .map(
+                    phone => `
+
+                        <a
+                            class="card-phone"
+                            href="tel:${phoneHref(phone)}"
+                            onclick="event.stopPropagation()"
+                        >
+                            📞 ${escapeHTML(phone)}
+                        </a>
+
+                    `
+                )
+                .join("");
+
+
+            card.innerHTML = `
+
+                <div class="hospital-title-row">
+
+                    <div class="hospital-name">
+                        ${escapeHTML(hospital.name)}
+                    </div>
+
+                    <button
+                        class="delete-btn"
+                        title="حذف بیمارستان"
+                        onclick="
+                            deleteHospital(
+                                event,
+                                '${escapeJS(province)}',
+                                ${hospital.id}
+                            )
+                        "
+                    >
+                        🗑
+                    </button>
+
                 </div>
 
-                <button
-                    class="delete-btn"
-                    title="حذف بیمارستان"
-                    onclick="
-                        deleteHospital(
-                            event,
-                            '${escapeJS(province)}',
-                            ${hospital.id}
-                        )
-                    "
-                >
-                    🗑
-                </button>
 
-            </div>
-
-
-            <div class="hospital-city">
-                📍 ${escapeHTML(hospital.city || "")}
-            </div>
-
-
-            <div
-                class="status-badge ${statusClass(status)}"
-            >
-                ${escapeHTML(
-                    statusNames[status] ||
-                    "تماس بی‌پاسخ"
-                )}
-            </div>
-
-
-            <div>
-                ${phonesHTML}
-            </div>
-
-
-            ${
-                hospital.note
-                ?
-                `
-                <div class="note">
-                    📝 ${escapeHTML(
-                        hospital.note
+                <div class="hospital-city">
+                    📍 ${escapeHTML(
+                        hospital.city || ""
                     )}
                 </div>
-                `
-                :
-                ""
-            }
-
-        `;
 
 
-        grid.appendChild(card);
+                <div
+                    class="status-badge ${statusClass(status)}"
+                >
+                    ${escapeHTML(
+                        statusNames[status] ||
+                        "تماس بی‌پاسخ"
+                    )}
+                </div>
 
-    });
+
+                <div>
+                    ${phonesHTML}
+                </div>
+
+
+                ${
+                    hospital.note
+                    ?
+                    `
+                    <div class="note">
+                        📝 ${escapeHTML(
+                            hospital.note
+                        )}
+                    </div>
+                    `
+                    :
+                    ""
+                }
+
+            `;
+
+
+            grid.appendChild(
+                card
+            );
+
+        }
+    );
 
 }
 
@@ -1566,11 +1826,17 @@ function renderHospitals(province){
    باز کردن بیمارستان
    ========================================================= */
 
-function openHospital(province,id){
+function openHospital(
+    province,
+    id
+){
 
     const hospital =
         (hospitals[province] || [])
-        .find(h => h.id === id);
+        .find(
+            h =>
+                h.id === id
+        );
 
 
     if(
@@ -1613,23 +1879,35 @@ function openHospital(province,id){
         );
 
 
-    statusButtons.innerHTML = "";
+    statusButtons.innerHTML =
+        "";
 
 
-    Object.entries(statusNames)
-        .forEach(([key,label]) => {
+    Object.entries(
+        statusNames
+    )
+    .forEach(
+        ([key,label]) => {
 
             const btn =
                 document.createElement(
                     "button"
                 );
 
+
             btn.className =
                 "status-btn";
 
 
-            if(currentStatus === key)
-                btn.classList.add("active");
+            if(
+                currentStatus === key
+            ){
+
+                btn.classList.add(
+                    "active"
+                );
+
+            }
 
 
             btn.textContent =
@@ -1644,11 +1922,22 @@ function openHospital(province,id){
                     key
                 );
 
+
                 closeModal();
 
-                renderStats(province);
 
-                renderHospitals(province);
+                renderStats(
+                    province
+                );
+
+
+                renderHospitals(
+                    province
+                );
+
+
+                renderProvinces();
+
 
                 showToast(
                     "وضعیت به «" +
@@ -1659,9 +1948,12 @@ function openHospital(province,id){
             };
 
 
-            statusButtons.appendChild(btn);
+            statusButtons.appendChild(
+                btn
+            );
 
-        });
+        }
+    );
 
 
     const phones =
@@ -1670,30 +1962,40 @@ function openHospital(province,id){
         );
 
 
-    phones.innerHTML = "";
+    phones.innerHTML =
+        "";
 
 
     (hospital.phones || [])
-        .forEach(phone => {
+    .forEach(
+        phone => {
 
             const a =
                 document.createElement(
                     "a"
                 );
 
+
             a.className =
                 "modal-phone";
+
 
             a.href =
                 "tel:" +
                 phoneHref(phone);
 
+
             a.textContent =
-                "📞 " + phone;
+                "📞 " +
+                phone;
 
-            phones.appendChild(a);
 
-        });
+            phones.appendChild(
+                a
+            );
+
+        }
+    );
 
 
     const note =
@@ -1707,6 +2009,7 @@ function openHospital(province,id){
         note.style.display =
             "block";
 
+
         note.textContent =
             "📝 " +
             hospital.note;
@@ -1717,6 +2020,7 @@ function openHospital(province,id){
         note.style.display =
             "none";
 
+
         note.textContent =
             "";
 
@@ -1725,7 +2029,9 @@ function openHospital(province,id){
 
     document.getElementById(
         "modal"
-    ).classList.add("show");
+    ).classList.add(
+        "show"
+    );
 
 }
 
@@ -1745,7 +2051,10 @@ function deleteHospital(
 
     const hospital =
         (hospitals[province] || [])
-        .find(h => h.id === id);
+        .find(
+            h =>
+                h.id === id
+        );
 
 
     if(!hospital)
@@ -1774,7 +2083,9 @@ function deleteHospital(
 
     localStorage.setItem(
         DELETED_KEY,
-        JSON.stringify(deleted)
+        JSON.stringify(
+            deleted
+        )
     );
 
 
@@ -1783,12 +2094,23 @@ function deleteHospital(
     );
 
 
-    if(currentProvince === province){
+    if(
+        currentProvince === province
+    ){
 
-        renderStats(province);
-        renderHospitals(province);
+        renderStats(
+            province
+        );
+
+
+        renderHospitals(
+            province
+        );
 
     }
+
+
+    renderProvinces();
 
 }
 
@@ -1799,20 +2121,31 @@ function deleteHospital(
 
 function showProvinces(){
 
-    currentProvince = null;
-    currentHospital = null;
+    currentProvince =
+        null;
+
+
+    currentHospital =
+        null;
+
 
     document.getElementById(
         "provincePage"
-    ).style.display = "block";
+    ).style.display =
+        "block";
+
 
     document.getElementById(
         "hospitalPage"
-    ).style.display = "none";
+    ).style.display =
+        "none";
+
 
     document.getElementById(
         "hospitalSearch"
-    ).value = "";
+    ).value =
+        "";
+
 
     renderProvinces();
 
@@ -1827,14 +2160,20 @@ function closeModal(){
 
     document.getElementById(
         "modal"
-    ).classList.remove("show");
+    ).classList.remove(
+        "show"
+    );
 
-    currentHospital = null;
+
+    currentHospital =
+        null;
 
 }
 
 
-function closeModalByBackdrop(event){
+function closeModalByBackdrop(
+    event
+){
 
     if(
         event.target ===
@@ -1852,8 +2191,13 @@ document.addEventListener(
     "keydown",
     event => {
 
-        if(event.key === "Escape")
+        if(
+            event.key === "Escape"
+        ){
+
             closeModal();
+
+        }
 
     }
 );
@@ -1867,7 +2211,9 @@ function clearProvinceSearch(){
 
     document.getElementById(
         "provinceSearch"
-    ).value = "";
+    ).value =
+        "";
+
 
     renderProvinces();
 
@@ -1878,7 +2224,9 @@ function clearHospitalSearch(){
 
     document.getElementById(
         "hospitalSearch"
-    ).value = "";
+    ).value =
+        "";
+
 
     renderHospitals(
         currentProvince
@@ -1893,24 +2241,32 @@ function clearHospitalSearch(){
 
 function exportTXT(){
 
-    let output = "";
+    let output =
+        "";
+
 
     output +=
         "========================================\n";
 
+
     output +=
         "گزارش اطلاعات بیمارستان‌ها\n";
+
 
     output +=
         "========================================\n\n";
 
+
     output +=
         "تاریخ تهیه گزارش: " +
-        new Date().toLocaleString("fa-IR") +
+        new Date().toLocaleString(
+            "fa-IR"
+        ) +
         "\n\n";
 
 
-    let total = 0;
+    let total =
+        0;
 
 
     provinces.forEach(
@@ -1929,15 +2285,18 @@ function exportTXT(){
             output +=
                 "\n########################################\n";
 
+
             output +=
                 "استان: " +
                 province +
                 "\n";
 
+
             output +=
                 "تعداد: " +
                 list.length +
                 "\n";
+
 
             output +=
                 "########################################\n\n";
@@ -1959,8 +2318,10 @@ function exportTXT(){
                     output +=
                         `${index+1}. ${hospital.name}\n`;
 
+
                     output +=
                         `شهر: ${hospital.city || ""}\n`;
+
 
                     output +=
                         `وضعیت: ${
@@ -1973,14 +2334,16 @@ function exportTXT(){
 
 
                     (hospital.phones || [])
-                        .forEach(phone => {
+                    .forEach(
+                        phone => {
 
                             output +=
                                 "  " +
                                 phone +
                                 "\n";
 
-                        });
+                        }
+                    );
 
 
                     if(hospital.note){
@@ -2006,10 +2369,12 @@ function exportTXT(){
     output +=
         "\n========================================\n";
 
+
     output +=
         "تعداد کل بیمارستان‌های فعال: " +
         total +
         "\n";
+
 
     output +=
         "========================================\n";
@@ -2017,7 +2382,10 @@ function exportTXT(){
 
     const blob =
         new Blob(
-            ["\uFEFF" + output],
+            [
+                "\uFEFF" +
+                output
+            ],
             {
                 type:
                     "text/plain;charset=utf-8"
@@ -2026,14 +2394,20 @@ function exportTXT(){
 
 
     const url =
-        URL.createObjectURL(blob);
+        URL.createObjectURL(
+            blob
+        );
 
 
     const a =
-        document.createElement("a");
+        document.createElement(
+            "a"
+        );
 
 
-    a.href = url;
+    a.href =
+        url;
+
 
     a.download =
         "hospital-data-" +
@@ -2043,13 +2417,20 @@ function exportTXT(){
         ".txt";
 
 
-    document.body.appendChild(a);
+    document.body.appendChild(
+        a
+    );
+
 
     a.click();
 
+
     a.remove();
 
-    URL.revokeObjectURL(url);
+
+    URL.revokeObjectURL(
+        url
+    );
 
 
     showToast(
@@ -2063,10 +2444,13 @@ function exportTXT(){
    Toast
    ========================================================= */
 
-let toastTimer = null;
+let toastTimer =
+    null;
 
 
-function showToast(message){
+function showToast(
+    message
+){
 
     const toast =
         document.getElementById(
@@ -2076,6 +2460,7 @@ function showToast(message){
 
     toast.textContent =
         message;
+
 
     toast.classList.add(
         "show"
@@ -2106,23 +2491,52 @@ function showToast(message){
    امنیت HTML
    ========================================================= */
 
-function escapeHTML(value){
+function escapeHTML(
+    value
+){
 
-    return String(value ?? "")
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
 
 }
 
 
-function escapeJS(value){
+function escapeJS(
+    value
+){
 
-    return String(value ?? "")
-        .replace(/\\/g,"\\\\")
-        .replace(/'/g,"\\'");
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /\\/g,
+        "\\\\"
+    )
+    .replace(
+        /'/g,
+        "\\'"
+    );
 
 }
 
